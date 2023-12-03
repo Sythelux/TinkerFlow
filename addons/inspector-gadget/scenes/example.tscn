@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb8ywhm60n3q5"]
+
+[ext_resource type="Script" path="res://addons/inspector-gadget/src/inspector_gadget.gd" id="1"]
+[ext_resource type="Script" path="res://addons/inspector-gadget/src/property_visualizer.gd" id="2"]
+
+[node name="InspectorGadgetExample" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VisualizerScrollContainer" type="ScrollContainer" parent="ColorRect/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PropertyVisualizer" type="Control" parent="ColorRect/HBoxContainer/VisualizerScrollContainer"]
+custom_minimum_size = Vector2(0, 4290)
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2")
+quaternion_value = Quaternion(-0.18, -0.31, -0.31, 0.88)
+basis_value = Basis(0.853553, 0.5, 0.146447, -0.146447, 0.5, -0.853553, -0.5, 0.707107, 0.5)
+packed_byte_array_value = PackedByteArray(0, 1, 2, 3, 7, 15, 31, 63, 127, 255)
+packed_int32_array_value = PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7)
+packed_float32_array_value = PackedFloat32Array(0, 0.3, 0.6, 0.9, 1.2, 1.5, 1.7, 2, 2.3, 2.7, 3)
+packed_string_array_value = PackedStringArray("foo", "bar", "baz")
+packed_vector2_array_value = PackedVector2Array(0, 0, 0, -5, 5, 0, 5, 5)
+packed_vector3_array_value = PackedVector3Array(0, 0, 0, 0, 10, 0, 10, 0, 0, 0, 0, 10)
+packed_color_array_value = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[node name="InspectorGadgetScrollContainer" type="ScrollContainer" parent="ColorRect/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InspectorGadget" type="MarginContainer" parent="ColorRect/HBoxContainer/InspectorGadgetScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1")
+property_blacklist = Array[String](["blacklisted_property"])
+container_type_hints = {
+":array_value:4": 0,
+":array_value:5": "",
+":dictionary_value:[keys]": "",
+":dictionary_value:[values]": ""
+}
+node_path = NodePath("../../VisualizerScrollContainer/PropertyVisualizer")
