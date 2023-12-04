@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnkwh5j4jofs2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruvs5"]
+bg_color = Color(0.129458, 0.148989, 0.180255, 1)
+
+[node name="BehaviorUIBase" type="VBoxContainer"]
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ruvs5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<Placeholder>"
+
+[node name="Button" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "⬆"
+flat = true
+
+[node name="Button2" type="Button" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "⬇"
+flat = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MenuBar" type="MenuBar" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3

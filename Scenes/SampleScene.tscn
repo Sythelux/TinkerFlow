@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwu26e1jy8icq"]
+
+[ext_resource type="Script" path="res://addons/TinkerFlow/Runtime/Configuration/RuntimeConfigurator.cs" id="1_tmdxv"]
+[ext_resource type="Script" path="res://addons/TinkerFlow/Runtime/Configuration/SceneConfiguration.cs" id="2_xhjjv"]
+
+[node name="SampleScene" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0.5, -0.663414, 0.55667, 0, 0, 0)
+
+[node name="PROCESS_CONFIGURATION" type="Node" parent="."]
+script = ExtResource("1_tmdxv")
+RuntimeConfigurationName = "DefaultRuntimeConfiguration"
+SelectedProcess = ""
+ProcessStringLocalizationTable = ""
+
+[node name="Node" type="Node" parent="PROCESS_CONFIGURATION"]
+script = ExtResource("2_xhjjv")

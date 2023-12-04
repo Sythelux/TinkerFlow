@@ -14,10 +14,10 @@ public partial class TinkerFlowPlugin : EditorPlugin
 
     public override void _EnterTree()
     {
-        ProcessInspector = GD.Load<PackedScene>(ResourcePath("Godot/ProcessInspector.tscn")).Instantiate<ProcessInspector>();
+        ProcessInspector = GD.Load<PackedScene>(ResourcePath("ProcessInspector.tscn")).Instantiate<ProcessInspector>();
         AddControlToDock(DockSlot.LeftUl, ProcessInspector);
 
-        ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("Godot/ProcessEditor.tscn")).Instantiate<ProcessEditor>();
+        ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("ProcessEditor.tscn")).Instantiate<ProcessEditor>();
         if (ProcessEditor != null)
         {
             EditorInterface.Singleton.GetEditorMainScreen().AddChild(ProcessEditor);
@@ -43,7 +43,7 @@ public partial class TinkerFlowPlugin : EditorPlugin
 
     public override Texture2D _GetPluginIcon()
     {
-        return ResourceLoader.Load<Texture2D>(ResourcePath("Godot/Resources/TinkerFlow.svg"));
+        return ResourceLoader.Load<Texture2D>(ResourcePath("Resources/TinkerFlow.svg"));
     }
 
     public override bool _HasMainScreen()
@@ -58,8 +58,7 @@ public partial class TinkerFlowPlugin : EditorPlugin
 
     public override void _SaveExternalData()
     {
-        if (ProcessEditor != null)
-            ProcessEditor.Save();
+        ProcessEditor?.Save();
     }
 
     public override void _ExitTree()
@@ -67,7 +66,7 @@ public partial class TinkerFlowPlugin : EditorPlugin
         RemoveInspectorPlugin(_plugin);
         ProcessEditor?.QueueFree();
         RemoveControlFromDocks(ProcessInspector);
-        ProcessInspector.Free();
+        ProcessInspector?.Free();
     }
 
     public static string ResourcePath(string subPath)

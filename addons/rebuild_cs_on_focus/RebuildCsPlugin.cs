@@ -17,7 +17,7 @@ public partial class RebuildCsPlugin : EditorPlugin
    public override void _EnterTree()
    {
       _godotSharpEditorPlugin = GetParent().GetChildren().First(n => n.HasMethod("BuildProjectPressed"));
-      AddUiControl();
+      // AddUiControl();
       FindEditorBuildShortcut();
       ConnectEditorSignals();
    }
@@ -26,7 +26,7 @@ public partial class RebuildCsPlugin : EditorPlugin
    {
       _rebuildEnabled = false;
       _scanning = false;
-      RemoveControlFromContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
+      // RemoveControlFromContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
       _godotSharpEditorPlugin.Set("SkipBuildBeforePlaying", false);
       _rebuildOnFocusUi.QueueFree();
    }
@@ -95,9 +95,8 @@ public partial class RebuildCsPlugin : EditorPlugin
       var bottomBar = node.GetParent();
       RemoveControlFromBottomPanel(node);
       node.QueueFree();
-
-      var msBuildPanel = bottomBar.GetChildren()
-         .FirstOrDefault(c => c is VBoxContainer && c.HasMethod(_msBuildPanelBuildMethod));
+      
+      var msBuildPanel = bottomBar.GetChildren().FirstOrDefault(c => c.HasMethod(_msBuildPanelBuildMethod));
 
       if (msBuildPanel != null)
       {

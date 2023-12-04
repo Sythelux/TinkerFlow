@@ -21,3 +21,7 @@ project/assembly_name="TinkerFlow"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/TinkerFlow/plugin.cfg", "res://addons/inspector-gadget/plugin.cfg", "res://addons/rebuild_cs_on_focus/plugin.cfg")
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://Localisation/Default.csv")
