@@ -1,10 +1,12 @@
 using Godot;
+using VRBuilder.Core;
+using VRBuilder.Editor.UI.Windows;
 
 namespace TinkerFlow.Godot.Editor;
 
 ///<author email="Sythelux Rikd">Sythelux Rikd</author>
 [Tool]
-public partial class ProcessInspector : Control
+public partial class StepWindow : Control, IStepView
 {
     private LineEdit? stepName;
     private LineEdit? stepDescription;
@@ -21,9 +23,9 @@ public partial class ProcessInspector : Control
     public VBoxContainer Transitions => transitions ??= GetNode<VBoxContainer>("TabContainer/Conditions");
     public VBoxContainer UnlockedElements => unlockedElements ??= GetNode<VBoxContainer>("TabContainer/LockedObjects");
 
-    public void OnStepSelected(StepNode stepNode)
+    public void OnStepSelected(ProcessGraphNode processGraphNode)
     {
-        StepName.Text = stepNode.Name;
+        StepName.Text = processGraphNode.Name;
         foreach (Node? node in GetChildren())
         {
             var child = (Control)node;
@@ -36,7 +38,7 @@ public partial class ProcessInspector : Control
             child.QueueFree();
         }
 
-        foreach (var node in stepNode.GetChildren())
+        foreach (var node in processGraphNode.GetChildren())
         {
             var child = (StepNodeRow)node;
             var transitionUiBase = TransitionUiBase?.Instantiate<TransitionUiBase>();
@@ -45,11 +47,11 @@ public partial class ProcessInspector : Control
 
         var button = new Button();
         button.Text = "Add Transition";
-        button.Pressed += () => stepNode.AddRow(new StepNodeRow());
+        button.Pressed += () => processGraphNode.AddRow(new StepNodeRow());
         Transitions.AddChild(button);
     }
 
-    public void OnStepDeselected(StepNode stepNode)
+    public void OnStepDeselected(ProcessGraphNode processGraphNode)
     {
         StepName.Text = "None Selected";
         foreach (Node? node in GetChildren())
@@ -59,5 +61,20 @@ public partial class ProcessInspector : Control
         }
 
         StepName.Visible = true;
+    }
+
+    public void SetStep(IStep newStep)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ResetStepView()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public static void ShowInspector()
+    {
+        throw new System.NotImplementedException();
     }
 }

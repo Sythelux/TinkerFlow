@@ -1,0 +1,10 @@
+Editor:
+- EditorPrefs.SetString(GlobalEditorHandler.LastEditedProcessNameKey, processName);
+-> EditorInterface.Singleton.Set(GlobalEditorHandler.LastEditedProcessNameKey, processName);
+
+
+- Debug.LogError
+-> GD.PushError
+
+- AddElement(node);
+-> AddChild(node);

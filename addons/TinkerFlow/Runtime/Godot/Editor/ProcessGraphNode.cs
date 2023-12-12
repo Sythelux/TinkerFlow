@@ -2,11 +2,24 @@ using Godot;
 using System;
 using Godot.Collections;
 using TinkerFlow.Godot.Editor;
+using VRBuilder.Core;
+using Array = System.Array;
 
 [Tool]
-public partial class StepNode : GraphNode
+public abstract partial class ProcessGraphNode : GraphNode
 {
     private readonly Array<StepNodeRow> rows = new();
+    private const string emptyOutputPortText = "Go to next Chapter";
+
+    /// <summary>
+    /// Steps this node leads to.
+    /// </summary>
+    public abstract IStep[] Outputs { get; }
+
+    /// <summary>
+    /// Step other nodes connect to.
+    /// </summary>
+    public abstract IStep EntryPoint { get; }
 
     public override void _EnterTree()
     {
@@ -81,13 +94,33 @@ public partial class StepNode : GraphNode
         }
     }
 
-    public void UpdateTransitionTo(int fromPort, StepNode toNode, int toPort)
+    public void UpdateTransitionTo(int fromPort, ProcessGraphNode toNode, int toPort)
     {
         rows[fromPort].Title = "Transition to: " + toNode.Title;
     }
 
-    public void RemoveTransitionTo(int fromPort, StepNode toNode, int toPort)
+    public void RemoveTransitionTo(int fromPort, ProcessGraphNode toNode, int toPort)
     {
         rows[fromPort].Title = "Chapter End";
+    }
+
+    public void Refresh()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateOutputPortName(Port port, GraphElement node)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Port? GetOutPutPortForSlot(int indexOf)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Port? GetInPutPortForSlot(int indexOf)
+    {
+        throw new NotImplementedException();
     }
 }

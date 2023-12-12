@@ -11,8 +11,8 @@ transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0
 [node name="PROCESS_CONFIGURATION" type="Node" parent="."]
 script = ExtResource("1_tmdxv")
 RuntimeConfigurationName = "DefaultRuntimeConfiguration"
-SelectedProcess = ""
-ProcessStringLocalizationTable = ""
+SelectedProcess = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
+ProcessStringLocalizationTable = "res://Localisation/Default.csv"
 
 [node name="Node" type="Node" parent="PROCESS_CONFIGURATION"]
 script = ExtResource("2_xhjjv")

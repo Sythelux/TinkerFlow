@@ -10,32 +10,34 @@ public partial class ProcessEditor : Control
     public int MyPropertyTest { get; set; }
 
     private ProcessGraph? graph;
+    private HBoxContainer chapterHierarchy;
+
+    public ProcessGraph ProcessGraph => graph ??= GetNode<ProcessGraph>("Main/Workspace/Graph");
 
     [Signal]
-    public delegate void StepSelectedEventHandler(StepNode stepNode);
+    public delegate void StepSelectedEventHandler(ProcessGraphNode processGraphNode);
 
     [Signal]
-    public delegate void StepDeselectedEventHandler(StepNode stepNode);
+    public delegate void StepDeselectedEventHandler(ProcessGraphNode processGraphNode);
 
     public override void _Ready()
     {
-        graph = GetNode<ProcessGraph>("Main/Workspace/Graph");
-        if (graph != null)
+        if (ProcessGraph != null)
         {
-            graph.NodeSelected += OnNodeSelected;
-            graph.NodeDeselected += OnNodeDeselected;
+            ProcessGraph.NodeSelected += OnNodeSelected;
+            ProcessGraph.NodeDeselected += OnNodeDeselected;
         }
     }
 
     private void OnNodeDeselected(Node node)
     {
-        if (node is StepNode stepNode)
+        if (node is ProcessGraphNode stepNode)
             EmitSignal(SignalName.StepDeselected, stepNode);
     }
 
     private void OnNodeSelected(Node node)
     {
-        if (node is StepNode stepNode)
+        if (node is ProcessGraphNode stepNode)
             EmitSignal(SignalName.StepSelected, stepNode);
     }
 

@@ -10,11 +10,13 @@ public partial class TinkerFlowPlugin : EditorPlugin
     private static string? defaultBasePath; // "res://addons/TinkerFlow/"
     private MyInspectorPlugin _plugin;
     public ProcessEditor? ProcessEditor { get; set; }
-    public ProcessInspector? ProcessInspector { get; set; }
+    public StepWindow? ProcessInspector { get; set; }
+    public static TinkerFlowPlugin Instance { get; private set; }
 
     public override void _EnterTree()
     {
-        ProcessInspector = GD.Load<PackedScene>(ResourcePath("ProcessInspector.tscn")).Instantiate<ProcessInspector>();
+        Instance = this;
+        ProcessInspector = GD.Load<PackedScene>(ResourcePath("ProcessInspector.tscn")).Instantiate<StepWindow>();
         AddControlToDock(DockSlot.LeftUl, ProcessInspector);
 
         ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("ProcessEditor.tscn")).Instantiate<ProcessEditor>();

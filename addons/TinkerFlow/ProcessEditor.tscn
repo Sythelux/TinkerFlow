@@ -26,41 +26,43 @@ grow_vertical = 2
 
 [node name="ToolBar" type="HBoxContainer" parent="Main"]
 layout_mode = 2
+alignment = 1
 
-[node name="Workspace" type="Control" parent="Main"]
+[node name="HBoxContainer2" type="Control" parent="Main"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Graph" type="GraphEdit" parent="Main/Workspace"]
+[node name="Graph" type="GraphEdit" parent="Main/HBoxContainer2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 right_disconnects = true
 script = ExtResource("2_hl13x")
 StepNode = ExtResource("4_torf1")
 
-[node name="PopupMenu" type="PopupMenu" parent="Main/Workspace/Graph"]
+[node name="PopupMenu" type="PopupMenu" parent="Main/HBoxContainer2/Graph"]
 item_count = 1
 item_0/text = "Add Step"
 item_0/id = 0
 
-[node name="NodePopupMenu" type="PopupMenu" parent="Main/Workspace/Graph"]
+[node name="NodePopupMenu" type="PopupMenu" parent="Main/HBoxContainer2/Graph"]
 item_count = 1
 item_0/text = "Delete"
 item_0/id = 0
 
-[node name="Start" parent="Main/Workspace/Graph" instance=ExtResource("3_diqr1")]
+[node name="Start" parent="Main/HBoxContainer2/Graph" instance=ExtResource("3_diqr1")]
 layout_mode = 0
 
-[node name="Step1" parent="Main/Workspace/Graph" instance=ExtResource("4_torf1")]
+[node name="Step1" parent="Main/HBoxContainer2/Graph" instance=ExtResource("4_torf1")]
 layout_mode = 0
 offset_left = 369.0
 offset_top = 251.0
 offset_right = 559.0
-offset_bottom = 362.0
+offset_bottom = 370.0
 position_offset = Vector2(369, 251)
 slot/1/left_enabled = false
 slot/1/left_type = 0
@@ -72,33 +74,33 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 
-[node name="FirstRow2" type="HBoxContainer" parent="Main/Workspace/Graph/Step1"]
+[node name="FirstRow2" type="HBoxContainer" parent="Main/HBoxContainer2/Graph/Step1"]
 layout_mode = 2
 script = ExtResource("5_6hy8b")
 
-[node name="Title" type="Label" parent="Main/Workspace/Graph/Step1/FirstRow2"]
+[node name="Title" type="Label" parent="Main/HBoxContainer2/Graph/Step1/FirstRow2"]
 layout_mode = 2
 text = "Chapter End"
 
-[node name="VSeparator" type="VSeparator" parent="Main/Workspace/Graph/Step1/FirstRow2"]
+[node name="VSeparator" type="VSeparator" parent="Main/HBoxContainer2/Graph/Step1/FirstRow2"]
 layout_mode = 2
 
-[node name="AddTransition" type="Button" parent="Main/Workspace/Graph/Step1/FirstRow2"]
+[node name="AddTransition" type="Button" parent="Main/HBoxContainer2/Graph/Step1/FirstRow2"]
 layout_mode = 2
 text = "➕"
 flat = true
 
-[node name="RemoveTransition" type="Button" parent="Main/Workspace/Graph/Step1/FirstRow2"]
+[node name="RemoveTransition" type="Button" parent="Main/HBoxContainer2/Graph/Step1/FirstRow2"]
 layout_mode = 2
 text = "➖"
 flat = true
 
-[node name="Step2" parent="Main/Workspace/Graph" instance=ExtResource("4_torf1")]
+[node name="Step2" parent="Main/HBoxContainer2/Graph" instance=ExtResource("4_torf1")]
 layout_mode = 0
 offset_left = 642.0
 offset_top = 202.0
 offset_right = 832.0
-offset_bottom = 313.0
+offset_bottom = 321.0
 position_offset = Vector2(642, 202)
 slot/1/left_enabled = false
 slot/1/left_type = 0
@@ -110,28 +112,28 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 
-[node name="FirstRow2" type="HBoxContainer" parent="Main/Workspace/Graph/Step2"]
+[node name="FirstRow2" type="HBoxContainer" parent="Main/HBoxContainer2/Graph/Step2"]
 layout_mode = 2
 script = ExtResource("5_6hy8b")
 
-[node name="Title" type="Label" parent="Main/Workspace/Graph/Step2/FirstRow2"]
+[node name="Title" type="Label" parent="Main/HBoxContainer2/Graph/Step2/FirstRow2"]
 layout_mode = 2
 text = "Chapter End"
 
-[node name="VSeparator" type="VSeparator" parent="Main/Workspace/Graph/Step2/FirstRow2"]
+[node name="VSeparator" type="VSeparator" parent="Main/HBoxContainer2/Graph/Step2/FirstRow2"]
 layout_mode = 2
 
-[node name="AddTransition" type="Button" parent="Main/Workspace/Graph/Step2/FirstRow2"]
+[node name="AddTransition" type="Button" parent="Main/HBoxContainer2/Graph/Step2/FirstRow2"]
 layout_mode = 2
 text = "➕"
 flat = true
 
-[node name="RemoveTransition" type="Button" parent="Main/Workspace/Graph/Step2/FirstRow2"]
+[node name="RemoveTransition" type="Button" parent="Main/HBoxContainer2/Graph/Step2/FirstRow2"]
 layout_mode = 2
 text = "➖"
 flat = true
 
-[node name="Step3" parent="Main/Workspace/Graph" instance=ExtResource("4_torf1")]
+[node name="Step3" parent="Main/HBoxContainer2/Graph" instance=ExtResource("4_torf1")]
 layout_mode = 0
 offset_left = 652.0
 offset_top = 372.0
@@ -139,19 +141,42 @@ offset_right = 842.0
 offset_bottom = 458.0
 position_offset = Vector2(652, 372)
 
+[node name="ChapterViewBG" type="Panel" parent="Main/HBoxContainer2"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 28.0
+grow_vertical = 2
+
+[node name="ChapterView" type="VBoxContainer" parent="Main/HBoxContainer2/ChapterViewBG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Main/HBoxContainer2/ChapterViewBG/ChapterView"]
+layout_mode = 2
+text = ">>"
+flat = true
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Main"]
 layout_mode = 2
 
 [node name="StatusText" type="Label" parent="Main/HBoxContainer"]
 layout_mode = 2
 
-[connection signal="popup_request" from="Main/Workspace/Graph" to="Main/Workspace/Graph" method="ShowPopup"]
-[connection signal="id_pressed" from="Main/Workspace/Graph/PopupMenu" to="Main/Workspace/Graph" method="AddStep"]
-[connection signal="id_pressed" from="Main/Workspace/Graph/NodePopupMenu" to="Main/Workspace/Graph" method="ModifyStep"]
-[connection signal="pressed" from="Main/Workspace/Graph/Step1/FirstRow2/AddTransition" to="Main/Workspace/Graph/Step1/FirstRow2" method="OnAddButton"]
-[connection signal="pressed" from="Main/Workspace/Graph/Step1/FirstRow2/RemoveTransition" to="Main/Workspace/Graph/Step1/FirstRow2" method="OnRemoveButton"]
-[connection signal="pressed" from="Main/Workspace/Graph/Step2/FirstRow2/AddTransition" to="Main/Workspace/Graph/Step2/FirstRow2" method="OnAddButton"]
-[connection signal="pressed" from="Main/Workspace/Graph/Step2/FirstRow2/RemoveTransition" to="Main/Workspace/Graph/Step2/FirstRow2" method="OnRemoveButton"]
+[connection signal="popup_request" from="Main/HBoxContainer2/Graph" to="Main/HBoxContainer2/Graph" method="ShowPopup"]
+[connection signal="id_pressed" from="Main/HBoxContainer2/Graph/PopupMenu" to="Main/HBoxContainer2/Graph" method="AddStep"]
+[connection signal="id_pressed" from="Main/HBoxContainer2/Graph/NodePopupMenu" to="Main/HBoxContainer2/Graph" method="ModifyStep"]
+[connection signal="pressed" from="Main/HBoxContainer2/Graph/Step1/FirstRow2/AddTransition" to="Main/HBoxContainer2/Graph/Step1/FirstRow2" method="OnAddButton"]
+[connection signal="pressed" from="Main/HBoxContainer2/Graph/Step1/FirstRow2/RemoveTransition" to="Main/HBoxContainer2/Graph/Step1/FirstRow2" method="OnRemoveButton"]
+[connection signal="pressed" from="Main/HBoxContainer2/Graph/Step2/FirstRow2/AddTransition" to="Main/HBoxContainer2/Graph/Step2/FirstRow2" method="OnAddButton"]
+[connection signal="pressed" from="Main/HBoxContainer2/Graph/Step2/FirstRow2/RemoveTransition" to="Main/HBoxContainer2/Graph/Step2/FirstRow2" method="OnRemoveButton"]
 
-[editable path="Main/Workspace/Graph/Step1"]
-[editable path="Main/Workspace/Graph/Step2"]
+[editable path="Main/HBoxContainer2/Graph/Step1"]
+[editable path="Main/HBoxContainer2/Graph/Step2"]

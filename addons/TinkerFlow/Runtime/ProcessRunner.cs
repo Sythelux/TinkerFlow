@@ -81,7 +81,7 @@ namespace VRBuilder.Core
                 }
             }
 
-            private void Update()
+            public override void _Process(double delta)
             {
                 if (process == null)
                 {
