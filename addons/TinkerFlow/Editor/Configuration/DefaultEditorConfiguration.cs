@@ -12,75 +12,53 @@ using VRBuilder.Core.Serialization.JSON;
 using VRBuilder.Editor.ProcessValidation;
 using VRBuilder.Editor.UI.StepInspector.Menu;
 
-namespace VRBuilder.Editor.Configuration
+namespace VRBuilder.Editor.Configuration;
+
+/// <summary>
+/// Default editor configuration definition which is used if no other was implemented.
+/// </summary>
+public class DefaultEditorConfiguration : IEditorConfiguration
 {
-    /// <summary>
-    /// Default editor configuration definition which is used if no other was implemented.
-    /// </summary>
-    public class DefaultEditorConfiguration : IEditorConfiguration
+    private AllowedMenuItemsSettings allowedMenuItemsSettings;
+
+    /// <inheritdoc />
+    public virtual string ProcessStreamingAssetsSubdirectory => "Processes";
+
+    /// <inheritdoc />
+    public virtual string AllowedMenuItemsSettingsAssetPath => "Assets/MindPort/VR Builder/Editor/Config/AllowedMenuItems.json";
+
+    /// <inheritdoc />
+    public virtual IProcessSerializer Serializer => new NewtonsoftJsonProcessSerializerV4();
+
+    /// <inheritdoc />
+    public IProcessAssetStrategy ProcessAssetStrategy => new SingleFileProcessAssetStrategy();
+
+    /// <inheritdoc />
+    public virtual ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent => AllowedMenuItemsSettings.GetBehaviorMenuOptions().Cast<MenuOption<IBehavior>>().ToList().AsReadOnly();
+
+    /// <inheritdoc />
+    public virtual ReadOnlyCollection<MenuOption<ICondition>> ConditionsMenuContent => AllowedMenuItemsSettings.GetConditionMenuOptions().Cast<MenuOption<ICondition>>().ToList().AsReadOnly();
+
+    /// <inheritdoc />
+    public virtual AllowedMenuItemsSettings AllowedMenuItemsSettings
     {
-        private AllowedMenuItemsSettings allowedMenuItemsSettings;
-
-        /// <inheritdoc />
-        public virtual string ProcessStreamingAssetsSubdirectory
+        get
         {
-            get { return "Processes"; }
+            if (allowedMenuItemsSettings == null) allowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
+
+            return allowedMenuItemsSettings;
         }
+        set => allowedMenuItemsSettings = value;
+    }
 
-        /// <inheritdoc />
-        public virtual string AllowedMenuItemsSettingsAssetPath
-        {
-            get { return "Assets/MindPort/VR Builder/Editor/Config/AllowedMenuItems.json"; }
-        }
+    internal virtual IValidationHandler Validation { get; }
 
-        /// <inheritdoc />
-        public virtual IProcessSerializer Serializer
-        {
-            get { return new GodotJsonProcessSerializerV1(); }
-        }
-
-        /// <inheritdoc />
-        public IProcessAssetStrategy ProcessAssetStrategy
-        {
-            get { return new SingleFileProcessAssetStrategy(); }
-        }
-
-        /// <inheritdoc />
-        public virtual ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent
-        {
-            get { return AllowedMenuItemsSettings.GetBehaviorMenuOptions().Cast<MenuOption<IBehavior>>().ToList().AsReadOnly(); }
-        }
-
-        /// <inheritdoc />
-        public virtual ReadOnlyCollection<MenuOption<ICondition>> ConditionsMenuContent
-        {
-            get { return AllowedMenuItemsSettings.GetConditionMenuOptions().Cast<MenuOption<ICondition>>().ToList().AsReadOnly(); }
-        }
-
-        /// <inheritdoc />
-        public virtual AllowedMenuItemsSettings AllowedMenuItemsSettings
-        {
-            get
-            {
-                if (allowedMenuItemsSettings == null)
-                {
-                    allowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
-                }
-
-                return allowedMenuItemsSettings;
-            }
-            set { allowedMenuItemsSettings = value; }
-        }
-
-        internal virtual IValidationHandler Validation { get; }
-
-        protected DefaultEditorConfiguration()
-        {
+    protected DefaultEditorConfiguration()
+    {
 #if CREATOR_PRO
             Validation = new DefaultValidationHandler();
 #else
-            Validation = new DisabledValidationHandler();
+        Validation = new DisabledValidationHandler();
 #endif
-        }
     }
 }

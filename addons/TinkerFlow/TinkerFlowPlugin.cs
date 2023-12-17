@@ -8,18 +8,19 @@ namespace TinkerFlow.Godot.Editor;
 public partial class TinkerFlowPlugin : EditorPlugin
 {
     private static string? defaultBasePath; // "res://addons/TinkerFlow/"
-    private MyInspectorPlugin _plugin;
+
+    // private MyInspectorPlugin _plugin;
     public ProcessEditor? ProcessEditor { get; set; }
     public StepWindow? ProcessInspector { get; set; }
-    public static TinkerFlowPlugin Instance { get; private set; }
+    public static TinkerFlowPlugin? Instance { get; private set; }
 
     public override void _EnterTree()
     {
         Instance = this;
-        ProcessInspector = GD.Load<PackedScene>(ResourcePath("ProcessInspector.tscn")).Instantiate<StepWindow>();
+        ProcessInspector = GD.Load<PackedScene>(ResourcePath("Scenes/ProcessInspector.tscn")).Instantiate<StepWindow>();
         AddControlToDock(DockSlot.LeftUl, ProcessInspector);
 
-        ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("ProcessEditor.tscn")).Instantiate<ProcessEditor>();
+        ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("Scenes/ProcessEditor.tscn")).Instantiate<ProcessEditor>();
         if (ProcessEditor != null)
         {
             EditorInterface.Singleton.GetEditorMainScreen().AddChild(ProcessEditor);
@@ -33,8 +34,8 @@ public partial class TinkerFlowPlugin : EditorPlugin
         }
 
         _MakeVisible(false);
-        _plugin = new MyInspectorPlugin();
-        AddInspectorPlugin(_plugin);
+        // _plugin = new MyInspectorPlugin();
+        // AddInspectorPlugin(_plugin);
         // AddCustomType("ProcessEditor", "Panel", ResourceLoader.Load<CSharpScript>(""), new ImageTexture());
     }
 
@@ -65,7 +66,7 @@ public partial class TinkerFlowPlugin : EditorPlugin
 
     public override void _ExitTree()
     {
-        RemoveInspectorPlugin(_plugin);
+        // RemoveInspectorPlugin(_plugin);
         ProcessEditor?.QueueFree();
         RemoveControlFromDocks(ProcessInspector);
         ProcessInspector?.Free();

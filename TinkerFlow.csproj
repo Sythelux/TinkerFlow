@@ -4,6 +4,14 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <Nullables>true</Nullables>
+      <Nullable>enable</Nullable>
   </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="addons\TinkerFlow\Godot\Editor\"/>
+        <Folder Include="addons\TinkerFlow\Prefabs\"/>
+        <Folder Include="addons\TinkerFlow\Runtime\Godot\Editor\"/>
+    </ItemGroup>
 </Project>

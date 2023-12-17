@@ -10,16 +10,16 @@ using VRBuilder.Editor.ProcessValidation;
 /// </summary>
 internal class DisabledValidationHandler : IValidationHandler
 {
-    public IContextResolver ContextResolver { get; set; } = null;
+    public IContextResolver? ContextResolver { get; set; } = null;
 
-    public IValidationReport LastReport { get; } = null;
+    public IValidationReport? LastReport { get; } = null;
 
     public bool IsAllowedToValidate()
     {
         return false;
     }
 
-    public IValidationReport Validate(IData data, IProcess process, IContext context = null)
+    public IValidationReport? Validate(IData data, IProcess process, IContext? context = null)
     {
         return null;
     }

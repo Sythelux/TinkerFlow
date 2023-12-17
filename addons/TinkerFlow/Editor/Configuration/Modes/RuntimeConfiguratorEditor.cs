@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Godot;
 using Godot.Collections;
 using VRBuilder.Core.Utils;
@@ -74,7 +73,6 @@ public partial class RuntimeConfigurator
             retVal.Add(nameof(SelectedProcess) + " is Invalid");
         if (!FileAccess.FileExists(ProcessStringLocalizationTable))
             retVal.Add(nameof(ProcessStringLocalizationTable) + " is Invalid");
-        retVal.AddRange(base._GetConfigurationWarnings());
         return retVal.ToArray();
     }
 }

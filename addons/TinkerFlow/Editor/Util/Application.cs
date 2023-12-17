@@ -5,5 +5,5 @@ namespace VRBuilder.Editor.Util;
 public class Application
 {
     public static string dataPath = "user://";
-    public static string streamingAssetsPath = "user://streaming";
+    public static string streamingAssetsPath = "res://StreamingAssets";
 }

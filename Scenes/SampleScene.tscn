@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwu26e1jy8icq"]
 
-[ext_resource type="Script" path="res://addons/TinkerFlow/Runtime/Configuration/RuntimeConfigurator.cs" id="1_tmdxv"]
-[ext_resource type="Script" path="res://addons/TinkerFlow/Runtime/Configuration/SceneConfiguration.cs" id="2_xhjjv"]
+[ext_resource type="Script" path="res://addons/TinkerFlow.Core/Runtime/Configuration/RuntimeConfigurator.cs" id="1_tmdxv"]
+[ext_resource type="Script" path="res://addons/TinkerFlow.Core/Runtime/Configuration/SceneConfiguration.cs" id="2_xhjjv"]
 
 [node name="SampleScene" type="Node3D"]
 

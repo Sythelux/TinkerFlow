@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=3 uid="uid://b35claxvsahil"]
+
+[ext_resource type="Script" path="res://addons/TinkerFlow/Editor/UI/GraphView/ProcessEditor.cs" id="1_b4nao"]
+[ext_resource type="Script" path="res://addons/TinkerFlow/Editor/UI/GraphView/ProcessGraph.cs" id="2_hl13x"]
+[ext_resource type="PackedScene" uid="uid://ousqiboihk4a" path="res://addons/TinkerFlow/Prefabs/StepNode.tscn" id="4_torf1"]
+
+[node name="ProcessEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_b4nao")
+
+[node name="Main" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ToolBar" type="HBoxContainer" parent="Main"]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer2" type="Control" parent="Main"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProcessGraph" type="GraphEdit" parent="Main/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+right_disconnects = true
+script = ExtResource("2_hl13x")
+StepNode = ExtResource("4_torf1")
+
+[node name="PopupMenu" type="PopupMenu" parent="Main/HBoxContainer2/ProcessGraph"]
+item_count = 1
+item_0/text = "Add Step"
+item_0/id = 0
+
+[node name="NodePopupMenu" type="PopupMenu" parent="Main/HBoxContainer2/ProcessGraph"]
+item_count = 1
+item_0/text = "Delete"
+item_0/id = 0
+
+[node name="ChapterViewBG" type="Panel" parent="Main/HBoxContainer2"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 28.0
+grow_vertical = 2
+
+[node name="ChapterView" type="VBoxContainer" parent="Main/HBoxContainer2/ChapterViewBG"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Main/HBoxContainer2/ChapterViewBG/ChapterView"]
+layout_mode = 2
+text = ">>"
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Main"]
+layout_mode = 2
+
+[node name="StatusText" type="Label" parent="Main/HBoxContainer"]
+layout_mode = 2
+
+[connection signal="popup_request" from="Main/HBoxContainer2/ProcessGraph" to="Main/HBoxContainer2/ProcessGraph" method="ShowPopup"]
+[connection signal="id_pressed" from="Main/HBoxContainer2/ProcessGraph/PopupMenu" to="Main/HBoxContainer2/ProcessGraph" method="AddStep"]
+[connection signal="id_pressed" from="Main/HBoxContainer2/ProcessGraph/NodePopupMenu" to="Main/HBoxContainer2/ProcessGraph" method="ModifyStep"]

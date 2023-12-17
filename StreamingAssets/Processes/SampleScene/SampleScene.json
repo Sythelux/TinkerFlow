@@ -1,420 +1,420 @@
 {
   "$id": "1",
-  "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+ProcessWrapper, VRBuilder.Core",
+  "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+ProcessWrapper, TinkerFlow",
   "SubChapters": {
-	"$id": "2",
-	"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, VRBuilder.Core]], mscorlib",
-	"$values": []
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, TinkerFlow]], System.Private.CoreLib",
+    "$values": []
   },
   "Steps": {
-	"$id": "3",
-	"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, VRBuilder.Core]], mscorlib",
-	"$values": [
-	  {
-		"$id": "4",
-		"$type": "VRBuilder.Core.Step, VRBuilder.Core",
-		"StepMetadata": {
-		  "$id": "5",
-		  "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
-		  "Position": {
-			"x": 270.0,
-			"y": 0.0
-		  },
-		  "StepType": "default",
-		  "Guid": "6ca3b553-6fd1-4c8d-b426-86a9a89bf08b"
-		},
-		"Data": {
-		  "$id": "6",
-		  "$type": "VRBuilder.Core.Step+EntityData, VRBuilder.Core",
-		  "Name": "Step1",
-		  "Description": null,
-		  "Behaviors": {
-			"$id": "7",
-			"$type": "VRBuilder.Core.BehaviorCollection, VRBuilder.Core",
-			"Data": {
-			  "$id": "8",
-			  "$type": "VRBuilder.Core.BehaviorCollection+EntityData, VRBuilder.Core",
-			  "Behaviors": {
-				"$id": "9",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, VRBuilder.Core]], mscorlib",
-				"$values": []
-			  }
-			}
-		  },
-		  "Transitions": {
-			"$id": "10",
-			"$type": "VRBuilder.Core.TransitionCollection, VRBuilder.Core",
-			"Data": {
-			  "$id": "11",
-			  "$type": "VRBuilder.Core.TransitionCollection+EntityData, VRBuilder.Core",
-			  "Transitions": {
-				"$id": "12",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, VRBuilder.Core]], mscorlib",
-				"$values": [
-				  {
-					"$id": "13",
-					"$type": "VRBuilder.Core.Transition, VRBuilder.Core",
-					"Data": {
-					  "$id": "14",
-					  "$type": "VRBuilder.Core.Transition+EntityData, VRBuilder.Core",
-					  "Conditions": {
-						"$id": "15",
-						"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, VRBuilder.Core]], mscorlib",
-						"$values": []
-					  },
-					  "TargetStep": {
-						"$id": "16",
-						"$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, VRBuilder.Core",
-						"LifeCycle": null,
-						"StepMetadata": {
-						  "$id": "17",
-						  "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
-						  "Position": {
-							"x": 0.0,
-							"y": 0.0
-						  },
-						  "StepType": null,
-						  "Guid": "6b0b2859-f926-4d9d-a7b2-7b084d9307dc"
-						},
-						"Parent": null
-					  },
-					  "Mode": null,
-					  "IsCompleted": false,
-					  "Metadata": null
-					}
-				  },
-				  {
-					"$id": "18",
-					"$type": "VRBuilder.Core.Transition, VRBuilder.Core",
-					"Data": {
-					  "$id": "19",
-					  "$type": "VRBuilder.Core.Transition+EntityData, VRBuilder.Core",
-					  "Conditions": {
-						"$id": "20",
-						"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, VRBuilder.Core]], mscorlib",
-						"$values": []
-					  },
-					  "TargetStep": {
-						"$id": "21",
-						"$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, VRBuilder.Core",
-						"LifeCycle": null,
-						"StepMetadata": {
-						  "$id": "22",
-						  "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
-						  "Position": {
-							"x": 0.0,
-							"y": 0.0
-						  },
-						  "StepType": null,
-						  "Guid": "237c6dc7-cf25-454c-b681-2cdab7e413ea"
-						},
-						"Parent": null
-					  },
-					  "Mode": null,
-					  "IsCompleted": false,
-					  "Metadata": null
-					}
-				  }
-				]
-			  }
-			}
-		  },
-		  "Mode": null,
-		  "ToUnlock": {
-			"$id": "23",
-			"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, VRBuilder.Core]], mscorlib",
-			"$values": []
-		  },
-		  "TagsToUnlock": {
-			"$id": "24",
-			"$type": "System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib],[System.Collections.Generic.IEnumerable`1[[System.Type, mscorlib]], mscorlib]], mscorlib"
-		  },
-		  "Metadata": {
-			"$id": "25",
-			"$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
-			"values": {
-			  "$id": "26",
-			  "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib]], mscorlib",
-			  "TabsGroup": {
-				"$id": "27",
-				"$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
-				"selected": 0
-			  }
-			}
-		  }
-		}
-	  },
-	  {
-		"$id": "28",
-		"$type": "VRBuilder.Core.Step, VRBuilder.Core",
-		"StepMetadata": {
-		  "$id": "29",
-		  "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
-		  "Position": {
-			"x": 559.0,
-			"y": 0.0
-		  },
-		  "StepType": "default",
-		  "Guid": "6b0b2859-f926-4d9d-a7b2-7b084d9307dc"
-		},
-		"Data": {
-		  "$id": "30",
-		  "$type": "VRBuilder.Core.Step+EntityData, VRBuilder.Core",
-		  "Name": "Step",
-		  "Description": null,
-		  "Behaviors": {
-			"$id": "31",
-			"$type": "VRBuilder.Core.BehaviorCollection, VRBuilder.Core",
-			"Data": {
-			  "$id": "32",
-			  "$type": "VRBuilder.Core.BehaviorCollection+EntityData, VRBuilder.Core",
-			  "Behaviors": {
-				"$id": "33",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, VRBuilder.Core]], mscorlib",
-				"$values": []
-			  }
-			}
-		  },
-		  "Transitions": {
-			"$id": "34",
-			"$type": "VRBuilder.Core.TransitionCollection, VRBuilder.Core",
-			"Data": {
-			  "$id": "35",
-			  "$type": "VRBuilder.Core.TransitionCollection+EntityData, VRBuilder.Core",
-			  "Transitions": {
-				"$id": "36",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, VRBuilder.Core]], mscorlib",
-				"$values": [
-				  {
-					"$id": "37",
-					"$type": "VRBuilder.Core.Transition, VRBuilder.Core",
-					"Data": {
-					  "$id": "38",
-					  "$type": "VRBuilder.Core.Transition+EntityData, VRBuilder.Core",
-					  "Conditions": {
-						"$id": "39",
-						"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, VRBuilder.Core]], mscorlib",
-						"$values": []
-					  },
-					  "TargetStep": null,
-					  "Mode": null,
-					  "IsCompleted": false,
-					  "Metadata": null
-					}
-				  },
-				  {
-					"$id": "40",
-					"$type": "VRBuilder.Core.Transition, VRBuilder.Core",
-					"Data": {
-					  "$id": "41",
-					  "$type": "VRBuilder.Core.Transition+EntityData, VRBuilder.Core",
-					  "Conditions": {
-						"$id": "42",
-						"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, VRBuilder.Core]], mscorlib",
-						"$values": []
-					  },
-					  "TargetStep": null,
-					  "Mode": null,
-					  "IsCompleted": false,
-					  "Metadata": null
-					}
-				  }
-				]
-			  }
-			}
-		  },
-		  "Mode": null,
-		  "ToUnlock": {
-			"$id": "43",
-			"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, VRBuilder.Core]], mscorlib",
-			"$values": []
-		  },
-		  "TagsToUnlock": {
-			"$id": "44",
-			"$type": "System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib],[System.Collections.Generic.IEnumerable`1[[System.Type, mscorlib]], mscorlib]], mscorlib"
-		  },
-		  "Metadata": {
-			"$id": "45",
-			"$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
-			"values": {
-			  "$id": "46",
-			  "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib]], mscorlib",
-			  "TabsGroup": {
-				"$id": "47",
-				"$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
-				"selected": 0
-			  }
-			}
-		  }
-		}
-	  },
-	  {
-		"$id": "48",
-		"$type": "VRBuilder.Core.Step, VRBuilder.Core",
-		"StepMetadata": {
-		  "$id": "49",
-		  "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
-		  "Position": {
-			"x": 559.0,
-			"y": 139.0
-		  },
-		  "StepType": "default",
-		  "Guid": "237c6dc7-cf25-454c-b681-2cdab7e413ea"
-		},
-		"Data": {
-		  "$id": "50",
-		  "$type": "VRBuilder.Core.Step+EntityData, VRBuilder.Core",
-		  "Name": "Step",
-		  "Description": null,
-		  "Behaviors": {
-			"$id": "51",
-			"$type": "VRBuilder.Core.BehaviorCollection, VRBuilder.Core",
-			"Data": {
-			  "$id": "52",
-			  "$type": "VRBuilder.Core.BehaviorCollection+EntityData, VRBuilder.Core",
-			  "Behaviors": {
-				"$id": "53",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, VRBuilder.Core]], mscorlib",
-				"$values": []
-			  }
-			}
-		  },
-		  "Transitions": {
-			"$id": "54",
-			"$type": "VRBuilder.Core.TransitionCollection, VRBuilder.Core",
-			"Data": {
-			  "$id": "55",
-			  "$type": "VRBuilder.Core.TransitionCollection+EntityData, VRBuilder.Core",
-			  "Transitions": {
-				"$id": "56",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, VRBuilder.Core]], mscorlib",
-				"$values": [
-				  {
-					"$id": "57",
-					"$type": "VRBuilder.Core.Transition, VRBuilder.Core",
-					"Data": {
-					  "$id": "58",
-					  "$type": "VRBuilder.Core.Transition+EntityData, VRBuilder.Core",
-					  "Conditions": {
-						"$id": "59",
-						"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, VRBuilder.Core]], mscorlib",
-						"$values": []
-					  },
-					  "TargetStep": {
-						"$id": "60",
-						"$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, VRBuilder.Core",
-						"LifeCycle": null,
-						"StepMetadata": {
-						  "$id": "61",
-						  "$type": "VRBuilder.Core.StepMetadata, VRBuilder.Core",
-						  "Position": {
-							"x": 0.0,
-							"y": 0.0
-						  },
-						  "StepType": null,
-						  "Guid": "6ca3b553-6fd1-4c8d-b426-86a9a89bf08b"
-						},
-						"Parent": null
-					  },
-					  "Mode": null,
-					  "IsCompleted": false,
-					  "Metadata": null
-					}
-				  }
-				]
-			  }
-			}
-		  },
-		  "Mode": null,
-		  "ToUnlock": {
-			"$id": "62",
-			"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, VRBuilder.Core]], mscorlib",
-			"$values": []
-		  },
-		  "TagsToUnlock": {
-			"$id": "63",
-			"$type": "System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib],[System.Collections.Generic.IEnumerable`1[[System.Type, mscorlib]], mscorlib]], mscorlib"
-		  },
-		  "Metadata": {
-			"$id": "64",
-			"$type": "VRBuilder.Core.Metadata, VRBuilder.Core",
-			"values": {
-			  "$id": "65",
-			  "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib]], mscorlib",
-			  "TabsGroup": {
-				"$id": "66",
-				"$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
-				"selected": 0
-			  }
-			}
-		  }
-		}
-	  }
-	]
+    "$id": "3",
+    "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, TinkerFlow]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$id": "4",
+        "$type": "VRBuilder.Core.Step, TinkerFlow",
+        "StepMetadata": {
+          "$id": "5",
+          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
+          "Position": {
+            "x": 270.0,
+            "y": 0.0
+          },
+          "StepType": "default",
+          "Guid": "6ca3b553-6fd1-4c8d-b426-86a9a89bf08b"
+        },
+        "Data": {
+          "$id": "6",
+          "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
+          "Name": "Step1",
+          "Description": null,
+          "Behaviors": {
+            "$id": "7",
+            "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
+            "Data": {
+              "$id": "8",
+              "$type": "VRBuilder.Core.BehaviorCollection+EntityData, TinkerFlow",
+              "Behaviors": {
+                "$id": "9",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], System.Private.CoreLib",
+                "$values": []
+              }
+            }
+          },
+          "Transitions": {
+            "$id": "10",
+            "$type": "VRBuilder.Core.TransitionCollection, TinkerFlow",
+            "Data": {
+              "$id": "11",
+              "$type": "VRBuilder.Core.TransitionCollection+EntityData, TinkerFlow",
+              "Transitions": {
+                "$id": "12",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], System.Private.CoreLib",
+                "$values": [
+                  {
+                    "$id": "13",
+                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
+                    "Data": {
+                      "$id": "14",
+                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
+                      "Conditions": {
+                        "$id": "15",
+                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
+                        "$values": []
+                      },
+                      "TargetStep": {
+                        "$id": "16",
+                        "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, TinkerFlow",
+                        "LifeCycle": null,
+                        "StepMetadata": {
+                          "$id": "17",
+                          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
+                          "Position": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "StepType": null,
+                          "Guid": "6b0b2859-f926-4d9d-a7b2-7b084d9307dc"
+                        },
+                        "Parent": null
+                      },
+                      "Mode": null,
+                      "IsCompleted": false,
+                      "Metadata": null
+                    }
+                  },
+                  {
+                    "$id": "18",
+                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
+                    "Data": {
+                      "$id": "19",
+                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
+                      "Conditions": {
+                        "$id": "20",
+                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
+                        "$values": []
+                      },
+                      "TargetStep": {
+                        "$id": "21",
+                        "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, TinkerFlow",
+                        "LifeCycle": null,
+                        "StepMetadata": {
+                          "$id": "22",
+                          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
+                          "Position": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "StepType": null,
+                          "Guid": "237c6dc7-cf25-454c-b681-2cdab7e413ea"
+                        },
+                        "Parent": null
+                      },
+                      "Mode": null,
+                      "IsCompleted": false,
+                      "Metadata": null
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Mode": null,
+          "ToUnlock": {
+            "$id": "23",
+            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, TinkerFlow]], System.Private.CoreLib",
+            "$values": []
+          },
+          "TagsToUnlock": {
+            "$id": "24",
+            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
+          },
+          "Metadata": {
+            "$id": "25",
+            "$type": "VRBuilder.Core.Metadata, TinkerFlow",
+            "values": {
+              "$id": "26",
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+              "TabsGroup": {
+                "$id": "27",
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+                "selected": 0
+              }
+            }
+          }
+        }
+      },
+      {
+        "$id": "28",
+        "$type": "VRBuilder.Core.Step, TinkerFlow",
+        "StepMetadata": {
+          "$id": "29",
+          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
+          "Position": {
+            "x": 559.0,
+            "y": 0.0
+          },
+          "StepType": "default",
+          "Guid": "6b0b2859-f926-4d9d-a7b2-7b084d9307dc"
+        },
+        "Data": {
+          "$id": "30",
+          "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
+          "Name": "Step",
+          "Description": null,
+          "Behaviors": {
+            "$id": "31",
+            "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
+            "Data": {
+              "$id": "32",
+              "$type": "VRBuilder.Core.BehaviorCollection+EntityData, TinkerFlow",
+              "Behaviors": {
+                "$id": "33",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], System.Private.CoreLib",
+                "$values": []
+              }
+            }
+          },
+          "Transitions": {
+            "$id": "34",
+            "$type": "VRBuilder.Core.TransitionCollection, TinkerFlow",
+            "Data": {
+              "$id": "35",
+              "$type": "VRBuilder.Core.TransitionCollection+EntityData, TinkerFlow",
+              "Transitions": {
+                "$id": "36",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], System.Private.CoreLib",
+                "$values": [
+                  {
+                    "$id": "37",
+                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
+                    "Data": {
+                      "$id": "38",
+                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
+                      "Conditions": {
+                        "$id": "39",
+                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
+                        "$values": []
+                      },
+                      "TargetStep": null,
+                      "Mode": null,
+                      "IsCompleted": false,
+                      "Metadata": null
+                    }
+                  },
+                  {
+                    "$id": "40",
+                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
+                    "Data": {
+                      "$id": "41",
+                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
+                      "Conditions": {
+                        "$id": "42",
+                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
+                        "$values": []
+                      },
+                      "TargetStep": null,
+                      "Mode": null,
+                      "IsCompleted": false,
+                      "Metadata": null
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Mode": null,
+          "ToUnlock": {
+            "$id": "43",
+            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, TinkerFlow]], System.Private.CoreLib",
+            "$values": []
+          },
+          "TagsToUnlock": {
+            "$id": "44",
+            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
+          },
+          "Metadata": {
+            "$id": "45",
+            "$type": "VRBuilder.Core.Metadata, TinkerFlow",
+            "values": {
+              "$id": "46",
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+              "TabsGroup": {
+                "$id": "47",
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+                "selected": 0
+              }
+            }
+          }
+        }
+      },
+      {
+        "$id": "48",
+        "$type": "VRBuilder.Core.Step, TinkerFlow",
+        "StepMetadata": {
+          "$id": "49",
+          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
+          "Position": {
+            "x": 559.0,
+            "y": 139.0
+          },
+          "StepType": "default",
+          "Guid": "237c6dc7-cf25-454c-b681-2cdab7e413ea"
+        },
+        "Data": {
+          "$id": "50",
+          "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
+          "Name": "Step",
+          "Description": null,
+          "Behaviors": {
+            "$id": "51",
+            "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
+            "Data": {
+              "$id": "52",
+              "$type": "VRBuilder.Core.BehaviorCollection+EntityData, TinkerFlow",
+              "Behaviors": {
+                "$id": "53",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], System.Private.CoreLib",
+                "$values": []
+              }
+            }
+          },
+          "Transitions": {
+            "$id": "54",
+            "$type": "VRBuilder.Core.TransitionCollection, TinkerFlow",
+            "Data": {
+              "$id": "55",
+              "$type": "VRBuilder.Core.TransitionCollection+EntityData, TinkerFlow",
+              "Transitions": {
+                "$id": "56",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], System.Private.CoreLib",
+                "$values": [
+                  {
+                    "$id": "57",
+                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
+                    "Data": {
+                      "$id": "58",
+                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
+                      "Conditions": {
+                        "$id": "59",
+                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
+                        "$values": []
+                      },
+                      "TargetStep": {
+                        "$id": "60",
+                        "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, TinkerFlow",
+                        "LifeCycle": null,
+                        "StepMetadata": {
+                          "$id": "61",
+                          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
+                          "Position": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "StepType": null,
+                          "Guid": "6ca3b553-6fd1-4c8d-b426-86a9a89bf08b"
+                        },
+                        "Parent": null
+                      },
+                      "Mode": null,
+                      "IsCompleted": false,
+                      "Metadata": null
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "Mode": null,
+          "ToUnlock": {
+            "$id": "62",
+            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, TinkerFlow]], System.Private.CoreLib",
+            "$values": []
+          },
+          "TagsToUnlock": {
+            "$id": "63",
+            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
+          },
+          "Metadata": {
+            "$id": "64",
+            "$type": "VRBuilder.Core.Metadata, TinkerFlow",
+            "values": {
+              "$id": "65",
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+              "TabsGroup": {
+                "$id": "66",
+                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+                "selected": 0
+              }
+            }
+          }
+        }
+      }
+    ]
   },
   "Process": {
-	"$id": "67",
-	"$type": "VRBuilder.Core.Process, VRBuilder.Core",
-	"CurrentStep": null,
-	"ProcessMetadata": {
-	  "$id": "68",
-	  "$type": "VRBuilder.Core.ProcessMetadata, VRBuilder.Core",
-	  "StringLocalizationTable": null,
-	  "Guid": "15cdb3cd-05bf-4d9d-9aff-60715f0fe60a"
-	},
-	"Data": {
-	  "$id": "69",
-	  "$type": "VRBuilder.Core.Process+EntityData, VRBuilder.Core",
-	  "Chapters": {
-		"$id": "70",
-		"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, VRBuilder.Core]], mscorlib",
-		"$values": [
-		  {
-			"$id": "71",
-			"$type": "VRBuilder.Core.Chapter, VRBuilder.Core",
-			"ChapterMetadata": {
-			  "$id": "72",
-			  "$type": "VRBuilder.Core.ChapterMetadata, VRBuilder.Core",
-			  "LastSelectedStep": null,
-			  "EntryNodePosition": {
-				"x": 0.0,
-				"y": 0.0
-			  },
-			  "Guid": "c466de93-4433-44b7-95da-1eed05e180c6"
-			},
-			"Data": {
-			  "$id": "73",
-			  "$type": "VRBuilder.Core.Chapter+EntityData, VRBuilder.Core",
-			  "Name": "Chapter 1",
-			  "FirstStep": {
-				"$ref": "4"
-			  },
-			  "Steps": {
-				"$id": "74",
-				"$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, VRBuilder.Core]], mscorlib",
-				"$values": [
-				  {
-					"$ref": "4"
-				  },
-				  {
-					"$ref": "28"
-				  },
-				  {
-					"$ref": "48"
-				  }
-				]
-			  }
-			}
-		  }
-		]
-	  },
-	  "FirstChapter": {
-		"$ref": "71"
-	  },
-	  "Name": "SampleScene",
-	  "Mode": null,
-	  "Metadata": null
-	}
+    "$id": "67",
+    "$type": "VRBuilder.Core.Process, TinkerFlow",
+    "CurrentStep": null,
+    "ProcessMetadata": {
+      "$id": "68",
+      "$type": "VRBuilder.Core.ProcessMetadata, TinkerFlow",
+      "StringLocalizationTable": null,
+      "Guid": "15cdb3cd-05bf-4d9d-9aff-60715f0fe60a"
+    },
+    "Data": {
+      "$id": "69",
+      "$type": "VRBuilder.Core.Process+EntityData, TinkerFlow",
+      "Chapters": {
+        "$id": "70",
+        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, TinkerFlow]], System.Private.CoreLib",
+        "$values": [
+          {
+            "$id": "71",
+            "$type": "VRBuilder.Core.Chapter, TinkerFlow",
+            "ChapterMetadata": {
+              "$id": "72",
+              "$type": "VRBuilder.Core.ChapterMetadata, TinkerFlow",
+              "LastSelectedStep": null,
+              "EntryNodePosition": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "Guid": "c466de93-4433-44b7-95da-1eed05e180c6"
+            },
+            "Data": {
+              "$id": "73",
+              "$type": "VRBuilder.Core.Chapter+EntityData, TinkerFlow",
+              "Name": "Chapter 1",
+              "FirstStep": {
+                "$ref": "4"
+              },
+              "Steps": {
+                "$id": "74",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, TinkerFlow]], System.Private.CoreLib",
+                "$values": [
+                  {
+                    "$ref": "4"
+                  },
+                  {
+                    "$ref": "28"
+                  },
+                  {
+                    "$ref": "48"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "FirstChapter": {
+        "$ref": "71"
+      },
+      "Name": "SampleScene",
+      "Mode": null,
+      "Metadata": null
+    }
   },
   "$serializerVersion": 4
 }

@@ -8,204 +8,163 @@ using VRBuilder.Core;
 using VRBuilder.Editor.Configuration;
 using VRBuilder.Editor.UI.Windows;
 
-namespace VRBuilder.Editor
+namespace VRBuilder.Editor;
+
+/// <summary>
+/// This strategy is used by default and it handles interaction between process assets and various Builder windows.
+/// </summary>
+internal class GraphViewEditingStrategy : IEditingStrategy
 {
-    /// <summary>
-    /// This strategy is used by default and it handles interaction between process assets and various Builder windows.
-    /// </summary>
-    internal class GraphViewEditingStrategy : IEditingStrategy
+    private ProcessEditorWindow? processWindow;
+    private IStepView? stepWindow;
+
+    public IProcess? CurrentProcess { get; protected set; }
+    public IChapter? CurrentChapter { get; protected set; }
+
+    /// <inheritdoc/>
+    public void HandleNewProcessWindow(ProcessEditorWindow window)
     {
-        private ProcessEditorWindow processWindow;
-        private IStepView stepWindow;
+        processWindow = window;
+        processWindow.SetProcess(CurrentProcess);
+    }
 
-        public IProcess CurrentProcess { get; protected set; }
-        public IChapter CurrentChapter { get; protected set; }
+    /// <inheritdoc/>
+    public void HandleNewStepWindow(IStepView window)
+    {
+        stepWindow = window;
+        if (processWindow == null || processWindow.Equals(null))
+            HandleCurrentStepChanged(null);
+        else
+            HandleCurrentStepChanged(processWindow.GetChapter()?.ChapterMetadata.LastSelectedStep);
+    }
 
-        /// <inheritdoc/>
-        public void HandleNewProcessWindow(ProcessEditorWindow window)
+    /// <inheritdoc/>
+    public void HandleCurrentProcessModified()
+    {
+    }
+
+    /// <inheritdoc/>
+    public void HandleProcessWindowClosed(ProcessEditorWindow window)
+    {
+        if (processWindow != window) return;
+
+        if (CurrentProcess != null) ProcessAssetManager.Save(CurrentProcess);
+    }
+
+    /// <inheritdoc/>
+    public void HandleStepWindowClosed(IStepView window)
+    {
+        if (CurrentProcess != null) ProcessAssetManager.Save(CurrentProcess);
+
+        stepWindow = null;
+    }
+
+    /// <inheritdoc/>
+    public void HandleStartEditingProcess()
+    {
+        if (processWindow == null)
         {
-            processWindow = window;
-            processWindow.SetProcess(CurrentProcess);
-        }
-
-        /// <inheritdoc/>
-        public void HandleNewStepWindow(IStepView window)
-        {
-            stepWindow = window;
-            if (processWindow == null || processWindow.Equals(null))
-            {
-                HandleCurrentStepChanged(null);
-            }
-            else
-            {
-                HandleCurrentStepChanged(processWindow.GetChapter().ChapterMetadata.LastSelectedStep);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void HandleCurrentProcessModified()
-        {
-        }
-
-        /// <inheritdoc/>
-        public void HandleProcessWindowClosed(ProcessEditorWindow window)
-        {
-            if (processWindow != window)
-            {
-                return;
-            }
-
-            if (CurrentProcess != null)
-            {
-                ProcessAssetManager.Save(CurrentProcess);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void HandleStepWindowClosed(IStepView window)
-        {
-            if (CurrentProcess != null)
-            {
-                ProcessAssetManager.Save(CurrentProcess);
-            }
-
-            stepWindow = null;
-        }
-
-        /// <inheritdoc/>
-        public void HandleStartEditingProcess()
-        {
-            if (processWindow == null)
-            {
-                if (TinkerFlowPlugin.Instance.ProcessEditor != null)
-                    processWindow = TinkerFlowPlugin.Instance.ProcessEditor.ProcessGraph;
-                //processWindow = EditorWindow.GetWindow<ProcessGraphViewWindow>();
-                if (processWindow != null)
-                    processWindow.CustomMinimumSize = new Vector2(400f, 100f);
-            }
-            else
-            {
-                // processWindow.Focus();
-            }
-        }
-
-        /// <inheritdoc/>
-        public void HandleCurrentProcessChanged(string processName)
-        {
-            if (CurrentProcess != null && CurrentProcess.Data.Name != processName)
-            {
-                ProcessAssetManager.Save(CurrentProcess);
-            }
-
-            EditorInterface.Singleton.Set(GlobalEditorHandler.LastEditedProcessNameKey, processName);
-            LoadProcess(ProcessAssetManager.Load(processName));
-        }
-
-        private void LoadProcess(IProcess newProcess)
-        {
-            CurrentProcess = newProcess;
-            CurrentChapter = null;
-
-            if (newProcess != null && EditorConfigurator.Instance.Validation.IsAllowedToValidate())
-            {
-                EditorConfigurator.Instance.Validation.Validate(newProcess.Data, newProcess);
-            }
-
+            if (TinkerFlowPlugin.Instance.ProcessEditor != null)
+                processWindow = TinkerFlowPlugin.Instance.ProcessEditor.ProcessGraph;
+            //processWindow = EditorWindow.GetWindow<ProcessGraphViewWindow>();
             if (processWindow != null)
-            {
-                processWindow.SetProcess(CurrentProcess);
-                if (stepWindow != null)
-                {
-                    stepWindow.SetStep(processWindow.GetChapter()?.ChapterMetadata.LastSelectedStep);
-                }
-            }
-            else if (stepWindow != null)
-            {
-                stepWindow.SetStep(null);
-            }
+                processWindow.CustomMinimumSize = new Vector2(400f, 100f);
         }
-
-        /// <inheritdoc/>
-        public void HandleCurrentStepModified(IStep step)
+        else
         {
-            processWindow.GetChapter().ChapterMetadata.LastSelectedStep = step;
-
-            if (EditorConfigurator.Instance.Validation.IsAllowedToValidate())
-            {
-                EditorConfigurator.Instance.Validation.Validate(step.Data, CurrentProcess);
-            }
-            
-            processWindow.RefreshChapterRepresentation();
+            // processWindow.Focus();
         }
+    }
 
-        /// <inheritdoc/>
-        public void HandleCurrentStepChanged(IStep step)
+    /// <inheritdoc/>
+    public void HandleCurrentProcessChanged(string processName)
+    {
+        if (CurrentProcess != null && CurrentProcess.Data.Name != processName) ProcessAssetManager.Save(CurrentProcess);
+
+        EditorInterface.Singleton.Set(GlobalEditorHandler.LastEditedProcessNameKey, processName);
+        LoadProcess(ProcessAssetManager.Load(processName));
+    }
+
+    private void LoadProcess(IProcess newProcess)
+    {
+        CurrentProcess = newProcess;
+        CurrentChapter = null;
+
+        if (newProcess != null && EditorConfigurator.Instance.Validation.IsAllowedToValidate()) EditorConfigurator.Instance.Validation.Validate(newProcess.Data, newProcess);
+
+        if (processWindow != null)
         {
-            StepWindow.ShowInspector();
-
-            if (stepWindow != null)
-            {
-                if (step != null && EditorConfigurator.Instance.Validation.IsAllowedToValidate())
-                {
-                    EditorConfigurator.Instance.Validation.Validate(step.Data, CurrentProcess);
-                }
-                stepWindow.SetStep(step);
-            }
-
-            // processWindow?.Focus();
+            processWindow.SetProcess(CurrentProcess);
+            if (stepWindow != null) stepWindow.SetStep(processWindow.GetChapter()?.ChapterMetadata.LastSelectedStep);
         }
-
-        /// <inheritdoc/>
-        public void HandleStartEditingStep()
+        else if (stepWindow != null)
         {
-            if (stepWindow == null)
-            {
-                StepWindow.ShowInspector();
-                // processWindow?.Focus();
-            }
+            stepWindow.SetStep(null);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void HandleCurrentStepModified(IStep? step)
+    {
+        processWindow.GetChapter().ChapterMetadata.LastSelectedStep = step;
+
+        if (EditorConfigurator.Instance.Validation.IsAllowedToValidate()) EditorConfigurator.Instance.Validation.Validate(step.Data, CurrentProcess);
+
+        processWindow.RefreshChapterRepresentation();
+    }
+
+    /// <inheritdoc/>
+    public void HandleCurrentStepChanged(IStep? step)
+    {
+        StepWindow.ShowInspector();
+
+        if (stepWindow != null)
+        {
+            if (step != null && EditorConfigurator.Instance.Validation.IsAllowedToValidate()) EditorConfigurator.Instance.Validation.Validate(step.Data, CurrentProcess);
+            stepWindow.SetStep(step);
         }
 
-        public void HandleCurrentChapterChanged(IChapter chapter)
-        {
-            CurrentChapter = chapter;
-        }
+        // processWindow?.Focus();
+    }
 
-        /// <inheritdoc/>
-        public void HandleProjectIsGoingToUnload()
-        {
-            if (CurrentProcess != null)
-            {
-                ProcessAssetManager.Save(CurrentProcess);
-            }
-        }
+    /// <inheritdoc/>
+    public void HandleStartEditingStep()
+    {
+        if (stepWindow == null) StepWindow.ShowInspector();
+        // processWindow?.Focus();
+    }
 
-        /// <inheritdoc/>
-        public void HandleProjectIsGoingToSave()
-        {
-            if (CurrentProcess != null)
-            {
-                ProcessAssetManager.Save(CurrentProcess);
-            }
-        }
+    public void HandleCurrentChapterChanged(IChapter chapter)
+    {
+        CurrentChapter = chapter;
+    }
 
-        /// <inheritdoc/>
-        public void HandleExitingPlayMode()
-        {
-            if (stepWindow != null)
-            {
-                stepWindow.ResetStepView();
-            }
-        }
+    /// <inheritdoc/>
+    public void HandleProjectIsGoingToUnload()
+    {
+        if (CurrentProcess != null) ProcessAssetManager.Save(CurrentProcess);
+    }
 
-        /// <inheritdoc/>
-        public void HandleEnterPlayMode()
-        {
-        }
+    /// <inheritdoc/>
+    public void HandleProjectIsGoingToSave()
+    {
+        if (CurrentProcess != null) ProcessAssetManager.Save(CurrentProcess);
+    }
 
-        /// <inheritdoc/>
-        public void HandleChapterChangeRequest(IChapter chapter)
-        {
-            processWindow.SetChapter(chapter);
-        }
+    /// <inheritdoc/>
+    public void HandleExitingPlayMode()
+    {
+        if (stepWindow != null) stepWindow.ResetStepView();
+    }
+
+    /// <inheritdoc/>
+    public void HandleEnterPlayMode()
+    {
+    }
+
+    /// <inheritdoc/>
+    public void HandleChapterChangeRequest(IChapter chapter)
+    {
+        processWindow.SetChapter(chapter);
     }
 }

@@ -8,3 +8,7 @@ Editor:
 
 - AddElement(node);
 -> AddChild(node);
+
+
+- public event EventHandler<TaggableObjectEventArgs> TagAdded;
+-> [Signal] public delegate void TagAddedEventHandler(string tag);

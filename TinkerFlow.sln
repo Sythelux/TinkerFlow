@@ -2,6 +2,8 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinkerFlow", "TinkerFlow.csproj", "{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRBuilder.Core", "addons\TinkerFlow.Core\VRBuilder.Core.csproj", "{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU

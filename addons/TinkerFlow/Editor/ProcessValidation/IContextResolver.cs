@@ -4,16 +4,15 @@
 
 using VRBuilder.Core;
 
-namespace VRBuilder.Editor.ProcessValidation
+namespace VRBuilder.Editor.ProcessValidation;
+
+/// <summary>
+/// Retrieves <see cref="IContext"/> from any provided <see cref="IData"/>.
+/// </summary>
+public interface IContextResolver
 {
     /// <summary>
-    /// Retrieves <see cref="IContext"/> from any provided <see cref="IData"/>.
+    /// Resolves the fitting <see cref="IContext"/> for the given <see cref="IData"/>.
     /// </summary>
-    public interface IContextResolver
-    {
-        /// <summary>
-        /// Resolves the fitting <see cref="IContext"/> for the given <see cref="IData"/>.
-        /// </summary>
-        IContext FindContext(IData data, IProcess process);
-    }
+    IContext FindContext(IData data, IProcess process);
 }
