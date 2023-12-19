@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://duj12l77bh0on"]
+[gd_scene load_steps=2 format=3 uid="uid://duj12l77bh0on"]
 
 [ext_resource type="Script" path="res://addons/TinkerFlow/Editor/UI/GraphView/StepWindow.cs" id="1_8x8mo"]
-[ext_resource type="PackedScene" uid="uid://cnkwh5j4jofs2" path="res://addons/TinkerFlow/Prefabs/ProcessInspectorBehaviorUI.tscn" id="1_bhe33"]
 
 [node name="Process Inspector" type="VBoxContainer"]
 anchors_preset = 15
@@ -13,34 +12,17 @@ size_flags_vertical = 3
 script = ExtResource("1_8x8mo")
 
 [node name="StepNameLabel" type="Label" parent="."]
+visible = false
 layout_mode = 2
 text = "Step Settings"
 
 [node name="StepName" type="LineEdit" parent="."]
+visible = false
 layout_mode = 2
+text = "None Selected"
 placeholder_text = "Step Name"
 
 [node name="StepDescription" type="LineEdit" parent="."]
+visible = false
 layout_mode = 2
 placeholder_text = "Description"
-
-[node name="TabContainer" type="TabContainer" parent="."]
-layout_mode = 2
-
-[node name="Behaviors" type="VBoxContainer" parent="TabContainer"]
-layout_mode = 2
-
-[node name="BehaviorUIBase" parent="TabContainer/Behaviors" instance=ExtResource("1_bhe33")]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="TabContainer/Behaviors"]
-layout_mode = 2
-text = "Add Behavior"
-
-[node name="Conditions" type="VBoxContainer" parent="TabContainer"]
-visible = false
-layout_mode = 2
-
-[node name="LockedObjects" type="VBoxContainer" parent="TabContainer"]
-visible = false
-layout_mode = 2

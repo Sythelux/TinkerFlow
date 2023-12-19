@@ -20,7 +20,7 @@ namespace VRBuilder.Core;
 /// A chapter of a process <see cref="Process"/>.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Chapter : Entity<Chapter.EntityData>, IChapter
+public partial class Chapter : Entity<Chapter.EntityData>, IChapter
 {
     /// <summary>
     /// The chapter's data class.

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Godot;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
+using VRBuilder.Core.Runtime.Utils;
 using VRBuilder.Core.Utils;
 using VRBuilder.Editor.Serialization;
 using VRBuilder.Editor.UI.StepInspector.Menu;
@@ -25,7 +26,7 @@ namespace VRBuilder.Editor.Configuration;
 /// Can be serialized.
 /// </summary>
 [DataContract(IsReference = true)]
-public partial class AllowedMenuItemsSettings : Resource
+public partial class AllowedMenuItemsSettings : SettingsObject<AllowedMenuItemsSettings>
 {
     private IList<MenuItem<IBehavior>> behaviorMenuItems;
     private IList<MenuItem<ICondition>> conditionMenuItems;
@@ -89,80 +90,80 @@ public partial class AllowedMenuItemsSettings : Resource
     /// Serializes the <paramref name="settings"/> object and saves it into a configuration file at a default path.
     /// </summary>
     /// <exception cref="NullReferenceException">Thrown when parameter is null.</exception>
-    public static bool Save(AllowedMenuItemsSettings settings)
-    {
-        if (string.IsNullOrEmpty(EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath))
-        {
-            GD.Print("The property \"AllowedMenuItemsSettingsAssetPath\" of the " +
-                     "current editor configuration is not set. Thus, the AllowedMenuItemsSettings cannot be saved.");
-            return false;
-        }
-
-        const string assets = "Assets/";
-        string path = EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath;
-
-        if (path.StartsWith(assets) == false)
-        {
-            GD.PushWarning("The property \"AllowedMenuItemsSettingsAssetPath\" of the current editor configuration" + $" is invalid. It has to start with \"{assets}\". Current value: \"{path}\"");
-            return false;
-        }
-
-        try
-        {
-            if (settings == null)
-                throw new NullReferenceException("The allowed menu items settings file cannot be saved "
-                                                 + "because the settings are null.");
-
-            string serialized = JsonEditorConfigurationSerializer.Serialize(settings);
-
-            var fullPath = $"user://{path.Remove(0, assets.Length)}";
-            string directoryPath = Path.GetDirectoryName(fullPath);
-
-            if (string.IsNullOrEmpty(directoryPath))
-            {
-                GD.PushWarning($"No valid directory path found in path \"{fullPath}\". The property \"AllowedMenuItemSettingsAssetPath\"" + $" of the current editor configuration is invalid. Current value: \"{path}\"");
-                return false;
-            }
-
-            if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
-
-            var writer = new StreamWriter(fullPath, false);
-            writer.Write(serialized);
-            writer.Close();
-
-            // TODO: AssetDatabase.ImportAsset(path);
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            GD.PushError(e);
-            return false;
-        }
-    }
+    // public static bool Save(AllowedMenuItemsSettings settings)
+    // {
+    //     if (string.IsNullOrEmpty(EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath))
+    //     {
+    //         GD.Print("The property \"AllowedMenuItemsSettingsAssetPath\" of the " +
+    //                  "current editor configuration is not set. Thus, the AllowedMenuItemsSettings cannot be saved.");
+    //         return false;
+    //     }
+    //
+    //     const string assets = "Assets/";
+    //     string path = EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath;
+    //
+    //     if (path.StartsWith(assets) == false)
+    //     {
+    //         GD.PushWarning("The property \"AllowedMenuItemsSettingsAssetPath\" of the current editor configuration" + $" is invalid. It has to start with \"{assets}\". Current value: \"{path}\"");
+    //         return false;
+    //     }
+    //
+    //     try
+    //     {
+    //         if (settings == null)
+    //             throw new NullReferenceException("The allowed menu items settings file cannot be saved "
+    //                                              + "because the settings are null.");
+    //
+    //         string serialized = JsonEditorConfigurationSerializer.Serialize(settings);
+    //
+    //         var fullPath = $"user://{path.Remove(0, assets.Length)}";
+    //         string directoryPath = Path.GetDirectoryName(fullPath);
+    //
+    //         if (string.IsNullOrEmpty(directoryPath))
+    //         {
+    //             GD.PushWarning($"No valid directory path found in path \"{fullPath}\". The property \"AllowedMenuItemSettingsAssetPath\"" + $" of the current editor configuration is invalid. Current value: \"{path}\"");
+    //             return false;
+    //         }
+    //
+    //         if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
+    //
+    //         var writer = new StreamWriter(fullPath, false);
+    //         writer.Write(serialized);
+    //         writer.Close();
+    //
+    //         // TODO: AssetDatabase.ImportAsset(path);
+    //
+    //         return true;
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         GD.PushError(e);
+    //         return false;
+    //     }
+    // }
 
     /// <summary>
     /// Loads and returns the <see cref="AllowedMenuItemsSettings"/> object from the default configuration file location.
     /// If the <see cref="AllowedMenuItemsSettingsAssetPath"/> in the editor configuration is empty or null,
     /// it returns an empty <see cref="AllowedMenuItemsSettings"/> object.
     /// </summary>
-    public static AllowedMenuItemsSettings Load()
-    {
-        string path = EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath;
-        if (string.IsNullOrEmpty(path))
-        {
-            GD.Print("The property \"AllowedMenuItemsSettingsAssetPath\" of the current editor " +
-                     "configuration is not set. Therefore, it cannot be loaded. A new \"AllowedMenuItemsSettings\" " +
-                     "object with all found conditions and behaviors was returned.");
-            return new AllowedMenuItemsSettings();
-        }
-
-        var settings = ResourceLoader.Load<Json>(path);
-
-        if (settings != null) return settings.Data.As<AllowedMenuItemsSettings>();
-        // return JsonEditorConfigurationSerializer.Deserialize();
-        return new AllowedMenuItemsSettings();
-    }
+    // public static AllowedMenuItemsSettings Load()
+    // {
+    //     string path = EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath;
+    //     if (string.IsNullOrEmpty(path))
+    //     {
+    //         GD.Print("The property \"AllowedMenuItemsSettingsAssetPath\" of the current editor " +
+    //                  "configuration is not set. Therefore, it cannot be loaded. A new \"AllowedMenuItemsSettings\" " +
+    //                  "object with all found conditions and behaviors was returned.");
+    //         return new AllowedMenuItemsSettings();
+    //     }
+    //
+    //     var settings = ResourceLoader.Load<Json>(path);
+    //
+    //     if (settings != null) return settings.Data.As<AllowedMenuItemsSettings>();
+    //     // return JsonEditorConfigurationSerializer.Deserialize();
+    //     return new AllowedMenuItemsSettings();
+    // }
 
     private IList<T> SetupItemList<T>(IDictionary<string, bool> userSelections)
     {

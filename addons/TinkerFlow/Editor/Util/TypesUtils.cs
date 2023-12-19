@@ -5,7 +5,7 @@ using System.Linq;
 namespace VRBuilder.Editor.Util;
 
 ///<author email="Sythelux Rikd">Sythelux Rikd</author>
-public static class TypesExtension
+public static class TypesUtils
 {
     private static readonly Dictionary<Type, List<Type>> Cache = new();
 

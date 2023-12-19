@@ -17,7 +17,7 @@ namespace VRBuilder.Core;
 /// A collection of <see cref="ITransition"/>s.
 /// </summary>
 [DataContract(IsReference = true)]
-public class TransitionCollection : Entity<TransitionCollection.EntityData>, ITransitionCollection
+public partial class TransitionCollection : Entity<TransitionCollection.EntityData>, ITransitionCollection
 {
     /// <summary>
     /// The data class of the <see cref="ITransition"/>s' collection.

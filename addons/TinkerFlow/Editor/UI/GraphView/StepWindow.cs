@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Godot;
 using VRBuilder.Core;
 using VRBuilder.Editor;
+using VRBuilder.Editor.UI.Drawers;
 using VRBuilder.Editor.UI.Windows;
 
 namespace TinkerFlow.Godot.Editor;
@@ -13,123 +11,132 @@ namespace TinkerFlow.Godot.Editor;
 [Tool]
 public partial class StepWindow : Control, IStepView
 {
-    private LineEdit? stepName;
-    private LineEdit? stepDescription;
-    private VBoxContainer? behaviors;
-    private VBoxContainer? transitions;
-    private VBoxContainer? unlockedElements;
-    private IStep? step;
-    public static StepWindow Instance { get; private set; }
+	private LineEdit? stepName;
+	private IStep? step;
+	private Control? stepDrawer;
+	public static StepWindow Instance { get; private set; }
 
-    [Export]
-    public PackedScene? TransitionUiBase { get; set; }
+	public LineEdit StepName => stepName ??= GetNode<LineEdit>("StepName");
 
-    public LineEdit StepName => stepName ??= GetNode<LineEdit>("StepName");
-    public LineEdit StepDescription => stepDescription ??= GetNode<LineEdit>("StepDescription");
-    public VBoxContainer Behaviors => behaviors ??= GetNode<VBoxContainer>("TabContainer/Behaviors");
-    public VBoxContainer Transitions => transitions ??= GetNode<VBoxContainer>("TabContainer/Conditions");
-    public VBoxContainer UnlockedElements => unlockedElements ??= GetNode<VBoxContainer>("TabContainer/LockedObjects");
+	public StepWindow()
+	{
+		Instance = this;
+	}
 
-    public StepWindow()
-    {
-        Instance = this;
-    }
+	public override void _Draw() //OnGUI
+	{
+		if (step == null)
+		{
+			return;
+		}
 
-    public override void _Draw()
-    {
-        GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
-    }
+		GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
+	}
 
-    public override void _EnterTree()
-    {
-        GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
+	public override void _EnterTree()
+	{
+		GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
 
-        GlobalEditorHandler.StepWindowOpened(this);
-    }
+		GlobalEditorHandler.StepWindowOpened(this);
+	}
 
-    public override void _ExitTree()
-    {
-        GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
+	public override void _ExitTree()
+	{
+		GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
 
-        GlobalEditorHandler.StepWindowClosed(this);
-    }
+		GlobalEditorHandler.StepWindowClosed(this);
+	}
 
-    public override void _Notification(int what)
-    {
-        // if (!new[] { NotificationProcess }.Contains(what))
-        //     GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()?.Name}({Enum.GetName(typeof(Notifications), what)}:{what})");
-    }
+	public override void _Notification(int what)
+	{
+		// if (!new[] { NotificationProcess }.Contains(what))
+		//     GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()?.Name}({Enum.GetName(typeof(Notifications), what)}:{what})");
+	}
 
-    public override void _Process(double delta)
-    {
-        //called even when invisible
-        // GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
-    }
+	public override void _Process(double delta)
+	{
+		//called even when invisible
+		// GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
+	}
 
-    public override void _Ready()
-    {
-        GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
-    }
+	public override void _Ready()
+	{
+		GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
+		OnStepDeselected(null);
+	}
 
-    public void OnStepSelected(ProcessGraphNode processGraphNode)
-    {
-        StepName.Text = processGraphNode.Name;
-        foreach (Node? node in GetChildren())
-        {
-            var child = (Control)node;
-            child.Visible = true;
-        }
+	public void OnStepSelected(IStep? newStep)
+	{
+		if (newStep == null)
+			return;
+		step = newStep;
+		StepName.Text = step.Data.Name;
+		foreach (Node? node in GetChildren())
+		{
+			var child = (Control)node;
+			child.Visible = true;
+		}
 
-        foreach (Node child in Transitions.GetChildren())
-        {
-            Transitions.RemoveChild(child);
-            child.QueueFree();
-        }
+		if (stepDrawer != null)
+		{
+			RemoveChild(stepDrawer);
+			stepDrawer.Free();
+			stepDrawer = null;
+		}
 
-        foreach (var node in processGraphNode.GetChildren())
-        {
-            var child = (StepNodeRow)node;
-            var transitionUiBase = TransitionUiBase?.Instantiate<TransitionUiBase>();
-            if (transitionUiBase != null)
-                Transitions.AddChild(transitionUiBase);
-        }
+		stepDrawer = DrawerLocator.GetDrawerForValue(step, typeof(Step))?.Create(step, ModifyStep, "Step");
+		if (stepDrawer != null)
+			AddChild(stepDrawer);
+	}
 
-        var button = new Button();
-        button.Text = "Add Transition";
-        button.Pressed += () => processGraphNode.AddRow(new StepNodeRow());
-        Transitions.AddChild(button);
-    }
+	private void ModifyStep(object newStep)
+	{
+		step = newStep as IStep;
+		GlobalEditorHandler.CurrentStepModified(step);
+	}
 
-    public void OnStepDeselected(ProcessGraphNode processGraphNode)
-    {
-        StepName.Text = "None Selected";
-        foreach (Node? node in GetChildren())
-        {
-            var child = (Control)node;
-            child.Visible = false;
-        }
+	public void OnStepDeselected(Step? oldStep)
+	{
+		StepName.Text = "None Selected";
 
-        StepName.Visible = true;
-    }
+		if (stepDrawer != null)
+		{
+			RemoveChild(stepDrawer);
+			stepDrawer.Free();
+			stepDrawer = null;
+		}
 
-    public void SetStep(IStep? newStep)
-    {
-        step = newStep;
-    }
+		foreach (Node? node in GetChildren())
+		{
+			var child = (Control)node;
+			child.Visible = false;
+		}
 
-    public void ResetStepView()
-    {
-        if (Instance.IsVisibleInTree() || step == null) return;
+		StepName.Visible = true;
+	}
 
-        // Dictionary<string, object> dict = step.Data.Metadata.GetMetadata(typeof(TabsGroup));
-        // if (dict.ContainsKey(TabsGroup.SelectedKey))
-        // {
-        //     dict[TabsGroup.SelectedKey] = 0;
-        // }
-    }
+	public void SetStep(IStep? newStep)
+	{
+		if (step == null)
+			OnStepDeselected(null);
+		else
+			OnStepSelected(step);
+	}
 
-    public static void ShowInspector()
-    {
-        // Instance.Show();
-    }
+
+	public void ResetStepView()
+	{
+		if (Instance.IsVisibleInTree() || step == null) return;
+
+		// Dictionary<string, object> dict = step.Data.Metadata.GetMetadata(typeof(TabsGroup));
+		// if (dict.ContainsKey(TabsGroup.SelectedKey))
+		// {
+		//     dict[TabsGroup.SelectedKey] = 0;
+		// }
+	}
+
+	public static void ShowInspector()
+	{
+		// Instance.Show();
+	}
 }

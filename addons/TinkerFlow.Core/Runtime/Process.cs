@@ -19,7 +19,7 @@ namespace VRBuilder.Core;
 /// It contains a complete information about the process workflow.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Process : Entity<Process.EntityData>, IProcess
+public partial class Process : Entity<Process.EntityData>, IProcess
 {
     public static readonly IProcess DEFAULT = new Process("None", Array.Empty<IChapter>());
 

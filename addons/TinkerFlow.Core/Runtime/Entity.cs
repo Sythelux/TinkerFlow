@@ -4,6 +4,7 @@
 
 using System.Linq;
 using System.Runtime.Serialization;
+using Godot;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
 
@@ -14,7 +15,7 @@ namespace VRBuilder.Core;
 /// offers member functions to trigger state changes.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class Entity<TData> : IEntity, IDataOwner<TData> where TData : class, IData, new()
+public abstract partial class Entity<TData> : GodotObject, IEntity, IDataOwner<TData> where TData : class, IData, new()
 {
     /// <inheritdoc />
     [DataMember]

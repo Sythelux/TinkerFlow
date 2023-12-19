@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c06qapyojkxo4"]
+
+[ext_resource type="Script" path="res://addons/TinkerFlow/Editor/Configuration/AllowedMenuItemsSettings.cs" id="1_qc8mr"]
+
+[resource]
+script = ExtResource("1_qc8mr")

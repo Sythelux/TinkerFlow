@@ -21,15 +21,15 @@ internal class EditorConfigWrapper : DefaultEditorConfiguration
 
     public override IProcessSerializer Serializer => config.Serializer;
 
-    public override AllowedMenuItemsSettings AllowedMenuItemsSettings
-    {
-        get => config.AllowedMenuItemsSettings;
-        set => config.AllowedMenuItemsSettings = value;
-    }
+    // public override AllowedMenuItemsSettings AllowedMenuItemsSettings
+    // {
+    //     get => config.AllowedMenuItemsSettings;
+    //     set => config.AllowedMenuItemsSettings = value;
+    // }
 
     public override string ProcessStreamingAssetsSubdirectory => config.ProcessStreamingAssetsSubdirectory;
 
-    public override string AllowedMenuItemsSettingsAssetPath => config.AllowedMenuItemsSettingsAssetPath;
+    // public override string AllowedMenuItemsSettingsAssetPath => config.AllowedMenuItemsSettingsAssetPath;
 
     public override ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent => config.BehaviorsMenuContent;
 

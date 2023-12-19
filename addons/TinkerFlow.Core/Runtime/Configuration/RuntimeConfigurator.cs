@@ -33,7 +33,7 @@ public partial class RuntimeConfigurator : Node
     /// Fully qualified name of the runtime configuration used.
     /// This field is magically filled by <see cref="RuntimeConfiguratorEditor"/>
     /// </summary>
-    private string RuntimeConfigurationName { get; set; } = typeof(DefaultRuntimeConfiguration).AssemblyQualifiedName ?? string.Empty;
+    private string RuntimeConfigurationName { get; set; } = typeof(BaseRuntimeConfiguration).AssemblyQualifiedName ?? string.Empty;
 
     /// <summary>
     /// Process name which is selected.
@@ -98,8 +98,8 @@ public partial class RuntimeConfigurator : Node
 
             if (type == null)
             {
-                GD.Print($"IRuntimeConfiguration type '{Instance.RuntimeConfigurationName}' cannot be found. Using '{typeof(DefaultRuntimeConfiguration).AssemblyQualifiedName}' instead.");
-                type = typeof(DefaultRuntimeConfiguration);
+                GD.Print($"IRuntimeConfiguration type '{Instance.RuntimeConfigurationName}' cannot be found. Using '{typeof(BaseRuntimeConfiguration).AssemblyQualifiedName}' instead.");
+                type = typeof(BaseRuntimeConfiguration);
             }
 
             var config = (IRuntimeConfiguration)ReflectionUtils.CreateInstanceOfType(type);

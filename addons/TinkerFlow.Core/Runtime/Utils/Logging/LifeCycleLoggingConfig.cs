@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2023 MindPort GmbH
 
+using Godot;
 using VRBuilder.Core.Runtime.Utils;
 
 namespace VRBuilder.Core.Utils.Logging;
@@ -14,35 +15,42 @@ public partial class LifeCycleLoggingConfig : SettingsObject<LifeCycleLoggingCon
     /// <summary>
     /// True, if behaviors are allowed to be logged.
     /// </summary>
+    [Export]
     public bool LogBehaviors = false;
 
     /// <summary>
     /// True, if conditions are allowed to be logged.
     /// </summary>
+    [Export]
     public bool LogConditions = false;
 
     /// <summary>
     /// True, if chapters are allowed to be logged.
     /// </summary>
+    [Export]
     public bool LogChapters = true;
 
     /// <summary>
     /// True, if steps are allowed to be logged.
     /// </summary>
+    [Export]
     public bool LogSteps = true;
 
     /// <summary>
     /// True, if transitions are allowed to be logged.
     /// </summary>
+    [Export]
     public bool LogTransitions = false;
 
     /// <summary>
     /// True, if data property changes are allowed to be logged.
     /// </summary>
+    [Export]
     public bool LogDataPropertyChanges = false;
 
     /// <summary>
     /// True, if verbose logging is enabled.
     /// </summary>
+    [Export]
     public bool LogLockState = false;
 }

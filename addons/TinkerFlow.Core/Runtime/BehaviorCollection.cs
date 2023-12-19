@@ -17,7 +17,7 @@ namespace VRBuilder.Core;
 /// A collection of <see cref="IBehavior"/>s of a <see cref="IStep"/>.
 /// </summary>
 [DataContract(IsReference = true)]
-public class BehaviorCollection : Entity<BehaviorCollection.EntityData>, IBehaviorCollection
+public partial class BehaviorCollection : Entity<BehaviorCollection.EntityData>, IBehaviorCollection
 {
     /// <summary>
     /// The data class for <see cref="IBehavior"/> collections.

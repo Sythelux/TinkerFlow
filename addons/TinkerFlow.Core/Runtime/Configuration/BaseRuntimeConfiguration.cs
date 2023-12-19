@@ -16,6 +16,7 @@ using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Serialization;
 using VRBuilder.Core.Serialization.JSON;
 using VRBuilder.Core.Utils;
+using FileAccess = Godot.FileAccess;
 
 namespace VRBuilder.Core.Configuration;
 
@@ -31,19 +32,11 @@ public abstract class BaseRuntimeConfiguration : IRuntimeConfiguration
     /// </summary>
     public static string ManifestFileName => "ProcessManifest";
 
-    private ISceneObjectRegistry sceneObjectRegistry;
-    private ISceneConfiguration sceneConfiguration;
+    protected ISceneObjectRegistry? sceneObjectRegistry;
+    protected ISceneConfiguration? sceneConfiguration;
 
     /// <inheritdoc />
-    public virtual ISceneObjectRegistry SceneObjectRegistry
-    {
-        get
-        {
-            if (sceneObjectRegistry == null) sceneObjectRegistry = new SceneObjectRegistry();
-
-            return sceneObjectRegistry;
-        }
-    }
+    public virtual ISceneObjectRegistry SceneObjectRegistry => sceneObjectRegistry ??= new BaseSceneObjectRegistry();
 
     /// <inheritdoc />
     public IProcessSerializer Serializer { get; set; } = new SystemJsonProcessSerializerV1();
@@ -130,7 +123,7 @@ public abstract class BaseRuntimeConfiguration : IRuntimeConfiguration
         }
     }
 
-    protected BaseRuntimeConfiguration() : this(new DefaultStepLockHandling())
+    protected BaseRuntimeConfiguration() : this(new EmptyStepLockHandling())
     {
     }
 
@@ -214,5 +207,18 @@ public abstract class BaseRuntimeConfiguration : IRuntimeConfiguration
         fileName = fileName.Substring(0, pointIndex);
 
         return fileName;
+    }
+}
+
+public class EmptyStepLockHandling : StepLockHandlingStrategy
+{
+    public override void Unlock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)
+    {
+        
+    }
+
+    public override void Lock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)
+    {
+        
     }
 }

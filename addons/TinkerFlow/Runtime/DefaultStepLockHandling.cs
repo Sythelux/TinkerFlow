@@ -20,6 +20,7 @@ public class DefaultStepLockHandling : StepLockHandlingStrategy
 {
     private bool lockOnProcessStart = true;
     private bool lockOnProcessFinished = true;
+    public LockableProperty[] LockablePropertys { get; set; } //TODO: set from Godot
 
     /// <inheritdoc />
     public override void Unlock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)

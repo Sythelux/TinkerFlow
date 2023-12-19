@@ -4,6 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 using VRBuilder.Core.Utils;
+using FileAccess = Godot.FileAccess;
 
 namespace VRBuilder.Core.Configuration;
 
@@ -23,7 +24,7 @@ public partial class RuntimeConfigurator
 
         // TODO: ProcessAssetPostprocessor.ProcessFileStructureChanged += OnProcessFileStructureChanged;
     }
-
+    
     public override Variant _Get(StringName property)
     {
         return property.ToString() switch

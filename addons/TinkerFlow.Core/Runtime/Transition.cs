@@ -20,7 +20,7 @@ namespace VRBuilder.Core;
 /// A class for a transition from one step to another.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Transition : CompletableEntity<Transition.EntityData>, ITransition, ILockablePropertiesProvider
+public partial class Transition : CompletableEntity<Transition.EntityData>, ITransition, ILockablePropertiesProvider
 {
     /// <summary>
     /// The transition's data class.

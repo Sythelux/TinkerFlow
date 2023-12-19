@@ -2,24 +2,22 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2023 MindPort GmbH
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using VRBuilder.Core.Exceptions;
 using VRBuilder.Core.Godot;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VRBuilder.Core.SceneObjects;
 
 /// <inheritdoc />
-public class SceneObjectRegistry : ISceneObjectRegistry
+public class GodotSceneObjectRegistry : BaseSceneObjectRegistry
 {
-    private readonly Dictionary<Guid, ISceneObject> registeredEntities = new();
-
     /// <inheritdoc />
     public ISceneObject this[Guid guid] => GetByGuid(guid);
 
-    public SceneObjectRegistry()
+    public GodotSceneObjectRegistry()
     {
         RegisterAll();
     }

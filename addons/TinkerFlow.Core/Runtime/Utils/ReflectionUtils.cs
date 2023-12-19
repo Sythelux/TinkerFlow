@@ -261,14 +261,14 @@ public static class ReflectionUtils
     /// <summary>
     /// Get value from property/field <paramref name="member"/> of object <paramref name="owner"/>
     /// </summary>
-    public static object GetValueFromPropertyOrField(object owner, MemberInfo member)
+    public static object? GetValueFromPropertyOrField(object owner, MemberInfo member)
     {
         var property = member as PropertyInfo;
         var field = member as FieldInfo;
 
-        if (property != null) return property.GetValue(owner, null);
-
-        return field.GetValue(owner);
+        return property != null
+            ? property.GetValue(owner, null)
+            : field?.GetValue(owner);
     }
 
     /// <summary>

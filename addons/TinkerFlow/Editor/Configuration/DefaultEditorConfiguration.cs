@@ -25,7 +25,7 @@ public class DefaultEditorConfiguration : IEditorConfiguration
     public virtual string ProcessStreamingAssetsSubdirectory => "Processes";
 
     /// <inheritdoc />
-    public virtual string AllowedMenuItemsSettingsAssetPath => "Assets/MindPort/VR Builder/Editor/Config/AllowedMenuItems.json";
+    // public virtual string AllowedMenuItemsSettingsAssetPath => "Assets/MindPort/VR Builder/Editor/Config/AllowedMenuItems.json";
 
     /// <inheritdoc />
     public virtual IProcessSerializer Serializer => new NewtonsoftJsonProcessSerializerV4();
@@ -34,22 +34,23 @@ public class DefaultEditorConfiguration : IEditorConfiguration
     public IProcessAssetStrategy ProcessAssetStrategy => new SingleFileProcessAssetStrategy();
 
     /// <inheritdoc />
-    public virtual ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent => AllowedMenuItemsSettings.GetBehaviorMenuOptions().Cast<MenuOption<IBehavior>>().ToList().AsReadOnly();
+    public virtual ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent => AllowedMenuItemsSettings.Instance.GetBehaviorMenuOptions().Cast<MenuOption<IBehavior>>().ToList().AsReadOnly();
 
     /// <inheritdoc />
-    public virtual ReadOnlyCollection<MenuOption<ICondition>> ConditionsMenuContent => AllowedMenuItemsSettings.GetConditionMenuOptions().Cast<MenuOption<ICondition>>().ToList().AsReadOnly();
+    public virtual ReadOnlyCollection<MenuOption<ICondition>> ConditionsMenuContent => AllowedMenuItemsSettings.Instance.GetConditionMenuOptions().Cast<MenuOption<ICondition>>().ToList().AsReadOnly();
 
     /// <inheritdoc />
-    public virtual AllowedMenuItemsSettings AllowedMenuItemsSettings
-    {
-        get
-        {
-            if (allowedMenuItemsSettings == null) allowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
-
-            return allowedMenuItemsSettings;
-        }
-        set => allowedMenuItemsSettings = value;
-    }
+    // public virtual AllowedMenuItemsSettings AllowedMenuItemsSettings
+    // {
+    //     get
+    //     {
+    //         if (allowedMenuItemsSettings == null) 
+    //             allowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
+    //
+    //         return allowedMenuItemsSettings;
+    //     }
+    //     set => allowedMenuItemsSettings = value;
+    // }
 
     internal virtual IValidationHandler Validation { get; }
 

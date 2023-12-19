@@ -13,7 +13,7 @@ public partial class ProcessMenuView : Resource
     #region Events
 
     [Signal]
-    public delegate void ChapterChangedEventHandler(Rid chapterRid); //was IChapter chapter. IChapter can't be passed and I need a unique identifier of it. Rid might be wrong
+    public delegate void ChapterChangedEventHandler(Chapter chapterRid); //was IChapter chapter. IChapter can't be passed and I need a unique identifier of it. Rid might be wrong
 
     [Signal]
     public delegate void MenuExtendedChangedEventHandler(bool isExtended);

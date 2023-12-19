@@ -9,7 +9,7 @@ namespace VRBuilder.Core;
 /// <summary>
 /// An <see cref="Entity{TData}"/> which can be completed. Entities can be completed only during their Active <seealso cref="Stage"/>.
 /// </summary>
-public abstract class CompletableEntity<TData> : Entity<TData>, ICompletableEntity where TData : class, ICompletableData, new()
+public abstract partial class CompletableEntity<TData> : Entity<TData>, ICompletableEntity where TData : class, ICompletableData, new()
 {
     /// <summary>
     /// Override this method to return a custom <see cref="Autocompleter{TData}"/>.

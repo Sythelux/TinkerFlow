@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinkerFlow", "TinkerFlow.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRBuilder.Core", "addons\TinkerFlow.Core\VRBuilder.Core.csproj", "{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinkerFlow.BasicConditionsAndBehaviors", "addons\TinkerFlow.BasicConditionsAndBehaviors\TinkerFlow.BasicConditionsAndBehaviors.csproj", "{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -17,5 +19,13 @@ Global
 		{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

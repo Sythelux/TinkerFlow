@@ -51,14 +51,14 @@ public static class EditorConfigurator
 
     private static void LoadAllowedMenuItems()
     {
-        if (string.IsNullOrEmpty(Instance.AllowedMenuItemsSettingsAssetPath))
-            Instance.AllowedMenuItemsSettings = new AllowedMenuItemsSettings();
-        else
-            Instance.AllowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
+        // if (string.IsNullOrEmpty(Instance.AllowedMenuItemsSettingsAssetPath))
+        //     Instance.AllowedMenuItemsSettings = new AllowedMenuItemsSettings();
+        // else
+        //     Instance.AllowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
+        //
+        // ApplyConfigurationExtensions();
 
-        ApplyConfigurationExtensions();
-
-        Instance.AllowedMenuItemsSettings.RefreshMenuOptions();
+        AllowedMenuItemsSettings.Instance.RefreshMenuOptions();
     }
 
     private static void ApplyConfigurationExtensions()
@@ -81,16 +81,16 @@ public static class EditorConfigurator
 
         foreach (Type menuItem in disabledMenuItems)
         {
-            if (menuItem.IsSubclassOf(typeof(MenuItem<IBehavior>))) Instance.AllowedMenuItemsSettings.SerializedBehaviorSelections[menuItem.AssemblyQualifiedName] = false;
+            if (menuItem.IsSubclassOf(typeof(MenuItem<IBehavior>))) AllowedMenuItemsSettings.Instance.SerializedBehaviorSelections[menuItem.AssemblyQualifiedName] = false;
 
-            if (menuItem.IsSubclassOf(typeof(MenuItem<ICondition>))) Instance.AllowedMenuItemsSettings.SerializedConditionSelections[menuItem.AssemblyQualifiedName] = false;
+            if (menuItem.IsSubclassOf(typeof(MenuItem<ICondition>))) AllowedMenuItemsSettings.Instance.SerializedConditionSelections[menuItem.AssemblyQualifiedName] = false;
         }
 
         foreach (Type menuItem in requiredMenuItems)
         {
-            if (menuItem.IsSubclassOf(typeof(MenuItem<IBehavior>))) Instance.AllowedMenuItemsSettings.SerializedBehaviorSelections[menuItem.AssemblyQualifiedName] = true;
+            if (menuItem.IsSubclassOf(typeof(MenuItem<IBehavior>))) AllowedMenuItemsSettings.Instance.SerializedBehaviorSelections[menuItem.AssemblyQualifiedName] = true;
 
-            if (menuItem.IsSubclassOf(typeof(MenuItem<ICondition>))) Instance.AllowedMenuItemsSettings.SerializedConditionSelections[menuItem.AssemblyQualifiedName] = true;
+            if (menuItem.IsSubclassOf(typeof(MenuItem<ICondition>))) AllowedMenuItemsSettings.Instance.SerializedConditionSelections[menuItem.AssemblyQualifiedName] = true;
         }
     }
 }

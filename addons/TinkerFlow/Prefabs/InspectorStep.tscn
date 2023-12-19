@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://brkfxwgxp1vgn"]
+
+[ext_resource type="PackedScene" uid="uid://cnkwh5j4jofs2" path="res://addons/TinkerFlow/Prefabs/ProcessInspectorBehaviorUI.tscn" id="1_6utbp"]
+
+[node name="Step" type="VBoxContainer"]
+offset_right = 382.0
+offset_bottom = 124.0
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+
+[node name="Behaviors" type="VBoxContainer" parent="TabContainer"]
+layout_mode = 2
+
+[node name="BehaviorUIBase" parent="TabContainer/Behaviors" instance=ExtResource("1_6utbp")]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="TabContainer/Behaviors"]
+layout_mode = 2
+text = "Add Behavior"
+
+[node name="Conditions" type="VBoxContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="LockedObjects" type="VBoxContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2

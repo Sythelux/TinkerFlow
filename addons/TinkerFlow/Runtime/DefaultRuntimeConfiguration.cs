@@ -18,8 +18,8 @@ namespace VRBuilder.Core.Configuration;
 /// </summary>
 public class DefaultRuntimeConfiguration : BaseRuntimeConfiguration
 {
-    private IProcessAudioPlayer processAudioPlayer;
-    private ISceneObjectManager sceneObjectManager;
+    private IProcessAudioPlayer? processAudioPlayer;
+    private ISceneObjectManager? sceneObjectManager;
 
     /// <summary>
     /// Default mode which white lists everything.
@@ -65,13 +65,8 @@ public class DefaultRuntimeConfiguration : BaseRuntimeConfiguration
     public override IEnumerable<UserSceneObject> Users => NodeExtensions.FindObjectsOfType<UserSceneObject>();
 
     /// <inheritdoc />
-    public override ISceneObjectManager SceneObjectManager
-    {
-        get
-        {
-            if (sceneObjectManager == null) sceneObjectManager = new DefaultSceneObjectManager();
+    public override ISceneObjectManager SceneObjectManager => sceneObjectManager ??= new DefaultSceneObjectManager();
 
-            return sceneObjectManager;
-        }
-    }
+    /// <inheritdoc />
+    public override ISceneObjectRegistry SceneObjectRegistry => sceneObjectRegistry ??= new GodotSceneObjectRegistry();
 }

@@ -57,7 +57,7 @@ public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
 
     private void SetupInstantiators()
     {
-        IEnumerable<Type> instantiatorTypes = TypesExtension.GetTypesDerivedFrom<IStepNodeInstantiator>();
+        IEnumerable<Type> instantiatorTypes = TypesUtils.GetTypesDerivedFrom<IStepNodeInstantiator>();
         foreach (Type instantiatorType in instantiatorTypes)
             if (Activator.CreateInstance(instantiatorType) is IStepNodeInstantiator val)
                 instantiators.Add(val);

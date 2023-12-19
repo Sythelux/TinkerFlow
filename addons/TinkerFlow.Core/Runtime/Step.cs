@@ -26,7 +26,7 @@ namespace VRBuilder.Core;
 /// An implementation of <see cref="IStep"/> interface.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Step : Entity<Step.EntityData>, IStep
+public partial class Step : Entity<Step.EntityData>, IStep
 {
     public class EntityData : EntityCollectionData<IStepChild>, IStepData, ILockableStepData
     {

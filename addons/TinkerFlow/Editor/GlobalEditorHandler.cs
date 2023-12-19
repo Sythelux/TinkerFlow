@@ -18,7 +18,7 @@ namespace VRBuilder.Editor;
 // [InitializeOnLoad]
 internal static class GlobalEditorHandler
 {
-    internal const string LastEditedProcessNameKey = "VRBuilder/Editors/LastEditedProcessName";
+    internal const string LastEditedProcessNameKey = "TinkerFlow/Editors/LastEditedProcessName";
 
     private static IEditingStrategy strategy;
 
@@ -108,6 +108,7 @@ internal static class GlobalEditorHandler
     internal static void SetCurrentProcess(string processName)
     {
         strategy.HandleCurrentProcessChanged(processName);
+        EditorInterface.Singleton.GetEditorSettings().SetSetting(LastEditedProcessNameKey, processName);
     }
 
     internal static void SetCurrentChapter(IChapter chapter)

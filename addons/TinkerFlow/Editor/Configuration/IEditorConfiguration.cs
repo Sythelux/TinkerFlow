@@ -25,7 +25,7 @@ public interface IEditorConfiguration
     /// Assets path where to save the serialized <see cref="AllowedMenuItemsSettings"/> file.
     /// It has to start with "Assets/".
     /// </summary>
-    string AllowedMenuItemsSettingsAssetPath { get; }
+    // string AllowedMenuItemsSettingsAssetPath { get; }
 
     /// <summary>
     /// Serializer used to serialize processes and steps.
@@ -41,7 +41,7 @@ public interface IEditorConfiguration
     /// The current instance of the <see cref="AllowedMenuItemsSettings"/> object.
     /// It manages the display status of all available behaviors and conditions.
     /// </summary>
-    AllowedMenuItemsSettings AllowedMenuItemsSettings { get; set; }
+    // AllowedMenuItemsSettings AllowedMenuItemsSettings { get; set; }
 
     /// <summary>
     /// List of available options in "Add new behavior" dropdown.

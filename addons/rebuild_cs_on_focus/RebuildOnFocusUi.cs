@@ -1,6 +1,6 @@
 #if TOOLS
 using Godot;
-using Godot.Collections;
+using FileAccess = Godot.FileAccess;
 
 namespace RebuildCsOnFocus.addons.rebuild_cs_on_focus;
 
@@ -18,7 +18,8 @@ public partial class RebuildOnFocusUi : Control
 	PopupMenu _popupMenu = default!;
 	ConfigFile _config = new ();
 	string _configPath = "user://rebuild_on_focus.cfg";
-	Dictionary<MenuOptions, string> _configKeys = new () {
+
+	Godot.Collections.Dictionary<MenuOptions, string> _configKeys = new () {
 		{MenuOptions.RebuildOnFocus, "rebuild_on_focus"}, 
 		{MenuOptions.BuildOnPlay, "build_on_play"}
 	};

@@ -3,11 +3,9 @@
 // Modifications copyright (c) 2021-2023 MindPort GmbH
 
 using System;
-#if UNITY_EDITOR
-using UnityEditor;
-#elif GODOT4
+using System.Runtime.InteropServices;
+using System.Xml.Linq;
 using Godot;
-#endif
 
 namespace VRBuilder.Core.Runtime.Utils;
 
@@ -50,7 +48,10 @@ public partial class SettingsObject<T> : Resource where T : Resource, new()
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 #elif GODOT4
-            settings = EditorInterface.Singleton.Get($"TinkerFlow/{typeof(T).Name}").Obj as T ?? new T();
+            settings = EditorInterface.Singleton.GetEditorSettings().GetSetting($"TinkerFlow/{typeof(T).Name}").Obj as T ?? new T();
+            EditorInterface.Singleton.GetEditorSettings().SetSetting($"TinkerFlow/{typeof(T).Name}", settings);
+            // settings = EditorInterface.Singleton.Get($"TinkerFlow/{typeof(T).Name}").Obj as T ?? new T();
+            // EditorInterface.Singleton.Set($"TinkerFlow/{typeof(T).Name}", settings);
 #endif
         }
 
@@ -67,7 +68,8 @@ public partial class SettingsObject<T> : Resource where T : Resource, new()
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 #elif GODOT4
-        EditorInterface.Singleton.Set($"TinkerFlow/{typeof(T).Name}", this);
+        EditorInterface.Singleton.GetEditorSettings().SetSetting($"TinkerFlow/{typeof(T).Name}", this);
+        // EditorInterface.Singleton.Set($"TinkerFlow/{typeof(T).Name}", this);
 #endif
     }
 
