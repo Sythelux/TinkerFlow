@@ -1,7 +1,4 @@
 using System.Linq;
-using System.Reflection;
-using Godot;
-using TinkerFlow.Godot.Editor;
 using VRBuilder.Core;
 
 namespace VRBuilder.Editor.UI.Graphics;
@@ -40,14 +37,14 @@ public partial class StepGraphNode : ProcessGraphNode
 
     public override void _Ready()
     {
-        GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
+        // GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
         PositionOffset = step.StepMetadata.Position;
     }
 
     /// <inheritdoc/>
     public override void Refresh()
     {
-        GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
+        // GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
         Title = step?.Data.Name;
         base.Refresh();
     }

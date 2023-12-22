@@ -17,7 +17,7 @@ namespace VRBuilder.Core.Configuration;
 /// Process runtime configuration which is used if no other was implemented.
 /// </summary>
 [Tool]
-public partial class DefaultRuntimeConfiguration : BaseRuntimeConfiguration
+public partial class DefaultRuntimeConfiguration2 : BaseRuntimeConfiguration
 {
     /// <summary>
     /// Default mode which white lists everything.
@@ -27,7 +27,7 @@ public partial class DefaultRuntimeConfiguration : BaseRuntimeConfiguration
     private IProcessAudioPlayer? processAudioPlayer;
     private ISceneObjectManager? sceneObjectManager;
 
-    public DefaultRuntimeConfiguration()
+    public DefaultRuntimeConfiguration2()
     {
         Modes = new BaseModeHandler(new List<IMode> { DefaultMode });
     }

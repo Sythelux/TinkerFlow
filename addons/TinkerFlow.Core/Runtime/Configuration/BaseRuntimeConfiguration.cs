@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -24,7 +23,8 @@ namespace VRBuilder.Core.Configuration;
 /// Base class for your runtime process configuration. Extend it to create your own.
 /// </summary>
 #pragma warning disable 0618
-public abstract class BaseRuntimeConfiguration : IRuntimeConfiguration
+[Tool]
+public abstract partial class BaseRuntimeConfiguration : Resource, IRuntimeConfiguration
 {
 #pragma warning restore 0618
     /// <summary>
@@ -214,11 +214,9 @@ public class EmptyStepLockHandling : StepLockHandlingStrategy
 {
     public override void Unlock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)
     {
-        
     }
 
     public override void Lock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)
     {
-        
     }
 }

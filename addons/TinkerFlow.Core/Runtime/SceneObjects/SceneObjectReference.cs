@@ -21,11 +21,11 @@ public sealed class SceneObjectReference : ObjectReference<ISceneObject>
     {
     }
 
-    protected override ISceneObject DetermineValue(ISceneObject cached)
+    protected override ISceneObject? DetermineValue(ISceneObject? cached)
     {
         if (string.IsNullOrEmpty(UniqueName)) return null;
 
-        ISceneObject value = cached;
+        ISceneObject? value = cached;
 
         // If MonoBehaviour was destroyed, nullify the value.
         if (value != null && value.Equals(null)) value = null;
@@ -33,7 +33,7 @@ public sealed class SceneObjectReference : ObjectReference<ISceneObject>
         // If value exists, return it.
         if (value != null) return value;
 
-        value = RuntimeConfigurator.Configuration.SceneObjectRegistry.GetByName(UniqueName);
+        value = RuntimeConfigurator.Configuration?.SceneObjectRegistry.GetByName(UniqueName);
         return value;
     }
 }

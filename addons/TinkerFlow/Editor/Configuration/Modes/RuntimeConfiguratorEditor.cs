@@ -17,19 +17,20 @@ public partial class RuntimeConfigurator
     static RuntimeConfigurator()
     {
 #pragma warning disable 0618
-        configurationTypes = ReflectionUtils.GetConcreteImplementationsOf<IRuntimeConfiguration>().Except(new[] { typeof(RuntimeConfigWrapper) }).ToList();
+        configurationTypes = ReflectionUtils.GetConcreteImplementationsOf<IRuntimeConfiguration>().ToList();
 #pragma warning restore 0618
         configurationTypes.Sort(((type1, type2) => string.Compare(type1.Name, type2.Name, StringComparison.Ordinal)));
         configurationTypeNames = configurationTypes.Select(t => t.Name).ToArray();
 
         // TODO: ProcessAssetPostprocessor.ProcessFileStructureChanged += OnProcessFileStructureChanged;
     }
-    
+
     public override Variant _Get(StringName property)
     {
+        // GD.Print(property);
         return property.ToString() switch
         {
-            nameof(RuntimeConfigurationName) => RuntimeConfigurationName,
+            nameof(RuntimeConfigurationName) => configurationTypes.FirstOrDefault(t => t.AssemblyQualifiedName == RuntimeConfigurationName)?.Name ?? string.Empty,
             nameof(SelectedProcess) => SelectedProcess,
             nameof(ProcessStringLocalizationTable) => ProcessStringLocalizationTable,
             _ => base._Get(property)
@@ -38,10 +39,11 @@ public partial class RuntimeConfigurator
 
     public override bool _Set(StringName property, Variant value)
     {
+        GD.Print(property);
         switch (property.ToString())
         {
             case nameof(RuntimeConfigurationName):
-                RuntimeConfigurationName = value.AsString();
+                RuntimeConfigurationName = configurationTypes[configurationTypeNames.ToList().IndexOf(value.AsString())].AssemblyQualifiedName ?? string.Empty;
                 return true;
             case nameof(SelectedProcess):
                 SelectedProcess = value.AsString();

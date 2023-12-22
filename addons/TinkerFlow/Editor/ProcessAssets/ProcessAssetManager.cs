@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Godot;
@@ -180,7 +179,8 @@ internal static class ProcessAssetManager
             // if (FileAccess.FileExists(path))
             //     FileAccess.Set(path, FileAttributes.Normal);
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            DirAccess? dir = DirAccess.Open(Path.GetDirectoryName(path));
+            dir?.MakeDirRecursive(Path.GetDirectoryName(path));
             stream = FileAccess.Open(path, FileAccess.ModeFlags.ReadWrite);
             stream.StoreBuffer(processData);
             // stream.Write(processData, 0, processData.Length);

@@ -16,35 +16,43 @@ namespace TinkerFlow.Godot.Editor;
 [Tool]
 public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
 {
-    [Export]
-    public PackedScene? StepNode { get; set; }
-
-    public RuntimeConfigurator? RuntimeConfigurator => runtimeConfigurator ??= EditorInterface.Singleton.GetEditedSceneRoot()?.GetChildren().OfType<RuntimeConfigurator>().FirstOrDefault();
-
-    private PopupMenu? addNodeMenu;
-    public PopupMenu AddNodeMenu => addNodeMenu ??= GetNode<PopupMenu>("PopupMenu");
-    private PopupMenu? editNodeMenu;
-    private Vector2 popUpPosition;
-    private RuntimeConfigurator? lastConfigurator;
-    public PopupMenu EditNodeMenu => editNodeMenu ??= GetNode<PopupMenu>("NodePopupMenu");
-    public Node? SelectedNode { get; set; }
-    private ProcessGraphNode? entryNode;
-    private IChapter? currentChapter;
-    private readonly List<IStepNodeInstantiator> instantiators = new();
-    private readonly Dictionary<IChapter, Rect2> storedViewTransforms = new();
-    private RuntimeConfigurator? runtimeConfigurator;
-    private IProcess? currentProcess;
-    private ProcessMenuView? chapterMenu;
-    private VBoxContainer? chapterViewContainer;
-    public VBoxContainer ChapterViewContainer => chapterViewContainer ??= GetNode<VBoxContainer>("%ChapterView");
+    #region Delegates
 
     [Signal]
     public delegate void ModifiedEventHandler();
 
-    public override void _Ready()
+    #endregion
+
+    private readonly Dictionary<IChapter, Rect2> storedViewTransforms = new();
+    private readonly List<IStepNodeInstantiator> instantiators = new();
+    private IChapter? currentChapter;
+    private IProcess? currentProcess;
+
+    private PopupMenu? addNodeMenu;
+    private PopupMenu? editNodeMenu;
+    private ProcessGraphNode? entryNode;
+    private ProcessMenuView? chapterMenu;
+    private RuntimeConfigurator? lastConfigurator;
+    private RuntimeConfigurator? runtimeConfigurator;
+    private VBoxContainer? chapterViewContainer;
+    private Vector2 popUpPosition;
+
+    [Export]
+    public PackedScene? StepNode { get; set; }
+
+    public RuntimeConfigurator? RuntimeConfigurator => runtimeConfigurator ??= EditorInterface.Singleton.GetEditedSceneRoot()?.GetChildren().OfType<RuntimeConfigurator>().FirstOrDefault();
+    public PopupMenu AddNodeMenu => addNodeMenu ??= GetNode<PopupMenu>("PopupMenu");
+    public PopupMenu EditNodeMenu => editNodeMenu ??= GetNode<PopupMenu>("NodePopupMenu");
+    public Node? SelectedNode { get; set; }
+    public VBoxContainer ChapterViewContainer => chapterViewContainer ??= GetNode<VBoxContainer>("%ChapterView");
+
+    public override void _EnterTree()
     {
         SetupInstantiators();
+    }
 
+    public override void _Ready()
+    {
         NodeSelected += OnNodeSelected;
         NodeDeselected += OnNodeDeselected;
         ConnectionRequest += OnConnectionRequest;

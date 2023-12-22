@@ -1,45 +1,53 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
-using VRBuilder.Core.Properties;
 
 namespace VRBuilder.Core.Utils;
 
 ///<author email="Sythelux Rikd">Sythelux Rikd</author>
 public static class NodeExtensions
 {
-    public static IEnumerable<T> FindObjectsOfType<T>(this Node self) where T : Node
+    public static Node? Root;
+
+    public static IEnumerable<T> FindObjectsOfType<T>(this Node self) where T : GodotObject
     {
-        //TODO
-        yield break;
+        return FindObjectsOfType<T>();
     }
 
-    public static IEnumerable<T> FindObjectsOfType<T>() where T : Node
+    public static IEnumerable<T> FindObjectsOfType<T>() where T : GodotObject
     {
-        //TODO
-        yield break;
+        if (Engine.IsEditorHint())
+            return EditorInterface.Singleton.GetEditedSceneRoot()?.GetComponentsInChildren<T>() ?? Array.Empty<T>();
+        return Root != null
+            ? Root.GetComponentsInChildren<T>()
+            : Array.Empty<T>();
     }
 
-    public static T GetComponentInChildren<T>(this Node self)
+    public static T? GetComponentInChildren<T>(this Node self)
     {
-        //TODO:
-        throw new System.NotImplementedException();
+        return self.GetComponentsInChildren<T>().FirstOrDefault();
     }
 
-    public static T GetComponent<T>(this Node self)
+    public static IEnumerable<T> GetComponentsInChildren<T>(this Node self)
     {
-        //TODO:
-        throw new System.NotImplementedException();
+        return self.GetChildren(true).OfType<T>();
+    }
+
+    public static T? GetComponent<T>(this Node self)
+    {
+        return self.GetComponents<T>().FirstOrDefault();
     }
 
     public static IEnumerable<T> GetComponents<T>(this Node self)
     {
-        //TODO:
-        throw new System.NotImplementedException();
+        return self.GetChildren().OfType<T>();
     }
 
-    public static T AddComponent<T>(this Node self)
+    public static T AddComponent<T>(this Node self) where T : Node, new()
     {
-        //TODO:
-        throw new System.NotImplementedException();
+        var node = new T();
+        self.AddChild(node);
+        return node;
     }
 }

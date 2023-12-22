@@ -4,10 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Godot;
@@ -15,7 +12,6 @@ using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Runtime.Utils;
 using VRBuilder.Core.Utils;
-using VRBuilder.Editor.Serialization;
 using VRBuilder.Editor.UI.StepInspector.Menu;
 
 namespace VRBuilder.Editor.Configuration;
@@ -26,16 +22,17 @@ namespace VRBuilder.Editor.Configuration;
 /// Can be serialized.
 /// </summary>
 [DataContract(IsReference = true)]
+[GlobalClass]
 public partial class AllowedMenuItemsSettings : SettingsObject<AllowedMenuItemsSettings>
 {
-    private IList<MenuItem<IBehavior>> behaviorMenuItems;
-    private IList<MenuItem<ICondition>> conditionMenuItems;
-
     [DataMember]
     public IDictionary<string, bool> SerializedBehaviorSelections;
 
     [DataMember]
     public IDictionary<string, bool> SerializedConditionSelections;
+
+    private IList<MenuItem<IBehavior>> behaviorMenuItems;
+    private IList<MenuItem<ICondition>> conditionMenuItems;
 
     public AllowedMenuItemsSettings() : this(new Dictionary<string, bool>(), new Dictionary<string, bool>())
     {
@@ -164,7 +161,6 @@ public partial class AllowedMenuItemsSettings : SettingsObject<AllowedMenuItemsS
     //     // return JsonEditorConfigurationSerializer.Deserialize();
     //     return new AllowedMenuItemsSettings();
     // }
-
     private IList<T> SetupItemList<T>(IDictionary<string, bool> userSelections)
     {
         if (userSelections == null) return null;

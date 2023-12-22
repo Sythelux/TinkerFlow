@@ -10,9 +10,16 @@ namespace VRBuilder.Editor.UI.Drawers;
 ///<author email="Sythelux Rikd">Sythelux Rikd</author>
 public abstract partial class AbstractProcessFactory : IProcessFactory
 {
-    public abstract Control Create<T>(T currentValue, Action<object> changeValueCallback, string label);
+    #region IProcessFactory Members
 
-    public Label GetLabel(MemberInfo memberInfo, object memberOwner)
+    public abstract Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label);
+
+    public virtual Control Create<T>(T currentValue, Action<object> changeValueCallback, string label)
+    {
+        return Create(currentValue, changeValueCallback, new Label { Text = label });
+    }
+
+    public virtual Label GetLabel(MemberInfo memberInfo, object memberOwner)
     {
         // Type memberType = Core.Utils.ReflectionUtils.GetDeclaredTypeOfPropertyOrField(memberInfo);
         object? value = Core.Utils.ReflectionUtils.GetValueFromPropertyOrField(memberOwner, memberInfo);
@@ -27,12 +34,12 @@ public abstract partial class AbstractProcessFactory : IProcessFactory
         DisplayNameAttribute? displayNameAttribute = memberInfo.GetAttributes<DisplayNameAttribute>(true).FirstOrDefault();
         DisplayTooltipAttribute? displayTooltipAttribute = memberInfo.GetAttributes<DisplayTooltipAttribute>(true).FirstOrDefault();
 
-        if (displayNameAttribute != null && displayNameAttribute.Name != null)
+        if (displayNameAttribute?.Name != null)
         {
             valueLabel.Text = displayNameAttribute.Name;
         }
 
-        if (displayTooltipAttribute != null && displayTooltipAttribute.Tooltip != null)
+        if (displayTooltipAttribute?.Tooltip != null)
         {
             valueLabel.TooltipText = displayTooltipAttribute.Tooltip;
         }
@@ -45,7 +52,7 @@ public abstract partial class AbstractProcessFactory : IProcessFactory
         return valueLabel;
     }
 
-    public Label GetLabel<T>(T value)
+    public virtual Label GetLabel<T>(T value)
     {
         var nameable = value as INamedData;
         var l = new Label();
@@ -57,7 +64,7 @@ public abstract partial class AbstractProcessFactory : IProcessFactory
         return l;
     }
 
-    public void ChangeValue<T>(Func<T> getNewValueCallback, Func<T> getOldValueCallback, Action<T> assignValueCallback)
+    public virtual void ChangeValue<T>(Func<T> getNewValueCallback, Func<T> getOldValueCallback, Action<T> assignValueCallback)
     {
         // ReSharper disable once ImplicitlyCapturedClosure
         Action doCallback = () => assignValueCallback(getNewValueCallback());
@@ -65,4 +72,6 @@ public abstract partial class AbstractProcessFactory : IProcessFactory
         Action undoCallback = () => assignValueCallback(getOldValueCallback());
         // TODO: RevertableChangesHandler.Do(new ProcessCommand(doCallback, undoCallback));
     }
+
+    #endregion
 }

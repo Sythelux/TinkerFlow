@@ -16,11 +16,6 @@ namespace VRBuilder.Core.SceneObjects;
 [DataContract(IsReference = true)]
 public sealed class ScenePropertyReference<T> : ObjectReference<T> where T : class, ISceneObjectProperty
 {
-    public static implicit operator T(ScenePropertyReference<T> reference)
-    {
-        return reference.Value;
-    }
-
     public ScenePropertyReference()
     {
     }
@@ -29,11 +24,16 @@ public sealed class ScenePropertyReference<T> : ObjectReference<T> where T : cla
     {
     }
 
-    protected override T DetermineValue(T cachedValue)
+    public static implicit operator T(ScenePropertyReference<T> reference)
+    {
+        return reference.Value;
+    }
+
+    protected override T? DetermineValue(T? cachedValue)
     {
         if (string.IsNullOrEmpty(UniqueName)) return null;
 
-        T value = cachedValue;
+        T? value = cachedValue;
 
         // If MonoBehaviour was destroyed, nullify the value.
         if (value != null && value.Equals(null)) value = null;
@@ -41,7 +41,7 @@ public sealed class ScenePropertyReference<T> : ObjectReference<T> where T : cla
         // If value exists, return it.
         if (value != null) return value;
 
-        ISceneObject sceneObject = RuntimeConfigurator.Configuration.SceneObjectRegistry.GetByName(UniqueName);
+        ISceneObject? sceneObject = RuntimeConfigurator.Configuration?.SceneObjectRegistry.GetByName(UniqueName);
 
         // Can't find process object with given UniqueName, value is null.
         if (sceneObject == null) return value;

@@ -13,6 +13,8 @@ namespace VRBuilder.Core.Utils;
 
 public static class ReflectionUtils
 {
+    private static HashSet<Type>? cachedTypes;
+
     /// <summary>
     /// Return <paramref name="type"/> name taking into consideration if it is nested type or not.
     /// </summary>
@@ -60,27 +62,22 @@ public static class ReflectionUtils
         return entryDeclaredType;
     }
 
-    private static Type[] cachedTypes;
-
     /// <summary>
     /// Returns all existing types of all assemblies.
     /// </summary>
     public static IEnumerable<Type> GetAllTypes()
     {
-        if (cachedTypes == null)
-            cachedTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly =>
+        return cachedTypes ?? (cachedTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly =>
+        {
+            try
             {
-                try
-                {
-                    return assembly.GetTypes();
-                }
-                catch (ReflectionTypeLoadException e)
-                {
-                    return e.Types.Where(type => type != null);
-                }
-            }).ToArray();
-
-        return cachedTypes;
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                return e.Types.Where(type => type != null);
+            }
+        }).ToHashSet());
     }
 
     /// <summary>
@@ -356,5 +353,15 @@ public static class ReflectionUtils
             default:
                 return false;
         }
+    }
+
+    /// <summary>
+    /// Returns the type from <paramref name="name"/> or null if not found.
+    /// </summary>
+    public static Type? GetTypeFromName(string name)
+    {
+        return string.IsNullOrEmpty(name)
+            ? null
+            : GetAllTypes().FirstOrDefault(type => type.Name == name);
     }
 }

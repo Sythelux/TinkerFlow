@@ -8,16 +8,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_8x8mo")
 
-[node name="StepNameLabel" type="Label" parent="."]
-visible = false
-layout_mode = 2
-text = "Step Settings"
-
 [node name="StepName" type="LineEdit" parent="."]
-visible = false
 layout_mode = 2
 text = "None Selected"
 placeholder_text = "Step Name"

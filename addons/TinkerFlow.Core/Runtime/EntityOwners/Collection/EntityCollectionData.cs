@@ -12,8 +12,10 @@ namespace VRBuilder.Core.EntityOwners;
 /// </summary>
 public abstract class EntityCollectionData<TEntity> : IEntityCollectionData<TEntity> where TEntity : IEntity
 {
+    #region IEntityCollectionData<TEntity> Members
+
     /// <inheritdoc />
-    public IMetadata Metadata { get; set; }
+    public IMetadata? Metadata { get; set; }
 
     /// <inheritdoc />
     public abstract IEnumerable<TEntity> GetChildren();
@@ -23,4 +25,6 @@ public abstract class EntityCollectionData<TEntity> : IEntityCollectionData<TEnt
     {
         return GetChildren().Cast<IEntity>();
     }
+
+    #endregion
 }

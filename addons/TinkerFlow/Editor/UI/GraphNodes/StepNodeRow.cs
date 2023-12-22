@@ -3,6 +3,19 @@ using Godot;
 [Tool]
 public partial class StepNodeRow : Node
 {
+    #region Delegates
+
+    [Signal]
+    public delegate void AddTransitionEventHandler(StepNodeRow row);
+
+    [Signal]
+    public delegate void RemoveTransitionEventHandler(StepNodeRow row);
+
+    #endregion
+
+    private Button? addButton;
+
+    private Button? removeButton;
     private Label? titleLabel;
 
     public string Title
@@ -14,10 +27,6 @@ public partial class StepNodeRow : Node
                 titleLabel.Text = value;
         }
     }
-
-    private Button? addButton;
-
-    private Button? removeButton;
 
     public bool Removable
     {
@@ -38,12 +47,6 @@ public partial class StepNodeRow : Node
                 addButton.Disabled = !value;
         }
     }
-    
-    [Signal]
-    public delegate void AddTransitionEventHandler(StepNodeRow row);
-
-    [Signal]
-    public delegate void RemoveTransitionEventHandler(StepNodeRow row);
 
     public override void _Ready()
     {

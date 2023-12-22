@@ -27,9 +27,28 @@ namespace VRBuilder.Editor.UI.Drawers
         Control Create<T>(T currentValue, Action<object> changeValueCallback, string label);
 
         /// <summary>
+        /// Draw editor view in given Rect.
+        /// </summary>
+        /// <param name="rect">A rectangle in which editor view should fit. The height value is ignored.</param>
+        /// <param name="currentValue">Current value of a member.</param>
+        /// <param name="changeValueCallback">
+        /// Delegate for a method that changes value of a member. Done that way to allow non-instantaneous assignments (for example, from generic menus).
+        /// Invoke only when child member's value has changed;
+        /// Otherwise, if the value itself has changed, call <see cref="ChangeValue"/> so it could manage Do/Undo stack in a proper way.
+        /// </param>
+        /// <param name="label">Label content to display.</param>
+        /// <returns>The area that was taken by the property.</returns>
+        Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label);
+
+        /// <summary>
         /// Return a label for a property/field <paramref name="memberInfo"/> of an object <paramref name="memberOwner"/>.
         /// </summary>
         Label GetLabel(MemberInfo memberInfo, object memberOwner);
+
+        /// <summary>
+        /// Return a label for a <paramref name="value"/>.
+        /// </summary>
+        Label GetLabel<T>(T value);
 
         /// <summary>
         /// Call when the value has changed; it will create proper <see cref="ProcessCommand"/> to handle Do/Undo logic.

@@ -15,6 +15,16 @@ namespace VRBuilder.Core.SceneObjects;
 [DataContract(IsReference = true)]
 public abstract class ObjectReference<T> : UniqueNameReference, ICanBeEmpty where T : class
 {
+    private T? cachedValue;
+
+    protected ObjectReference()
+    {
+    }
+
+    protected ObjectReference(string uniqueName) : base(uniqueName)
+    {
+    }
+
     public override string UniqueName
     {
         get => base.UniqueName;
@@ -26,9 +36,7 @@ public abstract class ObjectReference<T> : UniqueNameReference, ICanBeEmpty wher
         }
     }
 
-    private T cachedValue;
-
-    public T Value
+    public T? Value
     {
         get
         {
@@ -37,25 +45,7 @@ public abstract class ObjectReference<T> : UniqueNameReference, ICanBeEmpty wher
         }
     }
 
-    internal override Type GetReferenceType()
-    {
-        return typeof(T);
-    }
-
-    public static implicit operator T(ObjectReference<T> reference)
-    {
-        return reference.Value;
-    }
-
-    protected ObjectReference()
-    {
-    }
-
-    protected ObjectReference(string uniqueName) : base(uniqueName)
-    {
-    }
-
-    protected abstract T DetermineValue(T cachedValue);
+    #region ICanBeEmpty Members
 
     /// <inheritdoc/>
     public bool IsEmpty()
@@ -69,4 +59,18 @@ public abstract class ObjectReference<T> : UniqueNameReference, ICanBeEmpty wher
             return true;
         }
     }
+
+    #endregion
+
+    internal override Type GetReferenceType()
+    {
+        return typeof(T);
+    }
+
+    public static implicit operator T?(ObjectReference<T> reference)
+    {
+        return reference.Value ?? null;
+    }
+
+    protected abstract T? DetermineValue(T? cachedValue);
 }

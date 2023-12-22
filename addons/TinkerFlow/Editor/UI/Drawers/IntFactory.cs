@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Godot;
 
 namespace VRBuilder.Editor.UI.Drawers;
@@ -9,18 +8,26 @@ namespace VRBuilder.Editor.UI.Drawers;
 public partial class IntFactory : AbstractProcessFactory
 {
     /// <inheritdoc />
-    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string label)
+    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
     {
         var value = Convert.ToInt32(currentValue);
-        var spinBox = new SpinBox();
-        spinBox.CustomArrowStep = 1;
-        spinBox.ValueChanged += SpinBoxOnChanged;
+        var container = new HBoxContainer();
+        container.AddChild(label);
+        container.AddChild(CreateSpinBox<T>(changeValueCallback, value));
+        return container;
+    }
 
-        void SpinBoxOnChanged(double d)
+    private SpinBox CreateSpinBox<T>(Action<object> changeValueCallback, int value)
+    {
+        var spinBox = new SpinBox();
+        spinBox.Value = value;
+        spinBox.CustomArrowStep = 1;
+        spinBox.ValueChanged += OnValueChanged;
+        return spinBox;
+
+        void OnValueChanged(double d)
         {
             ChangeValue(() => (int)d, () => value, changeValueCallback);
         }
-
-        return spinBox;
     }
 }

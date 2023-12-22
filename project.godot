@@ -11,8 +11,12 @@ config_version=5
 [application]
 
 config/name="TinkerFlow"
-config/features=PackedStringArray("4.2", "C#", "Forward Plus")
+config/features=PackedStringArray("4.3", "C#")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SceneManager="*res://addons/TinkerFlow/Runtime/Godot/SceneManager.cs"
 
 [dotnet]
 

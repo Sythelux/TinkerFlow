@@ -13,11 +13,13 @@ public partial class SceneConfiguration : Node, ISceneConfiguration
 {
     [SerializeField]
     // [Tooltip("Lists all assemblies whose property extensions will be used in the current scene.")]
-    private List<string> extensionAssembliesWhitelist = new List<string>();
+    private List<string> extensionAssembliesWhitelist = new();
 
     [SerializeField]
     // [Tooltip("Default resources prefab to use for the Confetti behavior.")]
     private string defaultConfettiPrefab;
+
+    #region ISceneConfiguration Members
 
     /// <inheritdoc/>
     public IEnumerable<string> ExtensionAssembliesWhitelist => extensionAssembliesWhitelist;
@@ -25,29 +27,24 @@ public partial class SceneConfiguration : Node, ISceneConfiguration
     /// <inheritdoc/>
     public string DefaultConfettiPrefab
     {
-        get { return defaultConfettiPrefab; }
-        set { defaultConfettiPrefab = value; }
+        get => defaultConfettiPrefab;
+        set => defaultConfettiPrefab = value;
     }
 
     /// <inheritdoc/>
     public bool IsAllowedInAssembly(Type extensionType, string assemblyName)
     {
-        if (ExtensionAssembliesWhitelist.Contains(assemblyName) == false)
-        {
-            return false;
-        }
+        if (ExtensionAssembliesWhitelist.Contains(assemblyName) == false) return false;
 
         PropertyExtensionExclusionList blacklist = this.GetComponents<PropertyExtensionExclusionList>().FirstOrDefault(blacklist => blacklist.AssemblyFullName == assemblyName);
 
         if (blacklist == null)
-        {
             return true;
-        }
         else
-        {
             return blacklist.DisallowedExtensionTypes.Any(disallowedType => disallowedType.FullName == extensionType.FullName) == false;
-        }
     }
+
+    #endregion
 
     /// <summary>
     /// Adds the specified assembly names to the extension whitelist.
@@ -55,11 +52,7 @@ public partial class SceneConfiguration : Node, ISceneConfiguration
     public void AddWhitelistAssemblies(IEnumerable<string> assemblyNames)
     {
         foreach (string assemblyName in assemblyNames)
-        {
             if (extensionAssembliesWhitelist.Contains(assemblyName) == false)
-            {
                 extensionAssembliesWhitelist.Add(assemblyName);
-            }
-        }
     }
 }

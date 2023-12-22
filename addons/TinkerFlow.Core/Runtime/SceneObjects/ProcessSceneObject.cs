@@ -18,14 +18,36 @@ namespace VRBuilder.Core.SceneObjects;
 [Tool]
 public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
 {
+    #region Delegates
+
+    /// <inheritdoc />
+    [Signal]
+    public delegate void TagAddedEventHandler(string tag);
+
+    /// <inheritdoc />
+    [Signal]
+    public delegate void TagRemovedEventHandler(string tag);
+
+    #endregion
+
+    private Guid guid = Guid.NewGuid();
+    private List<IStepData> unlockers = new();
+
+    [SerializeField]
+    protected List<string> tags = new();
+
+    [Export]
+    // [Tooltip("Unique name which identifies an object in scene, can be null or empty, but has to be unique in the scene.")]
+    protected string uniqueName = string.Empty;
+
+    private bool IsRegistered => RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
+
+    #region ISceneObject Members
+
     public event EventHandler<LockStateChangedEventArgs> Locked;
     public event EventHandler<LockStateChangedEventArgs> Unlocked;
     public event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
     public Node GameObject => this; //was GameObject
-
-    [Export]
-    // [Tooltip("Unique name which identifies an object in scene, can be null or empty, but has to be unique in the scene.")]
-    protected string uniqueName = null;
 
     /// <inheritdoc />
     public string UniqueName
@@ -38,68 +60,12 @@ public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
         }
     }
 
-    private Guid guid = Guid.NewGuid();
-    private List<IStepData> unlockers = new();
-
     /// <inheritdoc />
     public Guid Guid => guid;
 
     public IEnumerable<ISceneObjectProperty> Properties => GetChildren().OfType<ISceneObjectProperty>();
 
     public bool IsLocked { get; private set; }
-
-    private bool IsRegistered => RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
-
-    [SerializeField]
-    protected List<string> tags = new();
-
-    /// <inheritdoc />
-    public IEnumerable<Guid> Tags => tags.Select(tag => Guid.Parse(tag));
-
-    /// <inheritdoc />
-    [Signal]
-    public delegate void TagAddedEventHandler(string tag);
-
-    /// <inheritdoc />
-    [Signal]
-    public delegate void TagRemovedEventHandler(string tag);
-
-    protected void Awake()
-    {
-        Init();
-
-        IEnumerable<ProcessSceneObject> processSceneObjects = FindChildren("*", recursive: true).OfType<ProcessSceneObject>();
-        foreach (ProcessSceneObject pso in processSceneObjects)
-            if (!pso.Visible) //was if (!pso.isActiveAndEnabled) 
-                pso.Init();
-    }
-
-    protected void Init()
-    {
-#if UNITY_EDITOR
-            if (UnityEditor.SceneManagement.EditorSceneManager.IsPreviewScene(gameObject.scene))
-            {
-                return;
-            }
-#endif
-        if (RuntimeConfigurator.Exists == false) return;
-
-        if (IsRegistered) return;
-
-        this.SetSuitableName(uniqueName);
-
-        if (IsRegistered == false)
-        {
-            RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
-
-            if (UniqueNameChanged != null) UniqueNameChanged.Invoke(this, new SceneObjectNameChanged(UniqueName, UniqueName));
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (RuntimeConfigurator.Exists) RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(this);
-    }
 
     public bool CheckHasProperty<T>() where T : ISceneObjectProperty
     {
@@ -181,15 +147,6 @@ public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
         return unlockers.Remove(data);
     }
 
-    /// <summary>
-    /// Tries to find property which is assignable to given type, this method
-    /// will return null if none is found.
-    /// </summary>
-    private ISceneObjectProperty FindProperty(Type type)
-    {
-        return GetChildren().FirstOrDefault(c => c.GetType() == type) as ISceneObjectProperty;
-    }
-
     public void ChangeUniqueName(string newName)
     {
         if (newName == UniqueName) return;
@@ -210,6 +167,13 @@ public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
 
         if (UniqueNameChanged != null) UniqueNameChanged.Invoke(this, new SceneObjectNameChanged(UniqueName, previousName));
     }
+
+    #endregion
+
+    #region ITagContainer Members
+
+    /// <inheritdoc />
+    public IEnumerable<Guid> Tags => tags.Select(tag => Guid.Parse(tag));
 
     /// <inheritdoc />
     public void AddTag(Guid tag)
@@ -237,5 +201,53 @@ public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
         }
 
         return false;
+    }
+
+    #endregion
+
+    protected void Awake()
+    {
+        Init();
+
+        IEnumerable<ProcessSceneObject> processSceneObjects = FindChildren("*", recursive: true).OfType<ProcessSceneObject>();
+        foreach (ProcessSceneObject pso in processSceneObjects)
+            if (!pso.Visible) //was if (!pso.isActiveAndEnabled) 
+                pso.Init();
+    }
+
+    protected void Init()
+    {
+#if UNITY_EDITOR
+			if (UnityEditor.SceneManagement.EditorSceneManager.IsPreviewScene(gameObject.scene))
+			{
+				return;
+			}
+#endif
+        if (RuntimeConfigurator.Exists == false) return;
+
+        if (IsRegistered) return;
+
+        this.SetSuitableName(uniqueName);
+
+        if (IsRegistered == false)
+        {
+            RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
+
+            if (UniqueNameChanged != null) UniqueNameChanged.Invoke(this, new SceneObjectNameChanged(UniqueName, UniqueName));
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (RuntimeConfigurator.Exists) RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(this);
+    }
+
+    /// <summary>
+    /// Tries to find property which is assignable to given type, this method
+    /// will return null if none is found.
+    /// </summary>
+    private ISceneObjectProperty FindProperty(Type type)
+    {
+        return GetChildren().FirstOrDefault(c => c.GetType() == type) as ISceneObjectProperty;
     }
 }
