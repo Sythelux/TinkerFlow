@@ -6,6 +6,9 @@ Editor:
 - Debug.LogError
 -> GD.PushError
 
+- Debug.LogWarning
+-> GD.PushWarning
+
 - AddElement(node);
 -> AddChild(node);
 

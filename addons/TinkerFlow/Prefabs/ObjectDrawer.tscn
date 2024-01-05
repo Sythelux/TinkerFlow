@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2wwh0xsrqomo"]
+
+[ext_resource type="Script" path="res://addons/TinkerFlow/Editor/Godot/ObjectDrawer.cs" id="1_eolwd"]
+[ext_resource type="Script" path="res://addons/TinkerFlow/Editor/Godot/DropForwardToParent.cs" id="2_mjt1c"]
+
+[node name="ObjectDrawer" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+alignment = 1
+script = ExtResource("1_eolwd")
+
+[node name="Object" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<empty>"
+flat = true
+script = ExtResource("2_mjt1c")
+
+[node name="Options" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+flat = true
+clip_text = true
+item_count = 2
+fit_to_longest_item = false
+allow_reselect = true
+popup/item_0/text = "Quick Load"
+popup/item_0/id = 0
+popup/item_1/text = "Load"
+popup/item_1/id = 1

@@ -14,12 +14,10 @@ script = ExtResource("1_tmdxv")
 RuntimeConfigurationName = "DefaultRuntimeConfiguration"
 SelectedProcess = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
 ProcessStringLocalizationTable = "res://Localisation/Default.csv"
-runtimeConfiguration = null
 
 [node name="SceneConfiguration" type="Node" parent="PROCESS_CONFIGURATION"]
 script = ExtResource("2_xhjjv")
 
 [node name="User" type="Node3D" parent="."]
 script = ExtResource("3_efkxi")
-IsLocked = false
 uniqueName = "User"

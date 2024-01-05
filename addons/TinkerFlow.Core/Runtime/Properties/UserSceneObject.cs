@@ -43,9 +43,9 @@ public partial class UserSceneObject : ProcessSceneObject
     /// </summary>
     public Transform3D? RightHand => rightHand;
 
-    protected new void Awake()
+    public override void _Ready()
     {
-        base.Awake();
+        base._Ready();
         uniqueName = "User";
     }
 }

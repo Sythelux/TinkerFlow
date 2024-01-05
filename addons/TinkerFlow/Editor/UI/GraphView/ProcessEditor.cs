@@ -7,79 +7,79 @@ namespace TinkerFlow.Godot.Editor;
 [Tool]
 public partial class ProcessEditor : Control
 {
-    #region Delegates
+	#region Delegates
 
-    [Signal]
-    public delegate void StepDeselectedEventHandler(Step processGraphNode);
+	[Signal]
+	public delegate void StepDeselectedEventHandler(Step processGraphNode);
 
-    [Signal]
-    public delegate void StepSelectedEventHandler(Step processGraphNode);
+	[Signal]
+	public delegate void StepSelectedEventHandler(Step processGraphNode);
 
-    #endregion
+	#endregion
 
-    private HBoxContainer chapterHierarchy;
+	private HBoxContainer chapterHierarchy;
 
-    private ProcessGraph? graph;
+	private ProcessGraph? graph;
 
-    [Export]
-    public int MyPropertyTest { get; set; }
+	[Export]
+	public int MyPropertyTest { get; set; }
 
-    public ProcessGraph ProcessGraph => graph ??= GetNode<ProcessGraph>("%ProcessGraph");
+	public ProcessGraph ProcessGraph => graph ??= GetNode<ProcessGraph>("%ProcessGraph");
 
-    public Color BaseColor { get; set; }
+	public Color BaseColor { get; set; }
 
-    public override void _Draw()
-    {
-        // GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
-    }
+	public override void _Draw()
+	{
+		// GD.Print(GetType().Name + ": " + MethodBase.GetCurrentMethod());
+	}
 
-    public override void _ExitTree()
-    {
-        GlobalEditorHandler.ProcessWindowClosed(ProcessGraph);
-    }
+	public override void _ExitTree()
+	{
+		GlobalEditorHandler.ProcessWindowClosed(ProcessGraph);
+	}
 
-    public override void _Notification(int what)
-    {
-        switch ((long)what)
-        {
-            case NotificationVisibilityChanged:
-                if (IsVisibleInTree())
-                    GlobalEditorHandler.ProcessWindowOpened(ProcessGraph);
-                else
-                    GlobalEditorHandler.ProcessWindowClosed(ProcessGraph);
-                break;
-        }
-    }
+	public override void _Notification(int what)
+	{
+		switch ((long)what)
+		{
+			case NotificationVisibilityChanged:
+				if (IsVisibleInTree())
+					GlobalEditorHandler.ProcessWindowOpened(ProcessGraph);
+				else
+					GlobalEditorHandler.ProcessWindowClosed(ProcessGraph);
+				break;
+		}
+	}
 
-    public override void _Ready()
-    {
-        if (ProcessGraph != null)
-        {
-            ProcessGraph.NodeSelected += OnNodeSelected;
-            ProcessGraph.NodeDeselected += OnNodeDeselected;
-        }
-    }
+	public override void _Ready()
+	{
+		if (ProcessGraph != null)
+		{
+			ProcessGraph.NodeSelected += OnNodeSelected;
+			ProcessGraph.NodeDeselected += OnNodeDeselected;
+		}
+	}
 
-    private void OnNodeDeselected(Node node)
-    {
-        if (node is ProcessGraphNode stepNode)
-            if (stepNode.EntryPoint is Step step)
-                EmitSignal(SignalName.StepDeselected, step);
-    }
+	private void OnNodeDeselected(Node node)
+	{
+		if (node is ProcessGraphNode stepNode)
+			if (stepNode.EntryPoint is Step step)
+				EmitSignal(SignalName.StepDeselected, step);
+	}
 
-    private void OnNodeSelected(Node node)
-    {
-        if (node is ProcessGraphNode stepNode)
-            if (stepNode.EntryPoint is Step step)
-                EmitSignal(SignalName.StepSelected, step);
-    }
+	private void OnNodeSelected(Node node)
+	{
+		if (node is ProcessGraphNode stepNode)
+			if (stepNode.EntryPoint is Step step)
+				EmitSignal(SignalName.StepSelected, step);
+	}
 
-    public override void _Process(double delta)
-    {
-    }
+	public override void _Process(double delta)
+	{
+	}
 
-    public void Save()
-    {
-        // throw new NotImplementedException();
-    }
+	public void Save()
+	{
+		// throw new NotImplementedException();
+	}
 }

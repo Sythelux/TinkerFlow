@@ -39,7 +39,7 @@ public interface IEntity
     void Configure(IMode mode);
 
     /// <summary>
-    /// Called every frame during the Unity's update.
+    /// Called every frame during the Godot's Process.
     /// </summary>
     void Update();
 

@@ -39,6 +39,11 @@ public static class NodeExtensions
         return self.GetComponents<T>().FirstOrDefault();
     }
 
+    public static T? GetComponent<T>(this Node self, T child)
+    {
+        return self.GetComponents<T>().FirstOrDefault();
+    }
+
     public static IEnumerable<T> GetComponents<T>(this Node self)
     {
         return self.GetChildren().OfType<T>();
