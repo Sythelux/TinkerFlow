@@ -25,26 +25,26 @@ namespace VRBuilder.Editor.Configuration;
 [GlobalClass]
 public partial class AllowedMenuItemsSettings : SettingsObject<AllowedMenuItemsSettings>
 {
-    [DataMember]
-    public IDictionary<string, bool> SerializedBehaviorSelections;
+    [Export]
+    public global::Godot.Collections.Dictionary<string, bool> SerializedBehaviorSelections = new();
 
-    [DataMember]
-    public IDictionary<string, bool> SerializedConditionSelections;
+    [Export]
+    public global::Godot.Collections.Dictionary<string, bool> SerializedConditionSelections = new();
 
     private IList<MenuItem<IBehavior>> behaviorMenuItems;
     private IList<MenuItem<ICondition>> conditionMenuItems;
 
-    public AllowedMenuItemsSettings() : this(new Dictionary<string, bool>(), new Dictionary<string, bool>())
-    {
-    }
+    // public AllowedMenuItemsSettings() : this(new Dictionary<string, bool>(), new Dictionary<string, bool>())
+    // {
+    // }
 
-    public AllowedMenuItemsSettings(IDictionary<string, bool> behaviors, IDictionary<string, bool> serializedConditions)
-    {
-        SerializedBehaviorSelections = behaviors;
-        SerializedConditionSelections = serializedConditions;
-
-        UpdateWithAllBehaviorsAndConditionsInProject();
-    }
+    // public AllowedMenuItemsSettings(IDictionary<string, bool> behaviors, IDictionary<string, bool> serializedConditions)
+    // {
+    //     SerializedBehaviorSelections = behaviors;
+    //     SerializedConditionSelections = serializedConditions;
+    //
+    //     UpdateWithAllBehaviorsAndConditionsInProject();
+    // }
 
     /// <summary>
     /// Returns all active behavior menu items.

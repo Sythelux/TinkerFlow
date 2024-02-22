@@ -106,8 +106,15 @@ public partial class EnableGameObjectBehavior : Behavior<EnableGameObjectBehavio
         {
             get
             {
-                string target = Target?.IsEmpty() == false ? Target.Value?.GameObject.Name : "[NULL]";
-                return $"Enable {target}";
+                try
+                {
+                    string target = Target?.IsEmpty() == false ? Target.Value?.GameObject.Name : "[NULL]";
+                    return $"Enable {target}";
+                }
+                catch
+                {
+                    return "[Disposed]";
+                }
             }
         }
 

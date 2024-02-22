@@ -29,6 +29,10 @@ public partial class StepGraphNode : ProcessGraphNode
         NodeSelected += OnSelected;
     }
 
+    public StepGraphNode()
+    {
+    }
+
     /// <inheritdoc/>
     public override IStep? EntryPoint => step;
 

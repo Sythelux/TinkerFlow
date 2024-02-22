@@ -8,6 +8,14 @@
 
 config_version=5
 
+[TinkerFlow]
+
+Editors/LastEditedProcessName="SampleScene"
+AllowedMenuItemsSettings/SerializedBehaviorSelections={}
+AllowedMenuItemsSettings/SerializedConditionSelections={}
+LifeCycleLoggingConfig/LogSteps=true
+LifeCycleLoggingConfig/LogChapters=true
+
 [application]
 
 config/name="TinkerFlow"

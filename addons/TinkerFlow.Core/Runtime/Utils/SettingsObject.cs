@@ -6,6 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Godot;
+using Godot.Collections;
 
 namespace VRBuilder.Core.Runtime.Utils;
 
@@ -33,29 +34,25 @@ public partial class SettingsObject<T> : Resource where T : Resource, new()
 
     private static T Load()
     {
-        var settings = ResourceLoader.Load<T>(typeof(T).Name);
-
-        if (settings == null)
+        var settings = new T();
+        foreach (Dictionary property in settings.GetPropertyList())
         {
-            // Create an instance
-            //TODO: settings = CreateInstance<T>();
-#if UNITY_EDITOR
-                if (!Directory.Exists("Assets/MindPort/VR Builder/Resources"))
-                {
-                    Directory.CreateDirectory("Assets/MindPort/VR Builder/Resources");
-                }
-                AssetDatabase.CreateAsset(settings, $"Assets/MindPort/VR Builder/Resources/{typeof(T).Name}.asset");
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-#elif GODOT4
-            settings = EditorInterface.Singleton.GetEditorSettings().GetSetting($"TinkerFlow/{typeof(T).Name}").Obj as T ?? new T();
-            EditorInterface.Singleton.GetEditorSettings().SetSetting($"TinkerFlow/{typeof(T).Name}", settings);
-            // settings = EditorInterface.Singleton.Get($"TinkerFlow/{typeof(T).Name}").Obj as T ?? new T();
-            // EditorInterface.Singleton.Set($"TinkerFlow/{typeof(T).Name}", settings);
-#endif
+            if (!property["usage"].Equals(Variant.From(4102))) continue;
+            StringName propertyName = property["name"].AsStringName();
+            var key = $"TinkerFlow/{typeof(T).Name}/{propertyName}";
+            if (ProjectSettings.Singleton.HasSetting(key))
+                settings.Set(propertyName, ProjectSettings.Singleton.GetSetting(key));
+            else
+                ProjectSettings.Singleton.SetSetting(key, default);
         }
 
         return settings;
+    }
+
+    public override bool _Set(StringName property, Variant value)
+    {
+        ProjectSettings.Singleton.SetSetting(property, default);
+        return base._Set(property, value);
     }
 
     /// <summary>
@@ -68,7 +65,7 @@ public partial class SettingsObject<T> : Resource where T : Resource, new()
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 #elif GODOT4
-        EditorInterface.Singleton.GetEditorSettings().SetSetting($"TinkerFlow/{typeof(T).Name}", this);
+        // ProjectSettings.Singleton.SetSetting($"TinkerFlow/{typeof(T).Name}", this);
         // EditorInterface.Singleton.Set($"TinkerFlow/{typeof(T).Name}", this);
 #endif
     }

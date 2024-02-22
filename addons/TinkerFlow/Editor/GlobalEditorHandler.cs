@@ -26,7 +26,7 @@ internal static class GlobalEditorHandler
     {
         SetDefaultStrategy();
 
-        string lastEditedProcessName = EditorInterface.Singleton.GetEditorSettings().GetSetting(LastEditedProcessNameKey).AsString();
+        string lastEditedProcessName = ProjectSettings.Singleton.GetSetting(LastEditedProcessNameKey).AsString();
         SetCurrentProcess(lastEditedProcessName);
 
         EditorSceneManager.sceneOpened += OnSceneOpened;
@@ -108,7 +108,7 @@ internal static class GlobalEditorHandler
     internal static void SetCurrentProcess(string processName)
     {
         strategy.HandleCurrentProcessChanged(processName);
-        EditorInterface.Singleton.GetEditorSettings().SetSetting(LastEditedProcessNameKey, processName);
+        ProjectSettings.Singleton.SetSetting(LastEditedProcessNameKey, processName);
     }
 
     internal static void SetCurrentChapter(IChapter chapter)

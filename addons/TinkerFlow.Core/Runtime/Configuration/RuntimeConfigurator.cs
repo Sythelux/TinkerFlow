@@ -191,7 +191,7 @@ public partial class RuntimeConfigurator : Node
 
 	public override void _Ready()
 	{
-		Configuration.SceneObjectRegistry.RegisterAll();
+		// TODO: Configuration.SceneObjectRegistry.RegisterAll();
 		RuntimeConfigurationChanged += HandleRuntimeConfigurationChanged;
 	}
 
