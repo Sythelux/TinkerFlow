@@ -28,11 +28,14 @@ public static class SceneObjectExtensions
         var counter = 1;
         string newName = baseName = string.IsNullOrEmpty(baseName) ? sceneObject.GameObject.Name : baseName;
 
-        RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(sceneObject);
-        while (RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsName(newName))
+        if (RuntimeConfigurator.Configuration != null)
         {
-            newName = string.Format("{0}_{1}", baseName, counter);
-            counter++;
+            RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(sceneObject);
+            while (RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsName(newName))
+            {
+                newName = string.Format("{0}_{1}", baseName, counter);
+                counter++;
+            }
         }
 
         sceneObject.ChangeUniqueName(newName);

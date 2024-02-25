@@ -16,8 +16,4 @@ script = ExtResource("1_8x8mo")
 layout_mode = 2
 text = "None Selected"
 placeholder_text = "Step Name"
-
-[node name="StepDescription" type="LineEdit" parent="."]
-visible = false
-layout_mode = 2
-placeholder_text = "Description"
+editable = false

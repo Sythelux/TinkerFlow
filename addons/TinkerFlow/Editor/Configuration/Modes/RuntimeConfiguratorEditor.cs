@@ -20,7 +20,7 @@ public partial class RuntimeConfigurator
         configurationTypes = ReflectionUtils.GetConcreteImplementationsOf<IRuntimeConfiguration>().ToList();
 #pragma warning restore 0618
         configurationTypes.Sort(((type1, type2) => string.Compare(type1.Name, type2.Name, StringComparison.Ordinal)));
-        configurationTypeNames = configurationTypes.Select(t => t.Name).ToArray();
+        configurationTypeNames = configurationTypes.Select(t => t.AssemblyQualifiedName).OfType<string>().Select(n => n.Replace(",", ";")).ToArray(); //,->; is a temporary fix as Godot, will interpret "," as separator for field names
 
         // TODO: ProcessAssetPostprocessor.ProcessFileStructureChanged += OnProcessFileStructureChanged;
     }

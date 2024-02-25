@@ -40,7 +40,7 @@ public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
 	// [Tooltip("Unique name which identifies an object in scene, can be null or empty, but has to be unique in the scene.")]
 	protected string uniqueName = string.Empty;
 
-	private bool IsRegistered => RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
+	private bool IsRegistered => RuntimeConfigurator.Configuration != null && RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
 
 	#region ISceneObject Members
 
@@ -231,7 +231,7 @@ public partial class ProcessSceneObject : Node3D, ISceneObject, ITagContainer
 
 		if (IsRegistered == false)
 		{
-			RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
+			if (RuntimeConfigurator.Configuration != null) RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
 
 			if (UniqueNameChanged != null) UniqueNameChanged.Invoke(this, new SceneObjectNameChanged(UniqueName, UniqueName));
 		}

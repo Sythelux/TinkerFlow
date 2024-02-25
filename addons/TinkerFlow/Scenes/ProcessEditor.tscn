@@ -30,7 +30,7 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProcessGraph" type="GraphEdit" parent="Main/HBoxContainer2"]
+[node name="ProcessGraph" type="GraphEdit" parent="Main/HBoxContainer2" node_paths=PackedStringArray("AddNodeMenu", "EditNodeMenu")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -42,16 +42,8 @@ size_flags_vertical = 3
 right_disconnects = true
 script = ExtResource("2_hl13x")
 StepNode = ExtResource("4_torf1")
-
-[node name="PopupMenu" type="PopupMenu" parent="Main/HBoxContainer2/ProcessGraph"]
-item_count = 1
-item_0/text = "Add Step"
-item_0/id = 0
-
-[node name="NodePopupMenu" type="PopupMenu" parent="Main/HBoxContainer2/ProcessGraph"]
-item_count = 1
-item_0/text = "Delete"
-item_0/id = 0
+AddNodeMenu = NodePath("../PopupMenu")
+EditNodeMenu = NodePath("../NodePopupMenu")
 
 [node name="ChapterViewBG" type="Panel" parent="Main/HBoxContainer2"]
 layout_mode = 1
@@ -77,6 +69,16 @@ layout_mode = 2
 text = ">>"
 flat = true
 
+[node name="PopupMenu" type="PopupMenu" parent="Main/HBoxContainer2"]
+item_count = 1
+item_0/text = "Test"
+item_0/id = 0
+
+[node name="NodePopupMenu" type="PopupMenu" parent="Main/HBoxContainer2"]
+item_count = 1
+item_0/text = "Test2"
+item_0/id = 0
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Main"]
 layout_mode = 2
 
@@ -84,5 +86,3 @@ layout_mode = 2
 layout_mode = 2
 
 [connection signal="popup_request" from="Main/HBoxContainer2/ProcessGraph" to="Main/HBoxContainer2/ProcessGraph" method="ShowPopup"]
-[connection signal="id_pressed" from="Main/HBoxContainer2/ProcessGraph/PopupMenu" to="Main/HBoxContainer2/ProcessGraph" method="AddStep"]
-[connection signal="id_pressed" from="Main/HBoxContainer2/ProcessGraph/NodePopupMenu" to="Main/HBoxContainer2/ProcessGraph" method="ModifyStep"]

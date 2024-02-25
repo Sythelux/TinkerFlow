@@ -27,7 +27,7 @@
           "$id": "6",
           "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
           "Name": "Step1",
-          "Description": null,
+          "Description": "Description of Step1",
           "Behaviors": {
             "$id": "7",
             "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
@@ -296,7 +296,7 @@
           "$id": "54",
           "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
           "Name": "Step",
-          "Description": null,
+          "Description": "Description of Step",
           "Behaviors": {
             "$id": "55",
             "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
@@ -400,7 +400,7 @@
           "$id": "74",
           "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
           "Name": "Step",
-          "Description": null,
+          "Description": "Desc of Step",
           "Behaviors": {
             "$id": "75",
             "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",

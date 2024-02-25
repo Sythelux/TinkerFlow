@@ -59,7 +59,6 @@ public partial class StepFactory : ObjectFactory
 
     private void UpdateBehaviors(VBoxContainer container, IBehaviorCollection stepBehaviors, Action<object> changeValueCallback, string text)
     {
-        //TODO: rethink
         foreach (IBehavior behavior in stepBehaviors.Data.Behaviors)
         {
             var behaviorUi = processInspectorBehaviorUIPrefab.Instantiate<VBoxContainer>();

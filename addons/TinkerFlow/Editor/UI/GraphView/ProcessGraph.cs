@@ -41,8 +41,20 @@ public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
     public PackedScene? StepNode { get; set; }
 
     public RuntimeConfigurator? RuntimeConfigurator => runtimeConfigurator ??= EditorInterface.Singleton.GetEditedSceneRoot()?.GetChildren().OfType<RuntimeConfigurator>().FirstOrDefault();
-    public PopupMenu AddNodeMenu => addNodeMenu ??= GetNode<PopupMenu>("PopupMenu");
-    public PopupMenu EditNodeMenu => editNodeMenu ??= GetNode<PopupMenu>("NodePopupMenu");
+    [Export]
+    public PopupMenu AddNodeMenu
+    {
+        get { return addNodeMenu ??= GetNode<PopupMenu>("../PopupMenu"); }
+        set => addNodeMenu = value;
+    }
+
+    [Export]
+    public PopupMenu EditNodeMenu
+    {
+        get { return editNodeMenu ??= GetNode<PopupMenu>("../NodePopupMenu"); }
+        set => editNodeMenu = value;
+    }
+
     public Node? SelectedNode { get; set; }
     public VBoxContainer ChapterViewContainer => chapterViewContainer ??= GetNode<VBoxContainer>("%ChapterView");
 
@@ -243,7 +255,7 @@ public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
 
     private IEnumerable<ProcessGraphNode> GenerateNodes(IChapter chapter)
     {
-        return chapter.Data.Steps.Select(CreateStepNode);
+        return chapter.Data.Steps.Select(CreateStepNode).OfType<ProcessGraphNode>();
     }
 
     private void RefreshNode(ProcessGraphNode node)
@@ -261,7 +273,7 @@ public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
         }
     }
 
-    private ProcessGraphNode CreateStepNode(IStep step)
+    private ProcessGraphNode? CreateStepNode(IStep step)
     {
         if (string.IsNullOrEmpty(step.StepMetadata.StepType))
         {
@@ -273,10 +285,10 @@ public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
         if (instantiator == null)
         {
             GD.PushError($"Impossible to find correct visualization for type '{step.StepMetadata.StepType}' used in step '{step.Data.Name}'. Things might not look as expected.");
-            instantiator = instantiators.First(i => i.StepType == "default");
+            instantiator = instantiators.FirstOrDefault(i => i.StepType == "default");
         }
 
-        ProcessGraphNode node = instantiator.InstantiateNode(step);
+        ProcessGraphNode? node = instantiator?.InstantiateNode(step);
         AddChild(node);
         return node;
     }

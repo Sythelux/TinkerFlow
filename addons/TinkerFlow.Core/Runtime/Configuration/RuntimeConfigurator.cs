@@ -72,12 +72,13 @@ public partial class RuntimeConfigurator : Node
 			if (Instance.runtimeConfiguration != null) return Instance.runtimeConfiguration;
 
 			// Type? type = ReflectionUtils.GetTypeFromAssemblyQualifiedName(Instance.RuntimeConfigurationName);
-			Type? type = ReflectionUtils.GetTypeFromName(Instance.RuntimeConfigurationName);
+			string instanceRuntimeConfigurationName = Instance.RuntimeConfigurationName.Replace(";",",");//,->; is a temporary fix as Godot, will interpret "," as separator for field names... now we have to switch it back.
+			Type? type = ReflectionUtils.GetTypeFromAssemblyQualifiedName(instanceRuntimeConfigurationName);
 
 			if (type == null)
 			{
-				GD.Print($"IRuntimeConfiguration type '{Instance.RuntimeConfigurationName}' cannot be found. Using '{typeof(BaseRuntimeConfiguration).AssemblyQualifiedName}' instead.");
-				type = typeof(BaseRuntimeConfiguration);
+				GD.PrintErr($"IRuntimeConfiguration type '{instanceRuntimeConfigurationName}' cannot be found. returning for now");
+				return null;
 			}
 
 			var config = (IRuntimeConfiguration)ReflectionUtils.CreateInstanceOfType(type);
