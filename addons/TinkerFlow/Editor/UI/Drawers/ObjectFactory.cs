@@ -14,21 +14,26 @@ namespace VRBuilder.Editor.UI.Drawers;
 [DefaultProcessDrawer(typeof(object))]
 public partial class ObjectFactory : AbstractProcessFactory
 {
-    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
+    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
     {
+        GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
+        var label = new Label { Text = text };
         if (currentValue == null)
         {
             return label;
         }
 
         var container = new VBoxContainer();
-        container.AddChild(label);
+        container.Name = GetType().Name + "." + text;
+
         foreach (MemberInfo memberInfoToDraw in GetMembersToDraw(currentValue))
         {
             MemberInfo closuredMemberInfo = memberInfoToDraw;
             if (closuredMemberInfo.GetAttributes<MetadataAttribute>(true).Any())
             {
-                container.AddChild(CreateAndDrawMetadataWrapper(currentValue, closuredMemberInfo, changeValueCallback));
+                Control andDrawMetadataWrapper = CreateAndDrawMetadataWrapper(currentValue, closuredMemberInfo, changeValueCallback);
+                container.AddChild(andDrawMetadataWrapper);
             }
             else
             {

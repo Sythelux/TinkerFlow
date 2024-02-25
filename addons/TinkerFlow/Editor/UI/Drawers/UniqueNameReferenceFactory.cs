@@ -12,7 +12,6 @@ using VRBuilder.Core.Properties;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
 using VRBuilder.Editor.Godot;
-using Container = Godot.Container;
 
 namespace VRBuilder.Editor.UI.Drawers
 {
@@ -23,15 +22,18 @@ namespace VRBuilder.Editor.UI.Drawers
     [DefaultProcessDrawer(typeof(UniqueNameReference))]
     public partial class UniqueNameReferenceFactory : AbstractProcessFactory
     {
-        protected bool isUndoOperation;
         protected const string undoGroupName = "brotcat";
 
         protected readonly HashSet<string> missingUniqueNames = new HashSet<string>();
+        protected bool isUndoOperation;
 
         /// <inheritdoc />
-        public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
+        public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
             var control = new VBoxContainer();
+            control.Name = GetType().Name + "." + text;
             if (RuntimeConfigurator.Exists == false)
             {
                 return control;
@@ -55,9 +57,11 @@ namespace VRBuilder.Editor.UI.Drawers
                 GD.PushError($"The process object with the unique name '{oldUniqueName}' cannot be found!");
             }
 
-            control.AddChild(CheckForMisconfigurationIssues(selectedSceneObject, valueType));
+            Control checkForMisconfigurationIssues = CheckForMisconfigurationIssues(selectedSceneObject, valueType);
+            control.AddChild(checkForMisconfigurationIssues);
 
             var hBoxContainer = new HBoxContainer();
+            var label = new Label { Text = text };
             hBoxContainer.AddChild(label);
 
             ObjectDrawer od = EditorGUI.ObjectField(label as Label, selectedSceneObject, typeof(Node), true);
@@ -94,7 +98,6 @@ namespace VRBuilder.Editor.UI.Drawers
 
             // https://docs.godotengine.org/en/latest/classes/class_control.html#class-control-private-method-get-drag-data
             control.AddChild(hBoxContainer);
-
             return control;
         }
 

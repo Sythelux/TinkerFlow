@@ -22,9 +22,10 @@ namespace VRBuilder.Editor.UI.Drawers
         /// Delegate for a method that changes value of a member. Done that way to allow non-instantaneous assignments (for example, from generic menus).
         /// Invoke only when the value (or values of child members) has actually changed.
         /// </param>
-        /// <param name="label">Label text to display.</param>
+        /// <param name="text">Label text to display.</param>
         /// <returns>The area that was taken by the property.</returns>
-        Control Create<T>(T currentValue, Action<object> changeValueCallback, string label);
+        Control Create<T>(T currentValue, Action<object> changeValueCallback, string text);
+        // Control DebugCreate<T>(T currentValue, Action<object> changeValueCallback, string text);
 
         /// <summary>
         /// Draw editor view in given Rect.
@@ -38,7 +39,7 @@ namespace VRBuilder.Editor.UI.Drawers
         /// </param>
         /// <param name="label">Label content to display.</param>
         /// <returns>The area that was taken by the property.</returns>
-        Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label);
+        // Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label);
 
         /// <summary>
         /// Return a label for a property/field <paramref name="memberInfo"/> of an object <paramref name="memberOwner"/>.

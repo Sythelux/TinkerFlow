@@ -3,6 +3,7 @@
 // Modifications copyright (c) 2021-2023 MindPort GmbH
 
 using System;
+using System.Reflection;
 using Godot;
 
 namespace VRBuilder.Editor.UI.Drawers;
@@ -14,10 +15,16 @@ namespace VRBuilder.Editor.UI.Drawers;
 internal class StringDrawer : AbstractProcessFactory
 {
     /// <inheritdoc />
-    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
+    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
     {
+        GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
+        // var label = new Label { Text = text };
+        // label.Owner = container;
         var value = Convert.ToString(currentValue);
         var textEdit = new TextEdit();
+        textEdit.CustomMinimumSize = textEdit.CustomMinimumSize with { Y = 48 };
+        textEdit.Name = GetType().Name + "." + text;
         textEdit.Text = value;
         textEdit.TextChanged += OnValueChanged;
 

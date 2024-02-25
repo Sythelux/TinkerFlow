@@ -12,15 +12,19 @@ public abstract partial class AbstractProcessFactory : IProcessFactory
 {
     #region IProcessFactory Members
 
-    public abstract Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label);
+    public abstract Control Create<T>(T currentValue, Action<object> changeValueCallback, string text);
 
-    public virtual Control Create<T>(T currentValue, Action<object> changeValueCallback, string label)
-    {
-        return Create(currentValue, changeValueCallback, new Label { Text = label });
-    }
+    // public virtual Control DebugCreate<T>(T currentValue, Action<object> changeValueCallback, string text)
+    // {
+    //     PrintDebugger.Indent();
+    //     var tmp = Create(currentValue, changeValueCallback, text);
+    //     PrintDebugger.UnIndent();
+    //     return tmp;
+    // }
 
     public virtual Label GetLabel(MemberInfo memberInfo, object memberOwner)
     {
+        GD.Print($"AbstractProcessFactory.GetLabel({memberInfo.Name}, {memberOwner})");
         // Type memberType = Core.Utils.ReflectionUtils.GetDeclaredTypeOfPropertyOrField(memberInfo);
         object? value = Core.Utils.ReflectionUtils.GetValueFromPropertyOrField(memberOwner, memberInfo);
 
@@ -54,6 +58,7 @@ public abstract partial class AbstractProcessFactory : IProcessFactory
 
     public virtual Label GetLabel<T>(T value)
     {
+        GD.Print($"AbstractProcessFactory.GetLabel({value})");
         var nameable = value as INamedData;
         var l = new Label();
 

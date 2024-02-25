@@ -3,6 +3,7 @@
 // Modifications copyright (c) 2021-2023 MindPort GmbH
 
 using System;
+using System.Reflection;
 using Godot;
 
 namespace VRBuilder.Editor.UI.Drawers;
@@ -14,12 +15,17 @@ namespace VRBuilder.Editor.UI.Drawers;
 internal class BoolFactory : AbstractProcessFactory
 {
     /// <inheritdoc />
-    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
+    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
     {
+        GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
         var value = Convert.ToBoolean(currentValue);
 
         var container = new HBoxContainer();
-        container.AddChild(CreateCheckBox<T>(changeValueCallback, value));
+        Node checkBox = CreateCheckBox<T>(changeValueCallback, value);
+        checkBox.Name = GetType().Name + "." + text;
+        container.AddChild(checkBox);
+        var label = new Label { Text = text };
         container.AddChild(label);
 
         return container;

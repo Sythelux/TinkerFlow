@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Godot;
 using TinkerFlow.Godot.Editor;
 using VRBuilder.Core;
@@ -16,9 +17,13 @@ public partial class StepFactory : ObjectFactory
     protected PackedScene inspectorStepPrefab = GD.Load<PackedScene>(TinkerFlowPlugin.ResourcePath("Prefabs/InspectorStep.tscn"));
     protected PackedScene processInspectorBehaviorUIPrefab = GD.Load<PackedScene>(TinkerFlowPlugin.ResourcePath("Prefabs/ProcessInspectorBehaviorUI.tscn"));
 
-    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
+    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
     {
-        Control parent = base.Create(currentValue, changeValueCallback, label);
+        GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
+        Control parent = base.Create(currentValue, changeValueCallback, text);
+        parent.Name = GetType().Name + "." + text;
+
 
         if (currentValue is Step.EntityData step)
         {
@@ -26,19 +31,18 @@ public partial class StepFactory : ObjectFactory
             var container = inspectorStepPrefab.Instantiate<InspectorStep>();
             container.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
 
-            if (lastStep != step && container != null)
+            //if ( lastStep != step )
             {
                 container.Step = step;
                 ClearContainer(container.Behaviors);
-                UpdateBehaviors(container.Behaviors, step.Behaviors, changeValueCallback, label);
+                UpdateBehaviors(container.Behaviors, step.Behaviors, changeValueCallback, text);
                 // ClearContainer(container.Transitions);
                 // UpdateTransitions(container.Transitions, step.Transitions, changeValueCallback, label);
                 // ClearContainer(container.UnlockedElements);
                 // UpdateUnlockedElements(container.UnlockedElements, new LockableObjectsCollection(step), changeValueCallback, label);
                 lastStep = step;
+                parent.AddChild(container);
             }
-
-            parent.AddChild(container);
         }
 
         return parent;
@@ -53,8 +57,9 @@ public partial class StepFactory : ObjectFactory
         }
     }
 
-    private void UpdateBehaviors(VBoxContainer container, IBehaviorCollection stepBehaviors, Action<object> changeValueCallback, Control label)
+    private void UpdateBehaviors(VBoxContainer container, IBehaviorCollection stepBehaviors, Action<object> changeValueCallback, string text)
     {
+        //TODO: rethink
         foreach (IBehavior behavior in stepBehaviors.Data.Behaviors)
         {
             var behaviorUi = processInspectorBehaviorUIPrefab.Instantiate<VBoxContainer>();
@@ -62,26 +67,38 @@ public partial class StepFactory : ObjectFactory
                 labelUi.Text = behavior.Data.Name;
             IProcessFactory? factory = DrawerLocator.GetDrawerForValue(behavior, typeof(object));
             if (factory != null)
-                behaviorUi.GetNode("%Values").AddChild(factory.Create(behavior, changeValueCallback, label));
+            {
+                Control control = factory.Create(behavior, changeValueCallback, text);
+                behaviorUi.GetNode("%Values").AddChild(control);
+            }
+
             container.AddChild(behaviorUi);
         }
     }
 
-    private void UpdateTransitions(VBoxContainer container, ITransitionCollection stepTransitions, Action<object> changeValueCallback, Control label)
+    private void UpdateTransitions(VBoxContainer container, ITransitionCollection stepTransitions, Action<object> changeValueCallback, string text)
     {
         foreach (ITransition transition in stepTransitions.Data.Transitions)
         {
             IProcessFactory? factory = DrawerLocator.GetDrawerForValue(transition, typeof(object));
-            if (factory != null) container.AddChild(factory.Create(transition, changeValueCallback, label));
+            if (factory != null)
+            {
+                Control control = factory.Create(transition, changeValueCallback, text);
+                container.AddChild(control);
+            }
         }
     }
 
-    private void UpdateUnlockedElements(VBoxContainer container, LockableObjectsCollection lockableObjectsCollection, Action<object> changeValueCallback, Control label)
+    private void UpdateUnlockedElements(VBoxContainer container, LockableObjectsCollection lockableObjectsCollection, Action<object> changeValueCallback, string text)
     {
         foreach (ISceneObject sceneObjects in lockableObjectsCollection.SceneObjects)
         {
             IProcessFactory? factory = DrawerLocator.GetDrawerForValue(sceneObjects, typeof(object));
-            if (factory != null) container.AddChild(factory.Create(sceneObjects, changeValueCallback, label));
+            if (factory != null)
+            {
+                Control control = factory.Create(sceneObjects, changeValueCallback, text);
+                container.AddChild(control);
+            }
         }
     }
 }

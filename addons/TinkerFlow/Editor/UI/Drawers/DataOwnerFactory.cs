@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using Godot;
 using VRBuilder.Core;
 
@@ -12,14 +13,16 @@ namespace VRBuilder.Editor.UI.Drawers;
 [DefaultProcessDrawer(typeof(IDataOwner))]
 internal class DataOwnerFactory : AbstractProcessFactory
 {
-    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label)
+    public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
     {
+        GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
         if (currentValue == null) throw new NullReferenceException("Attempting to draw null object.");
 
         IData? data = (currentValue as IDataOwner)?.Data;
         IProcessFactory dataDrawer = DrawerLocator.GetDrawerForMember(EditorReflectionUtils.GetFieldsAndPropertiesToDraw(currentValue).First(member => member.Name == "Data"), currentValue);
 
-        return dataDrawer.Create(data, _ => changeValueCallback(currentValue), label);
+        return dataDrawer.Create(data, _ => changeValueCallback(currentValue), text);
     }
 
     public override Label GetLabel<T>(T value)
