@@ -4,3 +4,4 @@
 **/.idea
 *.csproj.old*
 *.meta
+*.user

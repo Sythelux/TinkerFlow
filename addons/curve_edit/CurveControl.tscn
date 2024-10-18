@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://clsy37r1wjckv"]
+
+[ext_resource type="Script" path="res://addons/curve_edit/CurveControl.cs" id="1"]
+
+[sub_resource type="Curve" id="Curve_x8qbj"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="CurveControl" type="VBoxContainer"]
+offset_left = 2.0
+offset_right = 820.0
+offset_bottom = 164.0
+script = ExtResource("1")
+curve = SubResource("Curve_x8qbj")

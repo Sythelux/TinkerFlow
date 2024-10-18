@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://brkfxwgxp1vgn"]
+
+[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphEdit/InspectorStep.cs" id="1_4qayl"]
+
+[node name="Step" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_4qayl")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+
+[node name="Behaviors" type="VBoxContainer" parent="TabContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button" type="Button" parent="TabContainer/Behaviors"]
+layout_mode = 2
+text = "Add Behavior"
+
+[node name="Conditions" type="VBoxContainer" parent="TabContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Button" type="Button" parent="TabContainer/Conditions"]
+layout_mode = 2
+text = "Add Condition"
+
+[node name="UnlockedObjects" type="VBoxContainer" parent="TabContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2

@@ -1,0 +1,7 @@
+[submodule "addons/TinkerFlow.Core/VR-Builder-Lite"]
+	path = addons/TinkerFlow.Core/VR-Builder-Lite
+	url = git@github.com:Sythelux/VR-Builder-Lite.git
+	branch = develop
+[submodule "addons/TinkerFlow/VR-Builder-Lite"]
+	path = addons/TinkerFlow/VR-Builder-Lite
+	url = git@github.com:Sythelux/VR-Builder-Lite.git

@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0-dev.4">
+<Project Sdk="Godot.NET.Sdk/4.3.0">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
@@ -7,27 +7,23 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <!--    <ProjectReference Include="addons\TinkerFlow.Core\VRBuilder.Core.csproj" />-->
+    <!--        <ProjectReference Include="addons/TinkerFlow/VRBuilder.Core.csproj"/>-->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="**/*.tscn" />
-    <None Remove="addons\TinkerFlow.Core\**" />
-    <None Remove="addons\TinkerFlow.BasicConditionsAndBehaviors\**" />
-    <None Remove="addons\TinkerFlow\**" />
+    <!--        <Compile Remove="addons\TinkerFlow\**"/>-->
+    <!--    <Compile Include="addons/TinkerFlow/TinkerFlow/Core/TinkerFlowPlugin.cs"/>-->
+    <!--    <Compile Include="addons/TinkerFlow/TinkerFlow/Core/Editor/SceneManager.cs"/>-->
+    <Compile Remove="addons\TinkerFlow\VR-Builder-Lite/Source/Core/Editor/**/*.cs" />
+    <Compile Remove="addons\TinkerFlow\VR-Builder-Lite/Source/Core/Runtime/Unity/**/*.cs" />
+    <Compile Remove="addons\TinkerFlow\VR-Builder-Lite/Source/Basic-Conditions-And-Behaviors/Editor/**/*.cs" />
+    <Compile Remove="addons\TinkerFlow\VR-Builder-Lite/Source/Basic-Interaction-Component/Editor/**/*.cs" />
+    <Compile Remove="addons\TinkerFlow\VR-Builder-Lite/Source/TextToSpeech-Component/Editor/**/*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="addons\TinkerFlow.Core\**" />
-    <Compile Remove="addons\TinkerFlow.BasicConditionsAndBehaviors\**" />
-    <Compile Remove="addons\TinkerFlow\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="addons\TinkerFlow.Core\**" />
-    <EmbeddedResource Remove="addons\TinkerFlow.BasicConditionsAndBehaviors\**" />
     <EmbeddedResource Remove="addons\TinkerFlow\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="addons\TinkerFlow.Core\VRBuilder.Core.csproj" />
-    <ProjectReference Include="addons\TinkerFlow\VRBuilder.AddOn.csproj" />
+    <Content Include="addons\curve_edit\*" />
   </ItemGroup>
 </Project>

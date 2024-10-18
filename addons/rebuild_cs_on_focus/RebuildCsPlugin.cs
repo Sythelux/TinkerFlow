@@ -7,7 +7,7 @@ namespace RebuildCsOnFocus.addons.rebuild_cs_on_focus;
 [Tool]
 public partial class RebuildCsPlugin : EditorPlugin
 {
-   RebuildOnFocusUi _rebuildOnFocusUi = default!;
+   RebuildOnFocusUi? _rebuildOnFocusUi;
    Callable _buildCallable;
    Node _godotSharpEditorPlugin = default!;
    bool _rebuildEnabled;
@@ -28,7 +28,7 @@ public partial class RebuildCsPlugin : EditorPlugin
       _scanning = false;
       // RemoveControlFromContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
       _godotSharpEditorPlugin.Set("SkipBuildBeforePlaying", false);
-      _rebuildOnFocusUi.QueueFree();
+      _rebuildOnFocusUi?.QueueFree();
    }
 
    void ConnectEditorSignals()
@@ -44,7 +44,7 @@ public partial class RebuildCsPlugin : EditorPlugin
    {
       var dir = GetScript().As<CSharpScript>().ResourcePath.GetBaseDir();
       _rebuildOnFocusUi = GD.Load<PackedScene>($"{dir}/rebuild_on_focus.tscn").Instantiate<RebuildOnFocusUi>();
-      _rebuildOnFocusUi.Connect(RebuildOnFocusUi.SignalName.SettingChanged, new Callable(this, MethodName.SettingChanged));
+      _rebuildOnFocusUi?.Connect(RebuildOnFocusUi.SignalName.SettingChanged, new Callable(this, MethodName.SettingChanged));
       AddControlToContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
    }
 

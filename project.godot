@@ -16,6 +16,10 @@ AllowedMenuItemsSettings/SerializedConditionSelections={}
 LifeCycleLoggingConfig/LogSteps=true
 LifeCycleLoggingConfig/LogChapters=true
 
+[TinkerFlow.Core]
+
+Editor.Godots/LastEditedProcessName=""
+
 [application]
 
 config/name="TinkerFlow"
@@ -24,7 +28,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SceneManager="*res://addons/TinkerFlow/Runtime/Godot/SceneManager.cs"
+SceneManager="*res://addons/TinkerFlow/TinkerFlow/Core/Editor/SceneManager.cs"
 
 [dotnet]
 
@@ -32,7 +36,7 @@ project/assembly_name="TinkerFlow"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/TinkerFlow/plugin.cfg", "res://addons/inspector-gadget/plugin.cfg")
+enabled=PackedStringArray("res://addons/TinkerFlow/plugin.cfg", "res://addons/curve_edit/plugin.cfg", "res://addons/inspector-gadget/plugin.cfg", "res://addons/rebuild_cs_on_focus/plugin.cfg")
 
 [internationalization]
 

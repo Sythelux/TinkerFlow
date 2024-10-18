@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://duj12l77bh0on"]
+
+[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/StepWindow.cs" id="1_8x8mo"]
+
+[node name="Process Inspector" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_8x8mo")
+
+[node name="StepName" type="LineEdit" parent="."]
+visible = false
+layout_mode = 2
+text = "None Selected"
+placeholder_text = "Step Name"
+editable = false

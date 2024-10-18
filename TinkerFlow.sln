@@ -2,10 +2,6 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinkerFlow", "TinkerFlow.csproj", "{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRBuilder.Core", "addons\TinkerFlow.Core\VRBuilder.Core.csproj", "{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinkerFlow.BasicConditionsAndBehaviors", "addons\TinkerFlow.BasicConditionsAndBehaviors\TinkerFlow.BasicConditionsAndBehaviors.csproj", "{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -19,13 +15,35 @@ Global
 		{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{4EE7AAC6-51BD-47D5-AA90-7C58F3E8644A}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
-		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
-		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA76E089-49F2-4BB7-8CCE-B9A9FBEEB36D}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
-		{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD14986C-BFF0-4B6C-84E7-97F3405C35E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B0BF89-47AD-4968-A208-F8E359A3EA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B0BF89-47AD-4968-A208-F8E359A3EA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B0BF89-47AD-4968-A208-F8E359A3EA0B}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{15B0BF89-47AD-4968-A208-F8E359A3EA0B}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{15B0BF89-47AD-4968-A208-F8E359A3EA0B}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{15B0BF89-47AD-4968-A208-F8E359A3EA0B}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{D54412CF-4025-4CDD-A8D1-79336B6BDAD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D54412CF-4025-4CDD-A8D1-79336B6BDAD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D54412CF-4025-4CDD-A8D1-79336B6BDAD4}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{D54412CF-4025-4CDD-A8D1-79336B6BDAD4}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{D54412CF-4025-4CDD-A8D1-79336B6BDAD4}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{D54412CF-4025-4CDD-A8D1-79336B6BDAD4}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{79EEB436-3EF9-42E8-8B71-7DE0772F1B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79EEB436-3EF9-42E8-8B71-7DE0772F1B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79EEB436-3EF9-42E8-8B71-7DE0772F1B0C}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{79EEB436-3EF9-42E8-8B71-7DE0772F1B0C}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{79EEB436-3EF9-42E8-8B71-7DE0772F1B0C}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{79EEB436-3EF9-42E8-8B71-7DE0772F1B0C}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{53B1F542-3B5B-456D-AF4E-0DE85CD1BF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B1F542-3B5B-456D-AF4E-0DE85CD1BF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B1F542-3B5B-456D-AF4E-0DE85CD1BF66}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{53B1F542-3B5B-456D-AF4E-0DE85CD1BF66}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{53B1F542-3B5B-456D-AF4E-0DE85CD1BF66}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{53B1F542-3B5B-456D-AF4E-0DE85CD1BF66}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{4480E421-4A53-481F-8A63-A19537F994FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4480E421-4A53-481F-8A63-A19537F994FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4480E421-4A53-481F-8A63-A19537F994FD}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{4480E421-4A53-481F-8A63-A19537F994FD}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{4480E421-4A53-481F-8A63-A19537F994FD}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{4480E421-4A53-481F-8A63-A19537F994FD}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

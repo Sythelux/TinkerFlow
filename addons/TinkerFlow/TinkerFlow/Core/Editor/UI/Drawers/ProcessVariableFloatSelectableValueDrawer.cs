@@ -1,0 +1,20 @@
+#if UNITY_5_3_OR_NEWER
+using UnityEditor
+using VRBuilder.Core.Properties;
+using VRBuilder.Core.SceneObjects;
+
+namespace VRBuilder.Editor.UI.Drawers
+{
+    /// <summary>
+    /// Concrete implementation of process variable selectable value drawer.
+    /// </summary>
+    [DefaultProcessDrawer(typeof(ProcessVariableSelectableValue<float>))]
+    public class ProcessVariableFloatSelectableValueDrawer : SelectableValueDrawer<float, SingleScenePropertyReference<IDataProperty<float>>>
+    {
+    }
+}
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

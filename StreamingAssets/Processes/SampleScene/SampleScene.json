@@ -264,6 +264,9 @@
             "$id": "48",
             "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
           },
+          "GroupsToUnlock": {
+            "$ref": "48"
+          },
           "Metadata": {
             "$id": "49",
             "$type": "VRBuilder.Core.Metadata, TinkerFlow",
@@ -368,6 +371,9 @@
             "$id": "68",
             "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
           },
+          "GroupsToUnlock": {
+            "$ref": "68"
+          },
           "Metadata": {
             "$id": "69",
             "$type": "VRBuilder.Core.Metadata, TinkerFlow",
@@ -469,6 +475,9 @@
           "TagsToUnlock": {
             "$id": "87",
             "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
+          },
+          "GroupsToUnlock": {
+            "$ref": "87"
           },
           "Metadata": {
             "$id": "88",
