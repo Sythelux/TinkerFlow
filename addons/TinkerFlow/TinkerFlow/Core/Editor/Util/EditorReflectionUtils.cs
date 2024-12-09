@@ -10,9 +10,9 @@ using System.Runtime.Serialization;
 using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.EntityOwners;
-using VRBuilder.Editor.UI.Drawers;
+using VRBuilder.Core.Editor.UI.Drawers;
 
-namespace VRBuilder.Editor
+namespace VRBuilder.Core.Editor
 {
     /// <summary>
     /// Helper class for reflection.

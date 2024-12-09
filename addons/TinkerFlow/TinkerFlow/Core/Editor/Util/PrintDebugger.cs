@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     public class PrintDebugger
     {

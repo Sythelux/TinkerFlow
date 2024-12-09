@@ -9,7 +9,7 @@ using System.Reflection;
 using VRBuilder.Core;
 using UnityEngine;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     [DefaultProcessDrawer(typeof(TransitionCollection))]
     internal class TransitionCollectionDrawer : DataOwnerDrawer

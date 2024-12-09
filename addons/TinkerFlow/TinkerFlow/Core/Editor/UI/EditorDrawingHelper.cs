@@ -1,6 +1,7 @@
+#if UNITY_6000_0_OR_NEWER
 using Godot;
 
-namespace VRBuilder.Editor.UI.Drawers;
+namespace VRBuilder.Core.Editor.UI;
 
 internal class EditorDrawingHelper
 {
@@ -32,3 +33,4 @@ internal class EditorDrawingHelper
         };
     }
 }
+#endif

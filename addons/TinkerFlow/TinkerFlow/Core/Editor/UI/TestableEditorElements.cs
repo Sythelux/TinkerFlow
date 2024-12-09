@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 // // Copyright (c) 2013-2019 Innoactive GmbH
 // // Licensed under the Apache License, Version 2.0
 // // Modifications copyright (c) 2021-2024 MindPort GmbH
@@ -10,7 +11,7 @@ using System.Linq;
 using Godot;
 using VRBuilder.Core.Exceptions;
 
-namespace VRBuilder.Editor
+namespace VRBuilder.Core.Editor
 {
     public static class TestableEditorElements
     {
@@ -340,3 +341,4 @@ namespace VRBuilder.Editor
 //         }
     }
 }
+#endif

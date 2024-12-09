@@ -8,7 +8,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// Process drawer for `Vector4`.

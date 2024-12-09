@@ -1,8 +1,9 @@
+#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-namespace VRBuilder.Editor.UI.StepInspector.Menu
+namespace VRBuilder.Core.Editor.UI.StepInspector.Menu
 {
     /// <summary>
     /// This class adds a separator in the "Add Behavior"/"Add Condition" dropdown menus.
@@ -20,3 +21,4 @@ namespace VRBuilder.Editor.UI.StepInspector.Menu
         }
     }
 }
+#endif

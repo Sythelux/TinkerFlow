@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VRBuilder.Editor.Util
+namespace VRBuilder.Core.Editor.Util
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     public static class TypesUtils

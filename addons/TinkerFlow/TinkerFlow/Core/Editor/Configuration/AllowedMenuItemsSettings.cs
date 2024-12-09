@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using Godot;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
-using VRBuilder.Core.Runtime.Utils;
+using VRBuilder.Core.Settings;
 using VRBuilder.Core.Utils;
-using VRBuilder.Editor.UI.StepInspector.Menu;
+using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
-namespace VRBuilder.Editor.Configuration
+namespace VRBuilder.Core.Editor.Configuration
 {
     /// <summary>
     /// Configuration class for menu items.

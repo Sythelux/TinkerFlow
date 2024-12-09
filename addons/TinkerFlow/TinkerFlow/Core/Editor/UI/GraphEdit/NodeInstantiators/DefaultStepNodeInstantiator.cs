@@ -1,6 +1,7 @@
+#if UNITY_6000_0_OR_NEWER
 using VRBuilder.Core;
 
-namespace VRBuilder.Editor.UI.Graphics
+namespace VRBuilder.Core.Editor.UI.Graphics
 {
     /// <summary>
     /// Instantiator for a default <see cref="IStep"/> node.
@@ -32,3 +33,4 @@ namespace VRBuilder.Editor.UI.Graphics
         }
     }
 }
+#endif

@@ -1,6 +1,7 @@
 using Godot;
 using VRBuilder.Core;
-using VRBuilder.Editor;
+using VRBuilder.Core.Editor;
+using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
 namespace TinkerFlow.Godot.Editor
 {

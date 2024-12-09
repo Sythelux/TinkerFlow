@@ -9,9 +9,9 @@ using Godot;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Utils;
-using VRBuilder.Editor.UI.StepInspector.Menu;
+using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
-namespace VRBuilder.Editor.Configuration
+namespace VRBuilder.Core.Editor.Configuration
 {
     /// <summary>
     /// Configurator to set the process editor configuration which is used by the process creation editor tools (like Step Inspector).

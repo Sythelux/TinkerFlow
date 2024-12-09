@@ -8,10 +8,10 @@ using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.IO;
 using VRBuilder.Core.Serialization;
-using VRBuilder.Editor.ProcessValidation;
-using VRBuilder.Editor.UI.StepInspector.Menu;
+using VRBuilder.Core.Editor.ProcessValidation;
+using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
-namespace VRBuilder.Editor.Configuration
+namespace VRBuilder.Core.Editor.Configuration
 {
     /// <summary>
     /// Default editor configuration definition which is used if no other was implemented.
@@ -24,7 +24,7 @@ namespace VRBuilder.Editor.Configuration
         public virtual string ProcessStreamingAssetsSubdirectory => "Processes";
 
         /// <inheritdoc />
-        // public virtual string AllowedMenuItemsSettingsAssetPath => "Assets/MindPort/VR Builder/Editor/Config/AllowedMenuItems.json";
+        public virtual string AllowedMenuItemsSettingsAssetPath => "TinkerFlow/Editor/Config/AllowedMenuItems.json";
 
         /// <inheritdoc />
         public virtual IProcessSerializer Serializer => new NewtonsoftJsonProcessSerializerV4();

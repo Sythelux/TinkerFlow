@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using VRBuilder.Core;
-using VRBuilder.Editor.Configuration;
-using VRBuilder.Editor.Util;
+using VRBuilder.Core.Editor.Configuration;
+using VRBuilder.Core.Editor.Util;
 using FileAccess = Godot.FileAccess;
 
-namespace VRBuilder.Editor
+namespace VRBuilder.Core.Editor.ProcessAssets
 {
     /// <summary>
     /// A collection of helper functions which are related to process asset handling.

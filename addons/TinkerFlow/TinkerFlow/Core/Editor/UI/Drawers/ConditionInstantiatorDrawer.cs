@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
@@ -7,12 +8,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using VRBuilder.Core.Conditions;
-using VRBuilder.Editor.Configuration;
+using VRBuilder.Core.Editor.Configuration;
 using Godot;
 using Godot.Collections;
-using VRBuilder.Editor.Godot;
+using VRBuilder.Core.Editor.Godot;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// Draws a dropdown button with all <see cref="InstantiationOption{ICondition}"/> in the project, and creates a new instance of choosen condition on click.
@@ -72,3 +73,4 @@ namespace VRBuilder.Editor.UI.Drawers
         }
     }
 }
+#endif

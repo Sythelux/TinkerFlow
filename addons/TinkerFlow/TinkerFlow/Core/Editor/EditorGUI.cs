@@ -1,8 +1,9 @@
+#if UNITY_6000_0_OR_NEWER
 using System;
 using Godot;
 using TinkerFlow.Godot.Editor;
 
-namespace VRBuilder.Editor.Godot
+namespace VRBuilder.Core.Editor.Godot
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     public static class EditorGUI
@@ -59,3 +60,4 @@ namespace VRBuilder.Editor.Godot
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
@@ -7,9 +8,9 @@ using System.Reflection;
 using VRBuilder.Core.Behaviors;
 using Godot;
 using TinkerFlow.Godot.Editor;
-using VRBuilder.Editor.Godot;
+using VRBuilder.Core.Editor.Godot;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// Process drawer for <see cref="BehaviorExecutionStages"/> members.
@@ -63,3 +64,5 @@ namespace VRBuilder.Editor.UI.Drawers
     }
 }
 
+
+#endif

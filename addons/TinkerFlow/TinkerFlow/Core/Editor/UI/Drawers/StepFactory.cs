@@ -7,9 +7,9 @@ using TinkerFlow.Godot.Editor;
 using VRBuilder.Core;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.SceneObjects;
-using VRBuilder.Editor.UI.Windows;
+using VRBuilder.Core.Editor.UI.Windows;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     [DefaultProcessDrawer(typeof(Step.EntityData))]
@@ -66,7 +66,7 @@ namespace VRBuilder.Editor.UI.Drawers
                 var behaviorUi = processInspectorBehaviorUIPrefab.Instantiate<VBoxContainer>();
                 if (behaviorUi.GetNode("%Label") is Label labelUi)
                     labelUi.Text = behavior.Data.Name;
-                IProcessFactory? factory = DrawerLocator.GetDrawerForValue(behavior, typeof(object));
+                IProcessDrawer? factory = DrawerLocator.GetDrawerForValue(behavior, typeof(object));
                 if (factory != null)
                 {
                     Control control = factory.Create(behavior, changeValueCallback, text);
@@ -81,7 +81,7 @@ namespace VRBuilder.Editor.UI.Drawers
         {
             foreach (ITransition transition in stepTransitions.Data.Transitions)
             {
-                IProcessFactory? factory = DrawerLocator.GetDrawerForValue(transition, typeof(object));
+                IProcessDrawer? factory = DrawerLocator.GetDrawerForValue(transition, typeof(object));
                 if (factory != null)
                 {
                     Control control = factory.Create(transition, changeValueCallback, text);
@@ -94,7 +94,7 @@ namespace VRBuilder.Editor.UI.Drawers
         {
             foreach (ISceneObject sceneObjects in lockableObjectsCollection.SceneObjects)
             {
-                IProcessFactory? factory = DrawerLocator.GetDrawerForValue(sceneObjects, typeof(object));
+                IProcessDrawer? factory = DrawerLocator.GetDrawerForValue(sceneObjects, typeof(object));
                 if (factory != null)
                 {
                     Control control = factory.Create(sceneObjects, changeValueCallback, text);

@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 #if GODOT
 using System;
 using System.Collections.Generic;
@@ -81,4 +82,5 @@ namespace VRBuilder.Core.Configuration
         }
     }
 }
+#endif
 #endif

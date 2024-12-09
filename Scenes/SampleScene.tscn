@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/RuntimeConfigurator.cs" id="1_tmdxv"]
 [ext_resource type="Script" path="res://addons/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/SceneConfiguration.cs" id="2_xhjjv"]
-[ext_resource type="Script" path="res://addons/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/SceneObjects/ProcessSceneObject.cs" id="3_efkxi"]
+[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Runtime/SceneObjects/ProcessSceneObject.cs" id="3_6ubhu"]
 
 [node name="SampleScene" type="Node3D"]
 
@@ -11,12 +11,12 @@ transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0
 
 [node name="PROCESS_CONFIGURATION" type="Node" parent="."]
 script = ExtResource("1_tmdxv")
-SelectedProcess = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
-SelectedProcess = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
+runtimeConfigurationName = "VRBuilder.Core.Configuration.DefaultRuntimeConfiguration; TinkerFlow; Version=1.0.0.0; Culture=neutral; PublicKeyToken=null"
+selectedProcessStreamingAssetsPath = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
+processStringLocalizationTable = "res://Localisation/Default.csv"
 
 [node name="SceneConfiguration" type="Node" parent="PROCESS_CONFIGURATION"]
 script = ExtResource("2_xhjjv")
 
 [node name="User" type="Node3D" parent="."]
-script = ExtResource("3_efkxi")
-uniqueName = "User"
+script = ExtResource("3_6ubhu")

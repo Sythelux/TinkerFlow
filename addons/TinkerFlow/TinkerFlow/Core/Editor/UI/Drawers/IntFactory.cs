@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using Godot;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     [DefaultProcessDrawer(typeof(int))]

@@ -9,37 +9,37 @@ using System.Reflection;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Utils;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     public static class DrawerLocator
     {
-        private static readonly Dictionary<Type, IProcessFactory> allDrawers;
-        private static readonly Dictionary<Type, IProcessFactory> defaultDrawers;
-        private static readonly Dictionary<Type, IProcessFactory> instantiatorDrawers;
+        private static readonly Dictionary<Type, IProcessDrawer> allDrawers;
+        private static readonly Dictionary<Type, IProcessDrawer> defaultDrawers;
+        private static readonly Dictionary<Type, IProcessDrawer> instantiatorDrawers;
 
         static DrawerLocator()
         {
-            defaultDrawers = new Dictionary<Type, IProcessFactory>();
-            foreach (Type drawerType in ReflectionUtils.GetConcreteImplementationsOf<IProcessFactory>())
+            defaultDrawers = new Dictionary<Type, IProcessDrawer>();
+            foreach (Type drawerType in ReflectionUtils.GetConcreteImplementationsOf<IProcessDrawer>())
             {
                 foreach (DefaultProcessDrawerAttribute attribute in drawerType.GetAttributes<DefaultProcessDrawerAttribute>(true))
                 {
-                    defaultDrawers[attribute.DrawableType] = (IProcessFactory)ReflectionUtils.CreateInstanceOfType(drawerType);
+                    defaultDrawers[attribute.DrawableType] = (IProcessDrawer)ReflectionUtils.CreateInstanceOfType(drawerType);
                 }
             }
 
-            allDrawers = new Dictionary<Type, IProcessFactory>();
-            foreach (Type drawerType in ReflectionUtils.GetConcreteImplementationsOf<IProcessFactory>())
+            allDrawers = new Dictionary<Type, IProcessDrawer>();
+            foreach (Type drawerType in ReflectionUtils.GetConcreteImplementationsOf<IProcessDrawer>())
             {
-                allDrawers[drawerType] = (IProcessFactory)ReflectionUtils.CreateInstanceOfType(drawerType);
+                allDrawers[drawerType] = (IProcessDrawer)ReflectionUtils.CreateInstanceOfType(drawerType);
             }
 
-            instantiatorDrawers = new Dictionary<Type, IProcessFactory>();
-            foreach (Type drawerType in ReflectionUtils.GetConcreteImplementationsOf<IProcessFactory>().Where(t => t.GetAttributes<InstantiatorProcessDrawerAttribute>(true).Any()))
+            instantiatorDrawers = new Dictionary<Type, IProcessDrawer>();
+            foreach (Type drawerType in ReflectionUtils.GetConcreteImplementationsOf<IProcessDrawer>().Where(t => t.GetAttributes<InstantiatorProcessDrawerAttribute>(true).Any()))
             {
                 foreach (InstantiatorProcessDrawerAttribute attribute in drawerType.GetAttributes<InstantiatorProcessDrawerAttribute>(true))
                 {
-                    instantiatorDrawers[attribute.Type] = (IProcessFactory)ReflectionUtils.CreateInstanceOfType(drawerType);
+                    instantiatorDrawers[attribute.Type] = (IProcessDrawer)ReflectionUtils.CreateInstanceOfType(drawerType);
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace VRBuilder.Editor.UI.Drawers
         /// <param name="memberInfo">Reflection information about the member for which drawer is needed.</param>
         /// <param name="owner">Object to which this member belongs to.</param>
         /// <returns>Returns suitable Process drawer. Returns null only if the member is not a property or field, or the specified custom drawer is not found.</returns>
-        public static IProcessFactory GetDrawerForMember(MemberInfo memberInfo, object owner)
+        public static IProcessDrawer GetDrawerForMember(MemberInfo memberInfo, object owner)
         {
             if (ReflectionUtils.IsProperty(memberInfo) == false && ReflectionUtils.IsField(memberInfo) == false)
             {
@@ -81,7 +81,7 @@ namespace VRBuilder.Editor.UI.Drawers
         /// <param name="value">Value to get drawer for.</param>
         /// <param name="declaredType">Declaring type of the class member that contains the value.</param>
         /// <returns>Returns suitable Process drawer.</returns>
-        public static IProcessFactory? GetDrawerForValue(object? value, Type declaredType)
+        public static IProcessDrawer? GetDrawerForValue(object? value, Type declaredType)
         {
             return GetDrawerForType(value == null ? declaredType : value.GetType());
         }
@@ -89,7 +89,7 @@ namespace VRBuilder.Editor.UI.Drawers
         /// <summary>
         /// Get a drawer for a view that creates a new instance of <paramref name="declaredType"/>
         /// </summary>
-        public static IProcessFactory GetInstantiatorDrawer(Type declaredType)
+        public static IProcessDrawer GetInstantiatorDrawer(Type declaredType)
         {
             Type currentType = declaredType;
             // Get drawer for type, checking from the most concrete type definition to a most abstract one.
@@ -111,13 +111,13 @@ namespace VRBuilder.Editor.UI.Drawers
             return declaredType.GetInterfaces().Where(i => instantiatorDrawers.ContainsKey(i)).Select(i => instantiatorDrawers[i]).FirstOrDefault(t => t != null);
         }
 
-        private static IProcessFactory? GetDrawerForType(Type type)
+        private static IProcessDrawer? GetDrawerForType(Type type)
         {
             Type currentType = type;
             // Get drawer for type, checking from the most concrete type definition to a most abstract one.
             while (currentType.IsInterface == false && currentType != typeof(object))
             {
-                IProcessFactory? concreteTypeDrawer = GetTypeDrawer(currentType);
+                IProcessDrawer? concreteTypeDrawer = GetTypeDrawer(currentType);
                 if (concreteTypeDrawer != null)
                 {
                     return concreteTypeDrawer;
@@ -126,7 +126,7 @@ namespace VRBuilder.Editor.UI.Drawers
                 currentType = currentType.BaseType;
             }
 
-            IProcessFactory interfaceDrawer = null;
+            IProcessDrawer interfaceDrawer = null;
             if (type.IsInterface)
             {
                 interfaceDrawer = GetTypeDrawer(type);
@@ -163,17 +163,17 @@ namespace VRBuilder.Editor.UI.Drawers
             return null;
         }
 
-        private static IProcessFactory? GetTypeDrawer(Type type)
+        private static IProcessDrawer? GetTypeDrawer(Type type)
         {
             return defaultDrawers.GetValueOrDefault(type);
         }
 
-        private static IProcessFactory? GetObjectDrawer()
+        private static IProcessDrawer? GetObjectDrawer()
         {
             return GetTypeDrawer(typeof(object));
         }
 
-        private static IProcessFactory GetInheritedInterfaceDrawer(Type type)
+        private static IProcessDrawer GetInheritedInterfaceDrawer(Type type)
         {
             return type.GetInterfaces().Select(GetTypeDrawer).FirstOrDefault(t => t != null);
         }
@@ -183,7 +183,7 @@ namespace VRBuilder.Editor.UI.Drawers
             return memberInfo.GetAttributes<UsesSpecificProcessDrawerAttribute>(true).Any();
         }
 
-        private static IProcessFactory GetCustomDrawer(MemberInfo memberInfo)
+        private static IProcessDrawer GetCustomDrawer(MemberInfo memberInfo)
         {
             UsesSpecificProcessDrawerAttribute attribute = memberInfo.GetAttributes<UsesSpecificProcessDrawerAttribute>(true).First();
 

@@ -10,7 +10,7 @@ using System.Reflection;
 using Godot;
 using VRBuilder.Core;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     [DefaultProcessDrawer(typeof(IDataOwner))]
     internal class DataOwnerFactory : AbstractProcessFactory
@@ -22,7 +22,7 @@ namespace VRBuilder.Editor.UI.Drawers
             if (currentValue == null) throw new NullReferenceException("Attempting to draw null object.");
 
             IData? data = (currentValue as IDataOwner)?.Data;
-            IProcessFactory dataDrawer = DrawerLocator.GetDrawerForMember(EditorReflectionUtils.GetFieldsAndPropertiesToDraw(currentValue).First(member => member.Name == "Data"), currentValue);
+            IProcessDrawer dataDrawer = DrawerLocator.GetDrawerForMember(EditorReflectionUtils.GetFieldsAndPropertiesToDraw(currentValue).First(member => member.Name == "Data"), currentValue);
 
             return dataDrawer.Create(data, _ => changeValueCallback(currentValue), text);
         }
@@ -33,7 +33,7 @@ namespace VRBuilder.Editor.UI.Drawers
 
             if (value != null)
             {
-                IProcessFactory dataDrawer = DrawerLocator.GetDrawerForMember(EditorReflectionUtils.GetFieldsAndPropertiesToDraw(value).First(member => member.Name == "Data"), value);
+                IProcessDrawer dataDrawer = DrawerLocator.GetDrawerForMember(EditorReflectionUtils.GetFieldsAndPropertiesToDraw(value).First(member => member.Name == "Data"), value);
                 return data != null
                     ? dataDrawer.GetLabel(data)
                     : new Label { Text = $"{nameof(T)}.Data is null" };

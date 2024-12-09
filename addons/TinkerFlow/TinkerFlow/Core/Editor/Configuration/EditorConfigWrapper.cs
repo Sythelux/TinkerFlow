@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013-2019 Innoactive GmbH
+// Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
@@ -6,9 +6,9 @@ using System.Collections.ObjectModel;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Serialization;
-using VRBuilder.Editor.UI.StepInspector.Menu;
+using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
-namespace VRBuilder.Editor.Configuration
+namespace VRBuilder.Core.Editor.Configuration
 {
     internal class EditorConfigWrapper : DefaultEditorConfiguration
     {

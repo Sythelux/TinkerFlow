@@ -7,7 +7,7 @@
 using System;
 using System.Reflection;
 using VRBuilder.Core;
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     [DefaultProcessDrawer(typeof(BehaviorCollection))]
     internal class BehaviorCollectionDrawer : DataOwnerFactory

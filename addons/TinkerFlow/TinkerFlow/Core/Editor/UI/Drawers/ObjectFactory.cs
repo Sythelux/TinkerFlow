@@ -8,10 +8,10 @@ using Godot;
 using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Utils;
-using VRBuilder.Editor.Configuration;
-using VRBuilder.Editor.ProcessValidation;
+using VRBuilder.Core.Editor.Configuration;
+using VRBuilder.Core.Editor.ProcessValidation;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     [DefaultProcessDrawer(typeof(object))]
     public partial class ObjectFactory : AbstractProcessFactory
@@ -39,7 +39,7 @@ namespace VRBuilder.Editor.UI.Drawers
                 }
                 else
                 {
-                    IProcessFactory memberDrawer = DrawerLocator.GetDrawerForMember(closuredMemberInfo, currentValue);
+                    IProcessDrawer memberDrawer = DrawerLocator.GetDrawerForMember(closuredMemberInfo, currentValue);
 
                     object? memberValue = ReflectionUtils.GetValueFromPropertyOrField(currentValue, closuredMemberInfo);
 
@@ -156,7 +156,7 @@ namespace VRBuilder.Editor.UI.Drawers
                 throw new MissingFieldException($"No metadata property on object {ownerObject}.");
 
             object? memberValue = ReflectionUtils.GetValueFromPropertyOrField(ownerObject, drawnMemberInfo);
-            IProcessFactory memberDrawer = DrawerLocator.GetDrawerForMember(drawnMemberInfo, ownerObject);
+            IProcessDrawer memberDrawer = DrawerLocator.GetDrawerForMember(drawnMemberInfo, ownerObject);
 
             var wrapper = new MetadataWrapper
             {
@@ -208,7 +208,7 @@ namespace VRBuilder.Editor.UI.Drawers
 
             if (isMetadataDirty) WrapperChangedCallback(wrapper);
 
-            IProcessFactory? wrapperDrawer = DrawerLocator.GetDrawerForValue(wrapper, typeof(MetadataWrapper));
+            IProcessDrawer? wrapperDrawer = DrawerLocator.GetDrawerForValue(wrapper, typeof(MetadataWrapper));
 
             Label displayName = memberDrawer.GetLabel(drawnMemberInfo, ownerObject);
 

@@ -5,10 +5,13 @@
 using Godot;
 using TinkerFlow.Godot.Editor;
 using VRBuilder.Core;
-using VRBuilder.Editor.Configuration;
-using VRBuilder.Editor.UI.Windows;
+using VRBuilder.Core.Editor.Configuration;
+using VRBuilder.Core.Editor.ProcessAssets;
+using VRBuilder.Core.Editor.UI.GraphView;
+using VRBuilder.Core.Editor.UI.GraphView.Windows;
+using VRBuilder.Core.Editor.UI.Windows;
 
-namespace VRBuilder.Editor
+namespace VRBuilder.Core.Editor
 {
     /// <summary>
     /// This strategy is used by default and it handles interaction between process assets and various Builder windows.
@@ -22,10 +25,10 @@ namespace VRBuilder.Editor
         public IChapter? CurrentChapter { get; protected set; }
 
         /// <inheritdoc/>
-        public void HandleNewProcessWindow(ProcessEditorWindow window)
+        public void HandleNewProcessWindow(IProcessEditorWindow window)
         {
-            processWindow = window;
-            processWindow.SetProcess(CurrentProcess);
+            processWindow = window as ProcessEditorWindow;
+            processWindow?.SetProcess(CurrentProcess);
         }
 
         /// <inheritdoc/>
@@ -44,7 +47,7 @@ namespace VRBuilder.Editor
         }
 
         /// <inheritdoc/>
-        public void HandleProcessWindowClosed(ProcessEditorWindow window)
+        public void HandleProcessWindowClosed(IProcessEditorWindow window)
         {
             if (processWindow != window) return;
 

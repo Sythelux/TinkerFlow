@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using Godot;
 
 namespace TinkerFlow.Godot.Editor
@@ -7,3 +8,5 @@ namespace TinkerFlow.Godot.Editor
     {
     }
 }
+
+#endif

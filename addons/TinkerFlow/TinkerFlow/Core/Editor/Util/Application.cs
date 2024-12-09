@@ -1,5 +1,4 @@
-
-namespace VRBuilder.Editor.Util
+namespace VRBuilder.Core.Editor.Util
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     public class Application

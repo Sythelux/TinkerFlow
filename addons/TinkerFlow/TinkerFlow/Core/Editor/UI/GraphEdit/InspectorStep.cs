@@ -1,7 +1,7 @@
 using Godot;
 using VRBuilder.Core;
 
-namespace VRBuilder.Editor.UI.Windows
+namespace VRBuilder.Core.Editor.UI.Windows
 {
 	///<author email="Sythelux Rikd">Sythelux Rikd</author>
 	[Tool]

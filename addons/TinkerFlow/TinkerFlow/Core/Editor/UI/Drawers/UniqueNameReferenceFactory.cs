@@ -12,9 +12,9 @@ using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
-using VRBuilder.Editor.Godot;
+using VRBuilder.Core.Editor.Godot;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// TODO: implement drop: https://docs.godotengine.org/en/latest/classes/class_control.html#class-control-private-method-get-drag-data

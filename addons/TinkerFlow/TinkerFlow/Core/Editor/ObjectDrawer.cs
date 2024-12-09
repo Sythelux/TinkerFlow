@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Linq;
 using Godot;
 using VRBuilder.Core.SceneObjects;
@@ -50,3 +51,5 @@ public partial class ObjectDrawer : Control
 		ObjectLabel.Text = "<empty>";
 	}
 }
+
+#endif

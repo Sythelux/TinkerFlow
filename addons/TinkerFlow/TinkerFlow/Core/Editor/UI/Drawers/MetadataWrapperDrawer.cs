@@ -19,7 +19,7 @@ using VRBuilder.Core.Utils;
 using UnityEditor;
 using UnityEngine;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// This drawer receives a data structure which contains an actual object to draw and additional drawing information.

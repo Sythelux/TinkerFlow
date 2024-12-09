@@ -2,6 +2,7 @@ using Godot;
 using TinkerFlow.Godot.Editor;
 using VRBuilder.Core;
 
+namespace VRBuilder.Core.Editor.UI.GraphView.Nodes;
 [Tool]
 public partial class ProcessGraphNode : GraphNode
 {

@@ -1,7 +1,8 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Linq;
 using VRBuilder.Core;
 
-namespace VRBuilder.Editor.UI.Graphics
+namespace VRBuilder.Core.Editor.UI.Graphics
 {
     /// <summary>
     /// Step node in a graph view editor.
@@ -99,3 +100,4 @@ namespace VRBuilder.Editor.UI.Graphics
         }
     }
 }
+#endif

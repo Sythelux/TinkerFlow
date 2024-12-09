@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Godot;
-using VRBuilder.Core;
-using VRBuilder.Editor;
-using VRBuilder.Editor.UI.Drawers;
-using VRBuilder.Editor.UI.Windows;
+using VRBuilder.Core.Editor.UI.Drawers;
+using VRBuilder.Core.Editor.UI.GraphView;
 
-namespace TinkerFlow.Godot.Editor
+namespace VRBuilder.Core.Editor.UI.Windows
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     [Tool]

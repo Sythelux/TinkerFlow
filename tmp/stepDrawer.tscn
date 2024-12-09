@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bm2ijgpoj2v20"]
 
-[ext_resource type="PackedScene" uid="uid://brkfxwgxp1vgn" path="res://addons/TinkerFlow/TinkerFlow/Core/Prefabs/InspectorStep.tscn" id="1_qhm2c"]
-[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor.Godot/UI/GraphEdit/InspectorStep.cs" id="2_v31kp"]
+[ext_resource type="PackedScene" uid="uid://brkfxwgxp1vgn" path="res://addons/TinkerFlow/TinkerFlow/Core/Prefabs/InspectorStep.tscn" id="1_lnprg"]
+[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphEdit/InspectorStep.cs" id="2_tkd41"]
 
 [node name="StepFactory_Step" type="VBoxContainer"]
 
@@ -24,8 +24,8 @@ layout_mode = 2
 [node name="ObjectFactory_System_Collections_Generic_List`1[[VRBuilder_Core_Behaviors_LockablePropertyReference, TinkerFlow, Version=1_0_0_0, Culture=neutral, PublicKeyToken=null]]" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Step" type="VBoxContainer" parent="." instance=ExtResource("1_qhm2c")]
+[node name="Step" type="VBoxContainer" parent="." instance=ExtResource("1_lnprg")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("2_v31kp")
+script = ExtResource("2_tkd41")

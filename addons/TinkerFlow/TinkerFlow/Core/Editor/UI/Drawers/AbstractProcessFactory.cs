@@ -9,12 +9,12 @@ using System.Reflection;
 using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
-    public abstract partial class AbstractProcessFactory : IProcessFactory
+    public abstract partial class AbstractProcessFactory : IProcessDrawer
     {
-        #region IProcessFactory Members
+        #region IProcessDrawer Members
 
         public abstract Control Create<T>(T currentValue, Action<object> changeValueCallback, string text);
 

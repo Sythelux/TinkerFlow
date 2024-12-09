@@ -1,12 +1,13 @@
+#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System.Collections.Generic;
 using Godot;
-using VRBuilder.Editor.Configuration;
+using VRBuilder.Core.Editor.Configuration;
 
-namespace VRBuilder.Editor.Serialization
+namespace VRBuilder.Core.Editor.Serialization
 {
     public static class JsonEditorConfigurationSerializer
     {
@@ -32,3 +33,4 @@ namespace VRBuilder.Editor.Serialization
         }
     }
 }
+#endif

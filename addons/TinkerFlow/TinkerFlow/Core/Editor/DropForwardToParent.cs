@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using Godot;
 using System;
 
@@ -14,3 +15,5 @@ public partial class DropForwardToParent : Button
 		GetParent<Control>()._DropData(atPosition, data);
 	}
 }
+
+#endif

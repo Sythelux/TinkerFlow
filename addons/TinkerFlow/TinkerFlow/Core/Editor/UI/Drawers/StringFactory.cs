@@ -8,7 +8,7 @@ using System;
 using System.Reflection;
 using Godot;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// Process drawer for string members.

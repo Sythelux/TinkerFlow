@@ -5,10 +5,13 @@ using System.Reflection;
 using Godot;
 using VRBuilder.Core;
 using VRBuilder.Core.Configuration;
-using VRBuilder.Editor;
-using VRBuilder.Editor.UI.Graphics;
-using VRBuilder.Editor.UI.Windows;
-using VRBuilder.Editor.Util;
+using VRBuilder.Core.Editor;
+using VRBuilder.Core.Editor.ProcessAssets;
+using VRBuilder.Core.Editor.UI.Graphics;
+using VRBuilder.Core.Editor.UI.GraphView.Instantiators;
+using VRBuilder.Core.Editor.UI.GraphView.Nodes;
+using VRBuilder.Core.Editor.UI.Windows;
+using VRBuilder.Core.Editor.Util;
 
 namespace TinkerFlow.Godot.Editor
 {

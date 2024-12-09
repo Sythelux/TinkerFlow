@@ -26,4 +26,7 @@
   <ItemGroup>
     <Content Include="addons\curve_edit\*" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="addons\TinkerFlow\TinkerFlow\Core\Editor\Godot\" />
+  </ItemGroup>
 </Project>

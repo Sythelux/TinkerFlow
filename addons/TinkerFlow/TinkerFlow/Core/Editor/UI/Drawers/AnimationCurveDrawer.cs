@@ -6,9 +6,8 @@ using Godot;
 #endif
 using System;
 using System.Reflection;
-using VRBuilder.Editor.Godot;
 
-namespace VRBuilder.Editor.UI.Drawers
+namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// Drawer for <see cref="AnimationCurve"/>

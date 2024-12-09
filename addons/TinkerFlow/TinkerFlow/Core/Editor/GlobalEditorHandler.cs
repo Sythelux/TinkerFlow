@@ -4,13 +4,11 @@
 
 using System.IO;
 using Godot;
-using TinkerFlow.Godot.Editor;
-using VRBuilder.Core;
 using VRBuilder.Core.Configuration;
-using VRBuilder.Editor.Godot;
-using VRBuilder.Editor.UI.Windows;
+using VRBuilder.Core.Editor.Godot;
+using VRBuilder.Core.Editor.UI.Windows;
 
-namespace VRBuilder.Editor
+namespace VRBuilder.Core.Editor
 {
     /// <summary>
     /// A class that handles interactions between Builder windows and process assets by using selected <seealso cref="IEditingStrategy"/> strategy.

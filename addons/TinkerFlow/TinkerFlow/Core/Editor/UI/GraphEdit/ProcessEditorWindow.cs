@@ -1,12 +1,13 @@
 using Godot;
-using VRBuilder.Core;
+using VRBuilder.Core.Editor;
+using VRBuilder.Core.Editor.UI.GraphView.Windows;
 
-namespace VRBuilder.Editor.UI.Windows
+namespace VRBuilder.Core.Editor.UI.Windows
 {
     /// <summary>
     /// Base class for a process GUI editor window.
     /// </summary>
-    public abstract partial class ProcessEditorWindow : GraphEdit
+    public abstract partial class ProcessEditorWindow : GraphEdit, IProcessEditorWindow
     {
         /// <summary>
         /// Sets the process to be displayed.

@@ -1,7 +1,8 @@
 using System;
 using VRBuilder.Core;
+using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
-namespace VRBuilder.Editor.UI.Graphics
+namespace VRBuilder.Core.Editor.UI.Graphics
 {
     /// <summary>
     /// Entry point node in a graph view editor.
