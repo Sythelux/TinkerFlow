@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://b35claxvsahil"]
+[gd_scene load_steps=6 format=3 uid="uid://b35claxvsahil"]
 
-[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessEditor.cs" id="1_b4nao"]
-[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessGraph.cs" id="2_hl13x"]
+[ext_resource type="Script" uid="uid://bte4b6xunlfhn" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessEditor.cs" id="1_b4nao"]
+[ext_resource type="Script" uid="uid://dubgwd8hxt2dl" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessGraph.cs" id="2_hl13x"]
+[ext_resource type="Texture2D" uid="uid://bqwrsbqcu2dsw" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_expand_chapter_dark.png" id="4_rrkbu"]
 [ext_resource type="PackedScene" uid="uid://ousqiboihk4a" path="res://addons/TinkerFlow/TinkerFlow/Core/Prefabs/StepNode.tscn" id="4_torf1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_otjmm"]
+content_margin_left = 850.0
 
 [node name="ProcessEditor" type="Control"]
 layout_mode = 3
@@ -39,17 +43,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+theme_override_styles/menu_panel = SubResource("StyleBoxEmpty_otjmm")
 right_disconnects = true
 script = ExtResource("2_hl13x")
 StepNode = ExtResource("4_torf1")
-AddNodeMenu = NodePath("../PopupMenu")
+AddNodeMenu = NodePath("../AddNodePopup")
 EditNodeMenu = NodePath("../NodePopupMenu")
 
 [node name="ChapterViewBG" type="Panel" parent="Main/HBoxContainer2"]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 28.0
+offset_right = 32.0
 grow_vertical = 2
 
 [node name="ChapterView" type="VBoxContainer" parent="Main/HBoxContainer2/ChapterViewBG"]
@@ -66,18 +71,30 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Button" type="Button" parent="Main/HBoxContainer2/ChapterViewBG/ChapterView"]
 layout_mode = 2
-text = ">>"
+size_flags_horizontal = 8
+icon = ExtResource("4_rrkbu")
 flat = true
 
-[node name="PopupMenu" type="PopupMenu" parent="Main/HBoxContainer2"]
-item_count = 1
-item_0/text = "Test"
+[node name="AddNodePopup" type="PopupMenu" parent="Main/HBoxContainer2"]
+size = Vector2i(116, 2)
+prefer_native_menu = true
+item_count = 3
+item_0/text = "New"
 item_0/id = 0
+item_0/separator = true
+item_1/text = "Step"
+item_1/id = 1
+item_2/text = "End Chapter"
+item_2/id = 2
 
 [node name="NodePopupMenu" type="PopupMenu" parent="Main/HBoxContainer2"]
-item_count = 1
-item_0/text = "Test2"
+size = Vector2i(130, 100)
+prefer_native_menu = true
+item_count = 2
+item_0/text = "Make group"
 item_0/id = 0
+item_1/id = 1
+item_1/separator = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Main"]
 layout_mode = 2
@@ -86,3 +103,5 @@ layout_mode = 2
 layout_mode = 2
 
 [connection signal="popup_request" from="Main/HBoxContainer2/ProcessGraph" to="Main/HBoxContainer2/ProcessGraph" method="ShowPopup"]
+[connection signal="index_pressed" from="Main/HBoxContainer2/AddNodePopup" to="Main/HBoxContainer2/ProcessGraph" method="OnAddNodePopupIndexPressed"]
+[connection signal="index_pressed" from="Main/HBoxContainer2/NodePopupMenu" to="Main/HBoxContainer2/ProcessGraph" method="ModifyStep"]

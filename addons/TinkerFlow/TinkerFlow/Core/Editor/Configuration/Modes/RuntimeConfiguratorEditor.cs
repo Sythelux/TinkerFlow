@@ -1,4 +1,3 @@
-#if UNITY_6000_0_OR_NEWER
 #if GODOT
 using System;
 using System.Collections.Generic;
@@ -60,18 +59,18 @@ namespace VRBuilder.Core.Configuration
 
         public override Array<Dictionary> _GetPropertyList()
         {
-            Array<Dictionary> properties = new()
-            {
+            Array<Dictionary> properties =
+            [
                 SerializeFieldAttribute.PropertyInfo(nameof(runtimeConfigurationName), Variant.Type.String, PropertyHint.Enum, string.Join(',', configurationTypeNames)),
                 SerializeFieldAttribute.PropertyInfo(nameof(selectedProcessStreamingAssetsPath), Variant.Type.String, PropertyHint.File, "*.json"),
-                SerializeFieldAttribute.PropertyInfo(nameof(processStringLocalizationTable), Variant.Type.String, PropertyHint.File, "*.csv,*.po,*.translation,*.tres,*.res,*.mo"),
-            };
+                SerializeFieldAttribute.PropertyInfo(nameof(processStringLocalizationTable), Variant.Type.String, PropertyHint.File, "*.csv,*.po,*.translation,*.tres,*.res,*.mo")
+            ];
             return properties;
         }
 
         public override string[] _GetConfigurationWarnings()
         {
-            List<string> retVal = new();
+            List<string> retVal = [];
             if (string.IsNullOrEmpty(runtimeConfigurationName))
                 retVal.Add(nameof(runtimeConfigurationName) + " is Invalid");
             if (!FileAccess.FileExists(selectedProcessStreamingAssetsPath))
@@ -82,5 +81,4 @@ namespace VRBuilder.Core.Configuration
         }
     }
 }
-#endif
 #endif

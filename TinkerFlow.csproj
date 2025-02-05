@@ -1,8 +1,6 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0">
+<Project Sdk="Godot.NET.Sdk/4.4.0-beta.2">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
-    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -25,8 +23,5 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="addons\curve_edit\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="addons\TinkerFlow\TinkerFlow\Core\Editor\Godot\" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ public partial class ProcessSceneObject
     public override Variant _Get(StringName property)
     {
         var variant = base._Get(property);
+        serializedGuid ??= new SerializableGuid();
         var serializableGuid = serializedGuid as SerializableGuid;
         // if(property == nameof(serializedGuid))
         //     if (serializedGuid == null!)
@@ -29,7 +30,7 @@ public partial class ProcessSceneObject
         {
             /// Restore Guid:
             /// - Editor Prefab Overrides -> Revert
-            serializableGuid.SetGuid(guid);
+            serializableGuid?.SetGuid(guid);
         }
         else if (SerializableGuid.IsValid(serializableGuid))
         {

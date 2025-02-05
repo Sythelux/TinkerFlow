@@ -1,6 +1,7 @@
 using System.IO;
 using System.Reflection;
 using Godot;
+using Godot.Collections;
 using VRBuilder.Core.Editor.UI.Windows;
 
 namespace TinkerFlow.Godot.Editor
@@ -8,6 +9,7 @@ namespace TinkerFlow.Godot.Editor
     [Tool]
     public partial class TinkerFlowPlugin : EditorPlugin
     {
+        private static readonly Dictionary<string, Texture2D> iconCache = new Dictionary<string, Texture2D>();
         private static string? defaultBasePath; // "res://addons/TinkerFlow/"
 
         // private MyInspectorPlugin _plugin;
@@ -18,12 +20,10 @@ namespace TinkerFlow.Godot.Editor
         public override void _EnterTree()
         {
             Instance = this;
-            ProcessInspector = GD.Load<PackedScene>(ResourcePath("Scenes/ProcessInspector.tscn"))
-                .Instantiate<StepWindow>();
+            ProcessInspector = GD.Load<PackedScene>(ResourcePath("Scenes/ProcessInspector.tscn")).Instantiate<StepWindow>();
             AddControlToDock(DockSlot.LeftUl, ProcessInspector);
 
-            ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("Scenes/ProcessEditor.tscn"))
-                .Instantiate<ProcessEditor>();
+            ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("Scenes/ProcessEditor.tscn")).Instantiate<ProcessEditor>();
             if (ProcessEditor != null)
             {
                 EditorInterface.Singleton.GetEditorMainScreen().AddChild(ProcessEditor);
@@ -81,6 +81,22 @@ namespace TinkerFlow.Godot.Editor
             defaultBasePath ??= typeof(TinkerFlowPlugin).GetCustomAttribute<ScriptPathAttribute>()?.Path
                 .Replace($"{nameof(TinkerFlowPlugin)}.cs", "");
             return Path.Join(defaultBasePath, subPath);
+        }
+
+        public static Texture2D GetIcon(string iconName)
+        {
+            if (iconCache.TryGetValue(iconName, out var texture))
+                return texture;
+
+            if (EditorInterface.Singleton is EditorInterface editorInterface)
+            {
+                var theme = editorInterface.GetEditorTheme();
+                foreach (string themeType in theme.GetIconTypeList())
+                    if (theme.HasIcon(iconName, themeType))
+                        return theme.GetIcon(iconName, themeType);
+            }
+
+            return ResourceLoader.Load<Texture2D>(ResourcePath(iconName));
         }
     }
 }

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Godot;
+using System.Security.Cryptography.X509Certificates;
 using VRBuilder.Core;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Editor;
 using VRBuilder.Core.Editor.ProcessAssets;
 using VRBuilder.Core.Editor.UI.Graphics;
+using VRBuilder.Core.Editor.UI.GraphView;
 using VRBuilder.Core.Editor.UI.GraphView.Instantiators;
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 using VRBuilder.Core.Editor.UI.Windows;
 using VRBuilder.Core.Editor.Util;
+using VRBuilder.Core.Entities.Factories;
 
 namespace TinkerFlow.Godot.Editor
 {
@@ -19,6 +22,7 @@ namespace TinkerFlow.Godot.Editor
     [Tool]
     public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
     {
+
         #region Delegates
 
         [Signal]
@@ -44,10 +48,11 @@ namespace TinkerFlow.Godot.Editor
         public PackedScene? StepNode { get; set; }
 
         public RuntimeConfigurator? RuntimeConfigurator => runtimeConfigurator ??= EditorInterface.Singleton.GetEditedSceneRoot()?.GetChildren().OfType<RuntimeConfigurator>().FirstOrDefault();
+
         [Export]
         public PopupMenu AddNodeMenu
         {
-            get { return addNodeMenu ??= GetNode<PopupMenu>("../PopupMenu"); }
+            get { return addNodeMenu ??= GetNode<PopupMenu>("../AddNodePopup"); }
             set => addNodeMenu = value;
         }
 
@@ -73,6 +78,8 @@ namespace TinkerFlow.Godot.Editor
             ConnectionRequest += OnConnectionRequest;
             DisconnectionRequest += OnDisconnectionRequest;
             chapterMenu ??= new ProcessMenuView();
+
+            BuildContextualMenu();
 
             // chapterMenu.MenuExtendedChanged += (sender, args) => { chapterViewContainer.style.width = args.IsExtended ? ProcessMenuView.ExtendedMenuWidth : ProcessMenuView.MinimizedMenuWidth; };
             // chapterMenu.RefreshRequested += (sender, args) => { chapterViewContainer.MarkDirtyLayout(); };
@@ -135,6 +142,11 @@ namespace TinkerFlow.Godot.Editor
             foreach (ProcessGraphNode node in GetChildren().ToList().OfType<ProcessGraphNode>())
                 if (node.Dirty)
                     RefreshNode(node);
+
+            if (Input.IsKeyPressed(Key.Delete))
+            {
+                ModifyStep(0);
+            }
         }
 
         public void AddStep(int id)
@@ -142,7 +154,8 @@ namespace TinkerFlow.Godot.Editor
             var step = StepNode?.Instantiate<ProcessGraphNode>();
             switch (id)
             {
-                case 0:
+                //case 0: header
+                case 1: //step
                     if (step != null)
                     {
                         step.Position = popUpPosition;
@@ -182,6 +195,7 @@ namespace TinkerFlow.Godot.Editor
 
             if (currentProcess == null) return;
 
+            return;
             chapterMenu?.Initialise(currentProcess, this);
             // chapterViewContainer.onGUIHandler = () => chapterMenu.Draw();
 
@@ -255,6 +269,16 @@ namespace TinkerFlow.Godot.Editor
                 RefreshNode(node);
             }
         }
+        private void DeleteStep(IStep step)
+        {
+            if (currentChapter.ChapterMetadata.LastSelectedStep == step)
+            {
+                currentChapter.ChapterMetadata.LastSelectedStep = null;
+                GlobalEditorHandler.ChangeCurrentStep(null);
+            }
+
+            currentChapter.Data.Steps.Remove(step);
+        }
 
         private IEnumerable<ProcessGraphNode> GenerateNodes(IChapter chapter)
         {
@@ -275,6 +299,74 @@ namespace TinkerFlow.Godot.Editor
                 }
             }
         }
+
+
+        public void BuildContextualMenu()
+        {
+            // if (GlobalEditorHandler.GetCurrentProcess() == null)
+            // {
+            //     GD.PushWarning("No VR Builder scene is currently open.");
+            //     return;
+            // }
+
+            AddNodeMenu.Clear();
+            AddNodeMenu.AddItem("New");
+            AddNodeMenu.SetItemAsSeparator(0, true);
+            AddNodeMenu.SetItemAsCheckable(0, false);
+            foreach (IStepNodeInstantiator instantiator in instantiators.Where(i => i.IsInNodeMenu).OrderBy(i => i.Priority))
+            {
+                AddNodeMenu.AddItem(instantiator.Name);
+                AddNodeMenu.SetItemMetadata(AddNodeMenu.ItemCount - 1, instantiator.StepType);
+                AddNodeMenu.ResetSize();
+            }
+
+            EditNodeMenu.Clear();
+            EditNodeMenu.AddItem("Make group"); //TODO check if multiple nodes are selected.
+
+            EditNodeMenu.AddItem("");
+            EditNodeMenu.SetItemAsSeparator(EditNodeMenu.ItemCount - 1, true); //TODO check if we can pull it to Make group above
+            EditNodeMenu.SetItemAsCheckable(EditNodeMenu.ItemCount - 1, false);
+
+            //TODO: if you have one selected.
+            /*IContextMenuActions menuActions = evt.target as IContextMenuActions;
+
+            if (menuActions != null)
+            {
+                menuActions.AddContextMenuActions(evt.menu);
+                evt.menu.AppendSeparator();
+            }*/
+        }
+
+        public void OnEditNodePopupIndexPressed(int idx)
+        {
+            switch (EditNodeMenu.GetItemText(idx))
+            {
+                case "Make group":
+                    // MakeStepGroup(selection.Where(selected => selected is StepGraphNode).Cast<StepGraphNode>(), status);
+                    break;
+            }
+        }
+
+        public void OnAddNodePopupIndexPressed(int idx)
+        {
+            IStep step = EntityFactory.CreateStep(AddNodeMenu.GetItemText(idx), popUpPosition, AddNodeMenu.GetItemMetadata(idx).AsString());
+            currentChapter?.Data.Steps.Add(step);
+            CreateStepNode(step);
+            //TODO: CreateStepNodeWithUndo(step);
+            GlobalEditorHandler.CurrentStepModified(step);
+        }
+
+        // private void CreateStepNodeWithUndo(IStep step)
+        // {
+        //     IChapter storedChapter = currentChapter;
+        //
+        //     EditorUndoRedoManager undoRedo = TinkerFlowPlugin.Instance!.GetUndoRedo();
+        //     undoRedo?.CreateAction($"Undo Create Step: {step.StepMetadata.StepType}");
+        //     undoRedo?.AddDoMethod(this, nameof(CreateStepNode), Variant.From(step)); //doesn't work Godot doesn't support interfaces
+        //     undoRedo?.AddUndoMethod(this, nameof(DeleteStep), Variant.From(step));
+        //     undoRedo?.AddUndoMethod(this, nameof(SetChapter), Variant.From(storedChapter));
+        //     undoRedo?.CommitAction();
+        // }
 
         private ProcessGraphNode? CreateStepNode(IStep step)
         {
@@ -300,7 +392,6 @@ namespace TinkerFlow.Godot.Editor
         {
             GD.PushError(new NotImplementedException());
         }
-
 
         private ProcessGraphNode? FindStepNode(IStep? step)
         {

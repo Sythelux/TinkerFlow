@@ -109,11 +109,15 @@ namespace VRBuilder.Core.Editor
         /// <inheritdoc/>
         public void HandleCurrentStepModified(IStep? step)
         {
-            processWindow.GetChapter().ChapterMetadata.LastSelectedStep = step;
+            if (step == null || CurrentProcess == null) return;
+
+            IChapter? chapter = processWindow?.GetChapter();
+            if (chapter != null)
+                chapter.ChapterMetadata.LastSelectedStep = step;
 
             if (EditorConfigurator.Instance.Validation.IsAllowedToValidate()) EditorConfigurator.Instance.Validation.Validate(step.Data, CurrentProcess);
 
-            processWindow.RefreshChapterRepresentation();
+            processWindow?.RefreshChapterRepresentation();
         }
 
         /// <inheritdoc/>

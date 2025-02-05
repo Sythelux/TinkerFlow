@@ -23,7 +23,7 @@ Editor.Godots/LastEditedProcessName=""
 [application]
 
 config/name="TinkerFlow"
-config/features=PackedStringArray("4.3", "C#")
+config/features=PackedStringArray("4.4", "C#")
 config/icon="res://icon.svg"
 
 [autoload]

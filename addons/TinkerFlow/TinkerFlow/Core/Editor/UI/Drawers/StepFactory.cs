@@ -1,5 +1,3 @@
-#if UNITY_5_3_OR_NEWER
-using UnityEditor
 using System;
 using System.Reflection;
 using Godot;
@@ -104,7 +102,3 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         }
     }
 }
-#elif GODOT
-using Godot;
-//TODO
-#endif

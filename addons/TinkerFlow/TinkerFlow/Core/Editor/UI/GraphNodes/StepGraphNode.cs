@@ -1,8 +1,8 @@
-#if UNITY_6000_0_OR_NEWER
+using Godot;
 using System.Linq;
-using VRBuilder.Core;
+using TinkerFlow.Godot.Editor;
 
-namespace VRBuilder.Core.Editor.UI.Graphics
+namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
 {
     /// <summary>
     /// Step node in a graph view editor.
@@ -10,94 +10,221 @@ namespace VRBuilder.Core.Editor.UI.Graphics
     public partial class StepGraphNode : ProcessGraphNode
     {
         protected IStep step;
-
-        public StepGraphNode(IStep step) : base()
-        {
-            Title = step.Data.Name;
-            this.step = step;
-
-            AddRow(false);
-            SetSlotEnabledLeft(0, true);
-
-            for (var i = 0; i < step.Data.Transitions.Data.Transitions.Count; i++)
-            {
-                // ITransition transition = step.Data.Transitions.Data.Transitions[i];
-                SetSlotEnabledRight(i, true);
-                if (i > 0) // firstrow exists because of input side.
-                    AddRow();
-            }
-
-            NodeSelected += OnSelected;
-        }
-
-        public StepGraphNode()
-        {
-        }
+        Button addButton;
 
         /// <inheritdoc/>
-        public override IStep? EntryPoint => step;
+        public override IStep EntryPoint => step;
 
         /// <inheritdoc/>
         public override IStep[] Outputs => step.Data.Transitions.Data.Transitions.Select(t => t.Data.TargetStep).ToArray();
 
-        public override void _Ready()
+        public StepGraphNode(IStep step) : base()
         {
-            // GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
-            PositionOffset = step.StepMetadata.Position;
+            this.step = step;
+            SetTitle(step.Data.Name);
+            SetPosition(step.StepMetadata.Position);
+
+            AddChild(new Label());
+            SetSlotEnabledLeft(0, true);
+
+            addButton = CreateAddButton();
+            AddChild(addButton);
+        }
+
+        Button CreateAddButton()
+        {
+            var button = new Button();
+            button.Text = "Add";
+            button.Icon = TinkerFlowPlugin.GetIcon("../VR-Builder-Lite/Source/Core/Resources/icon_add_light.png");
+            return button;
         }
 
         /// <inheritdoc/>
         public override void Refresh()
         {
-            // GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
-            Title = step?.Data.Name;
+            SetTitle(step.Data.Name);
             base.Refresh();
         }
 
-        /// <summary>
-        /// Creates a transition port supporting undo.
-        /// </summary>
-        protected virtual void CreatePortWithUndo(StepNodeRow row)
+        public override void UpdateTransitionTo(int fromPort, ProcessGraphNode toNode, int toPort = 0)
         {
-        }
-
-        /// <summary>
-        /// Removes the specified output port supporting undo.
-        /// </summary>        
-        protected override void RemovePortWithUndo(int port)
-        {
-        }
-
-        /// <inheritdoc/>
-        public void OnSelected()
-        {
-            GlobalEditorHandler.ChangeCurrentStep(step);
-            GlobalEditorHandler.StartEditingStep();
-        }
-
-        /// <inheritdoc/>
-        public override void SetOutput(int index, IStep output)
-        {
-            step.Data.Transitions.Data.Transitions[index].Data.TargetStep = output;
-        }
-
-        /// <inheritdoc/>
-        public override void AddToChapter(IChapter chapter)
-        {
-            chapter.Data.Steps.Add(step);
-        }
-
-        /// <inheritdoc/>
-        public override void RemoveFromChapter(IChapter chapter)
-        {
-            if (chapter.ChapterMetadata.LastSelectedStep == step)
+            var ccwad = GetChildCount() - 1; //childCountWithoutAddButton
+            if (fromPort > ccwad - 1)
             {
-                chapter.ChapterMetadata.LastSelectedStep = null;
-                GlobalEditorHandler.ChangeCurrentStep(null);
+                AddRow();
             }
-
-            chapter.Data.Steps.Remove(step);
         }
+
+        public override void RemoveTransitionTo(int fromPort, ProcessGraphNode toNode, int toPort = 0)
+        {
+        }
+
+        // /// <summary>
+        // /// Creates a transition port supporting undo.
+        // /// </summary>
+        // protected virtual void CreatePortWithUndo()
+        // {
+        //     ITransition transition = EntityFactory.CreateTransition();
+        //
+        //     RevertableChangesHandler.Do(new ProcessCommand(
+        //         () =>
+        //         {
+        //             step.Data.Transitions.Data.Transitions.Add(transition);
+        //             AddTransitionPort();
+        //         },
+        //         () =>
+        //         {
+        //             RemovePort(outputContainer[step.Data.Transitions.Data.Transitions.IndexOf(transition)] as Port);
+        //         }
+        //     ));
+        // }
+        //
+        // /// <summary>
+        // /// Removes the specified output port.
+        // /// </summary>
+        // protected void RemovePort(Port port)
+        // {
+        //     Edge edge = port.connections.FirstOrDefault();
+        //
+        //     if (edge != null)
+        //     {
+        //         edge.input.Disconnect(edge);
+        //         edge.parent.Remove(edge);
+        //     }
+        //
+        //     int index = outputContainer.IndexOf(port);
+        //     step.Data.Transitions.Data.Transitions.RemoveAt(index);
+        //
+        //     outputContainer.Remove(port);
+        //
+        //     if (outputContainer.childCount == 0)
+        //     {
+        //         CreatePortWithUndo();
+        //     }
+        //
+        //     RefreshPorts();
+        //     RefreshExpandedState();
+        // }
+        //
+        // /// <summary>
+        // /// Removes the specified output port supporting undo.
+        // /// </summary>
+        // protected override void RemovePortWithUndo(Port port)
+        // {
+        //     int index = outputContainer.IndexOf(port);
+        //     ITransition removedTransition = step.Data.Transitions.Data.Transitions[index];
+        //     IChapter storedChapter = GlobalEditorHandler.GetCurrentChapter();
+        //
+        //     RevertableChangesHandler.Do(new ProcessCommand(
+        //         () =>
+        //         {
+        //             RemovePort(port);
+        //         },
+        //         () =>
+        //         {
+        //             step.Data.Transitions.Data.Transitions.Insert(index, removedTransition);
+        //             AddTransitionPort(true, index);
+        //             GlobalEditorHandler.RequestNewChapter(storedChapter);
+        //         }
+        //     ));
+        // }
+
+        public override void _EnterTree()
+        {
+            ChildEnteredTree += OnChildAdded;
+            ChildExitingTree += OnChildRemoved;
+        }
+
+        private void OnChildRemoved(Node node)
+        {
+            if (node is StepNodeRow stepNodeRow)
+            {
+                stepNodeRow.AddTransition -= AddRow;
+                stepNodeRow.RemoveTransition -= RemoveRow;
+            }
+        }
+
+        private void OnChildAdded(Node node)
+        {
+            if (node is StepNodeRow stepNodeRow)
+            {
+                stepNodeRow.AddTransition += AddRow;
+                stepNodeRow.RemoveTransition += RemoveRow;
+                SetSlotEnabledRight(GetChildCount() - 1, true);
+            }
+        }
+
+        public void AddRow(bool isDeletablePort = true, bool supportsAddingNewRows = true)
+        {
+            AddRow(null, isDeletablePort, supportsAddingNewRows);
+        }
+
+        public void AddRow(StepNodeRow? sourceRow)
+        {
+            AddRow(sourceRow, true, true);
+        }
+
+        public void AddRow(StepNodeRow? sourceRow, bool isDeletablePort, bool supportsAddingNewRows)
+        {
+            var newRow = RowPrefab.Instantiate<StepNodeRow>();
+            newRow.Removable = isDeletablePort;
+            newRow.Addable = supportsAddingNewRows;
+            RemoveChild(addButton);
+            AddChild(newRow);
+            AddChild(addButton);
+        }
+
+        public void RemoveRow(StepNodeRow row)
+        {
+            RemoveChild(row);
+        }
+
+        // /// <inheritdoc/>
+        // public override void OnSelected()
+        // {
+        //     base.OnSelected();
+        //
+        //     GlobalEditorHandler.ChangeCurrentStep(step);
+        //     GlobalEditorHandler.StartEditingStep();
+        // }
+
+        // /// <inheritdoc/>
+        // public override void SetOutput(int index, IStep output)
+        // {
+        //     step.Data.Transitions.Data.Transitions[index].Data.TargetStep = output;
+        // }
+        //
+        // /// <inheritdoc/>
+        // public override void AddToChapter(IChapter chapter)
+        // {
+        //     chapter.Data.Steps.Add(step);
+        // }
+        //
+        // /// <inheritdoc/>
+        // public override void RemoveFromChapter(IChapter chapter)
+        // {
+        //     if (chapter.ChapterMetadata.LastSelectedStep == step)
+        //     {
+
+        //         chapter.ChapterMetadata.LastSelectedStep = null;
+        //         GlobalEditorHandler.ChangeCurrentStep(null);
+        //     }
+        //
+        //     chapter.Data.Steps.Remove(step);
+        // }
+
+        // /// <inheritdoc/>
+        // public override void UpdateOutputPortName(Port outputPort, Node input)
+        // {
+        //     int index = outputContainer.IndexOf(outputPort);
+        //     if (index >= 0 && string.IsNullOrEmpty(step.Data.Transitions.Data.Transitions[index].Data.Name) == false)
+        //     {
+        //         outputPort.portName = step.Data.Transitions.Data.Transitions[index].Data.Name;
+        //     }
+        //     else
+        //     {
+        //         base.UpdateOutputPortName(outputPort, input);
+        //     }
+        // }
     }
 }
-#endif

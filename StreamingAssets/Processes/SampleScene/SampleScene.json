@@ -3,12 +3,12 @@
   "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+ProcessWrapper, TinkerFlow",
   "SubChapters": {
     "$id": "2",
-    "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, TinkerFlow]], System.Private.CoreLib",
+    "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, TinkerFlow]], mscorlib",
     "$values": []
   },
   "Steps": {
     "$id": "3",
-    "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, TinkerFlow]], System.Private.CoreLib",
+    "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, TinkerFlow]], mscorlib",
     "$values": [
       {
         "$id": "4",
@@ -17,11 +17,11 @@
           "$id": "5",
           "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
           "Position": {
-            "x": 270.0,
+            "x": 230.0,
             "y": 0.0
           },
           "StepType": "default",
-          "Guid": "6ca3b553-6fd1-4c8d-b426-86a9a89bf08b"
+          "Guid": "617a4a4f-704a-4fba-8c09-4cbdf6159771"
         },
         "Data": {
           "$id": "6",
@@ -36,20 +36,27 @@
               "$type": "VRBuilder.Core.BehaviorCollection+EntityData, TinkerFlow",
               "Behaviors": {
                 "$id": "9",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], System.Private.CoreLib",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], mscorlib",
                 "$values": [
                   {
                     "$id": "10",
-                    "$type": "VRBuilder.Core.Behaviors.EnableGameObjectBehavior, TinkerFlow",
+                    "$type": "VRBuilder.Core.Behaviors.SetObjectsEnabledBehavior, TinkerFlow",
                     "Data": {
                       "$id": "11",
-                      "$type": "VRBuilder.Core.Behaviors.EnableGameObjectBehavior+EntityData, TinkerFlow",
-                      "Target": {
+                      "$type": "VRBuilder.Core.Behaviors.SetObjectsEnabledBehavior+EntityData, TinkerFlow",
+                      "TargetObjects": {
                         "$id": "12",
-                        "$type": "VRBuilder.Core.SceneObjects.SceneObjectReference, TinkerFlow",
-                        "UniqueName": "User"
+                        "$type": "VRBuilder.Core.SceneObjects.MultipleSceneObjectReference, TinkerFlow",
+                        "guids": {
+                          "$id": "13",
+                          "$type": "System.Collections.Generic.List`1[[System.Guid, mscorlib]], mscorlib",
+                          "$values": [
+                            "ddb92651-165c-4dab-9c42-d413af25d89d"
+                          ]
+                        }
                       },
-                      "DisableOnDeactivating": false,
+                      "SetEnabled": true,
+                      "RevertOnDeactivation": false,
                       "Metadata": null
                     }
                   }
@@ -58,30 +65,30 @@
             }
           },
           "Transitions": {
-            "$id": "13",
+            "$id": "14",
             "$type": "VRBuilder.Core.TransitionCollection, TinkerFlow",
             "Data": {
-              "$id": "14",
+              "$id": "15",
               "$type": "VRBuilder.Core.TransitionCollection+EntityData, TinkerFlow",
               "Transitions": {
-                "$id": "15",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], System.Private.CoreLib",
+                "$id": "16",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], mscorlib",
                 "$values": [
                   {
-                    "$id": "16",
+                    "$id": "17",
                     "$type": "VRBuilder.Core.Transition, TinkerFlow",
                     "Data": {
-                      "$id": "17",
+                      "$id": "18",
                       "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
                       "Conditions": {
-                        "$id": "18",
-                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
+                        "$id": "19",
+                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], mscorlib",
                         "$values": [
                           {
-                            "$id": "19",
+                            "$id": "20",
                             "$type": "VRBuilder.Core.Conditions.TimeoutCondition, TinkerFlow",
                             "Data": {
-                              "$id": "20",
+                              "$id": "21",
                               "$type": "VRBuilder.Core.Conditions.TimeoutCondition+EntityData, TinkerFlow",
                               "Timeout": 1.0,
                               "IsCompleted": false,
@@ -90,73 +97,58 @@
                           }
                         ]
                       },
-                      "TargetStep": {
-                        "$id": "21",
-                        "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, TinkerFlow",
-                        "LifeCycle": null,
-                        "StepMetadata": {
-                          "$id": "22",
-                          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
-                          "Position": {
-                            "x": 0.0,
-                            "y": 0.0
-                          },
-                          "StepType": null,
-                          "Guid": "6b0b2859-f926-4d9d-a7b2-7b084d9307dc"
-                        },
-                        "Parent": null
-                      },
+                      "TargetStep": null,
                       "Mode": null,
                       "IsCompleted": false,
                       "Metadata": {
-                        "$id": "23",
+                        "$id": "22",
                         "$type": "VRBuilder.Core.Metadata, TinkerFlow",
                         "values": {
-                          "$id": "24",
-                          "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+                          "$id": "23",
+                          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib]], mscorlib",
                           "Conditions": {
-                            "$id": "25",
-                            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+                            "$id": "24",
+                            "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
                             "VRBuilder.Core.Attributes.FoldableAttribute": true,
                             "VRBuilder.Core.Attributes.ReorderableListOfAttribute": {
-                              "$id": "26",
+                              "$id": "25",
                               "$type": "VRBuilder.Core.Attributes.ListOfAttribute+Metadata, TinkerFlow",
                               "ChildAttributes": {
-                                "$id": "27",
-                                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Attributes.MetadataAttribute, TinkerFlow]], System.Private.CoreLib",
+                                "$id": "26",
+                                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Attributes.MetadataAttribute, TinkerFlow]], mscorlib",
                                 "$values": [
                                   {
-                                    "$id": "28",
+                                    "$id": "27",
                                     "$type": "VRBuilder.Core.Attributes.FoldableAttribute, TinkerFlow",
                                     "Name": "VRBuilder.Core.Attributes.FoldableAttribute",
-                                    "TypeId": "VRBuilder.Core.Attributes.FoldableAttribute, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                                    "TypeId": "VRBuilder.Core.Attributes.FoldableAttribute, TinkerFlow, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+                                  },
+                                  {
+                                    "$id": "28",
+                                    "$type": "VRBuilder.Core.Attributes.HelpAttribute, TinkerFlow",
+                                    "Name": "VRBuilder.Core.Attributes.HelpAttribute",
+                                    "TypeId": "VRBuilder.Core.Attributes.HelpAttribute, TinkerFlow, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
                                   },
                                   {
                                     "$id": "29",
-                                    "$type": "VRBuilder.Core.Attributes.DeletableAttribute, TinkerFlow",
-                                    "Name": "VRBuilder.Core.Attributes.DeletableAttribute",
-                                    "TypeId": "VRBuilder.Core.Attributes.DeletableAttribute, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-                                  },
-                                  {
-                                    "$id": "30",
-                                    "$type": "VRBuilder.Core.Attributes.HelpAttribute, TinkerFlow",
-                                    "Name": "VRBuilder.Core.Attributes.HelpAttribute",
-                                    "TypeId": "VRBuilder.Core.Attributes.HelpAttribute, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                                    "$type": "VRBuilder.Core.Attributes.MenuAttribute, TinkerFlow",
+                                    "Name": "VRBuilder.Core.Attributes.MenuAttribute",
+                                    "TypeId": "VRBuilder.Core.Attributes.MenuAttribute, TinkerFlow, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
                                   }
                                 ]
                               },
                               "ChildMetadata": {
-                                "$id": "31",
-                                "$type": "System.Collections.Generic.List`1[[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
+                                "$id": "30",
+                                "$type": "System.Collections.Generic.List`1[[System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib]], mscorlib",
                                 "$values": [
                                   {
-                                    "$id": "32",
-                                    "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+                                    "$id": "31",
+                                    "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
                                     "VRBuilder.Core.Attributes.FoldableAttribute": true,
-                                    "VRBuilder.Core.Attributes.DeletableAttribute": null,
                                     "VRBuilder.Core.Attributes.HelpAttribute": null,
+                                    "VRBuilder.Core.Attributes.MenuAttribute": null,
                                     "ReorderableElement": {
-                                      "$id": "33",
+                                      "$id": "32",
                                       "$type": "VRBuilder.Core.UI.Drawers.Metadata.ReorderableElementMetadata, TinkerFlow",
                                       "MoveUp": false,
                                       "MoveDown": false,
@@ -168,82 +160,9 @@
                               }
                             },
                             "VRBuilder.Core.Attributes.ExtendableListAttribute": {
-                              "$id": "34",
+                              "$id": "33",
                               "$type": "VRBuilder.Core.Attributes.ExtendableListAttribute+SerializedTypeWrapper, TinkerFlow",
-                              "Type": "VRBuilder.Core.Conditions.ICondition, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "$id": "35",
-                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
-                    "Data": {
-                      "$id": "36",
-                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
-                      "Conditions": {
-                        "$id": "37",
-                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
-                        "$values": []
-                      },
-                      "TargetStep": {
-                        "$id": "38",
-                        "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, TinkerFlow",
-                        "LifeCycle": null,
-                        "StepMetadata": {
-                          "$id": "39",
-                          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
-                          "Position": {
-                            "x": 0.0,
-                            "y": 0.0
-                          },
-                          "StepType": null,
-                          "Guid": "237c6dc7-cf25-454c-b681-2cdab7e413ea"
-                        },
-                        "Parent": null
-                      },
-                      "Mode": null,
-                      "IsCompleted": false,
-                      "Metadata": {
-                        "$id": "40",
-                        "$type": "VRBuilder.Core.Metadata, TinkerFlow",
-                        "values": {
-                          "$id": "41",
-                          "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
-                          "Conditions": {
-                            "$id": "42",
-                            "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
-                            "VRBuilder.Core.Attributes.FoldableAttribute": true,
-                            "VRBuilder.Core.Attributes.ReorderableListOfAttribute": {
-                              "$id": "43",
-                              "$type": "VRBuilder.Core.Attributes.ListOfAttribute+Metadata, TinkerFlow",
-                              "ChildAttributes": {
-                                "$id": "44",
-                                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Attributes.MetadataAttribute, TinkerFlow]], System.Private.CoreLib",
-                                "$values": [
-                                  {
-                                    "$ref": "28"
-                                  },
-                                  {
-                                    "$ref": "29"
-                                  },
-                                  {
-                                    "$ref": "30"
-                                  }
-                                ]
-                              },
-                              "ChildMetadata": {
-                                "$id": "45",
-                                "$type": "System.Collections.Generic.List`1[[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
-                                "$values": []
-                              }
-                            },
-                            "VRBuilder.Core.Attributes.ExtendableListAttribute": {
-                              "$id": "46",
-                              "$type": "VRBuilder.Core.Attributes.ExtendableListAttribute+SerializedTypeWrapper, TinkerFlow",
-                              "Type": "VRBuilder.Core.Conditions.ICondition, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                              "Type": "VRBuilder.Core.Conditions.ICondition, TinkerFlow, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
                             }
                           }
                         }
@@ -256,295 +175,63 @@
           },
           "Mode": null,
           "ToUnlock": {
-            "$id": "47",
-            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, TinkerFlow]], System.Private.CoreLib",
+            "$id": "34",
+            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.RestrictiveEnvironment.LockablePropertyReference, TinkerFlow]], mscorlib",
             "$values": []
           },
-          "TagsToUnlock": {
-            "$id": "48",
-            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
-          },
           "GroupsToUnlock": {
-            "$ref": "48"
+            "$id": "35",
+            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib],[System.Collections.Generic.IEnumerable`1[[System.Type, mscorlib]], mscorlib]], mscorlib"
           },
-          "Metadata": {
-            "$id": "49",
-            "$type": "VRBuilder.Core.Metadata, TinkerFlow",
-            "values": {
-              "$id": "50",
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
-              "TabsGroup": {
-                "$id": "51",
-                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
-                "selected": 0
-              }
-            }
-          }
-        }
-      },
-      {
-        "$id": "52",
-        "$type": "VRBuilder.Core.Step, TinkerFlow",
-        "StepMetadata": {
-          "$id": "53",
-          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
-          "Position": {
-            "x": 559.0,
-            "y": 0.0
-          },
-          "StepType": "default",
-          "Guid": "6b0b2859-f926-4d9d-a7b2-7b084d9307dc"
-        },
-        "Data": {
-          "$id": "54",
-          "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
-          "Name": "Step",
-          "Description": "Description of Step",
-          "Behaviors": {
-            "$id": "55",
-            "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
-            "Data": {
-              "$id": "56",
-              "$type": "VRBuilder.Core.BehaviorCollection+EntityData, TinkerFlow",
-              "Behaviors": {
-                "$id": "57",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], System.Private.CoreLib",
-                "$values": []
-              }
-            }
-          },
-          "Transitions": {
-            "$id": "58",
-            "$type": "VRBuilder.Core.TransitionCollection, TinkerFlow",
-            "Data": {
-              "$id": "59",
-              "$type": "VRBuilder.Core.TransitionCollection+EntityData, TinkerFlow",
-              "Transitions": {
-                "$id": "60",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], System.Private.CoreLib",
-                "$values": [
-                  {
-                    "$id": "61",
-                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
-                    "Data": {
-                      "$id": "62",
-                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
-                      "Conditions": {
-                        "$id": "63",
-                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
-                        "$values": []
-                      },
-                      "TargetStep": null,
-                      "Mode": null,
-                      "IsCompleted": false,
-                      "Metadata": null
-                    }
-                  },
-                  {
-                    "$id": "64",
-                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
-                    "Data": {
-                      "$id": "65",
-                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
-                      "Conditions": {
-                        "$id": "66",
-                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
-                        "$values": []
-                      },
-                      "TargetStep": null,
-                      "Mode": null,
-                      "IsCompleted": false,
-                      "Metadata": null
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "Mode": null,
-          "ToUnlock": {
-            "$id": "67",
-            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, TinkerFlow]], System.Private.CoreLib",
-            "$values": []
-          },
-          "TagsToUnlock": {
-            "$id": "68",
-            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
-          },
-          "GroupsToUnlock": {
-            "$ref": "68"
-          },
-          "Metadata": {
-            "$id": "69",
-            "$type": "VRBuilder.Core.Metadata, TinkerFlow",
-            "values": {
-              "$id": "70",
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
-              "TabsGroup": {
-                "$id": "71",
-                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
-                "selected": 0
-              }
-            }
-          }
-        }
-      },
-      {
-        "$id": "72",
-        "$type": "VRBuilder.Core.Step, TinkerFlow",
-        "StepMetadata": {
-          "$id": "73",
-          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
-          "Position": {
-            "x": 559.0,
-            "y": 139.0
-          },
-          "StepType": "default",
-          "Guid": "237c6dc7-cf25-454c-b681-2cdab7e413ea"
-        },
-        "Data": {
-          "$id": "74",
-          "$type": "VRBuilder.Core.Step+EntityData, TinkerFlow",
-          "Name": "Step",
-          "Description": "Desc of Step",
-          "Behaviors": {
-            "$id": "75",
-            "$type": "VRBuilder.Core.BehaviorCollection, TinkerFlow",
-            "Data": {
-              "$id": "76",
-              "$type": "VRBuilder.Core.BehaviorCollection+EntityData, TinkerFlow",
-              "Behaviors": {
-                "$id": "77",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.IBehavior, TinkerFlow]], System.Private.CoreLib",
-                "$values": []
-              }
-            }
-          },
-          "Transitions": {
-            "$id": "78",
-            "$type": "VRBuilder.Core.TransitionCollection, TinkerFlow",
-            "Data": {
-              "$id": "79",
-              "$type": "VRBuilder.Core.TransitionCollection+EntityData, TinkerFlow",
-              "Transitions": {
-                "$id": "80",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.ITransition, TinkerFlow]], System.Private.CoreLib",
-                "$values": [
-                  {
-                    "$id": "81",
-                    "$type": "VRBuilder.Core.Transition, TinkerFlow",
-                    "Data": {
-                      "$id": "82",
-                      "$type": "VRBuilder.Core.Transition+EntityData, TinkerFlow",
-                      "Conditions": {
-                        "$id": "83",
-                        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Conditions.ICondition, TinkerFlow]], System.Private.CoreLib",
-                        "$values": []
-                      },
-                      "TargetStep": {
-                        "$id": "84",
-                        "$type": "VRBuilder.Core.Serialization.NewtonsoftJsonProcessSerializerV4+Wrapper+StepRef, TinkerFlow",
-                        "LifeCycle": null,
-                        "StepMetadata": {
-                          "$id": "85",
-                          "$type": "VRBuilder.Core.StepMetadata, TinkerFlow",
-                          "Position": {
-                            "x": 0.0,
-                            "y": 0.0
-                          },
-                          "StepType": null,
-                          "Guid": "6ca3b553-6fd1-4c8d-b426-86a9a89bf08b"
-                        },
-                        "Parent": null
-                      },
-                      "Mode": null,
-                      "IsCompleted": false,
-                      "Metadata": null
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "Mode": null,
-          "ToUnlock": {
-            "$id": "86",
-            "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.Behaviors.LockablePropertyReference, TinkerFlow]], System.Private.CoreLib",
-            "$values": []
-          },
-          "TagsToUnlock": {
-            "$id": "87",
-            "$type": "System.Collections.Generic.Dictionary`2[[System.Guid, System.Private.CoreLib],[System.Collections.Generic.IEnumerable`1[[System.Type, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib"
-          },
-          "GroupsToUnlock": {
-            "$ref": "87"
-          },
-          "Metadata": {
-            "$id": "88",
-            "$type": "VRBuilder.Core.Metadata, TinkerFlow",
-            "values": {
-              "$id": "89",
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib]], System.Private.CoreLib",
-              "TabsGroup": {
-                "$id": "90",
-                "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
-                "selected": 0
-              }
-            }
-          }
+          "Metadata": null
         }
       }
     ]
   },
   "Process": {
-    "$id": "91",
+    "$id": "36",
     "$type": "VRBuilder.Core.Process, TinkerFlow",
     "CurrentStep": null,
     "ProcessMetadata": {
-      "$id": "92",
+      "$id": "37",
       "$type": "VRBuilder.Core.ProcessMetadata, TinkerFlow",
       "StringLocalizationTable": null,
-      "Guid": "15cdb3cd-05bf-4d9d-9aff-60715f0fe60a"
+      "Guid": "37a445d3-cd1a-4dbf-bc64-6dd723626517"
     },
     "Data": {
-      "$id": "93",
+      "$id": "38",
       "$type": "VRBuilder.Core.Process+EntityData, TinkerFlow",
       "Chapters": {
-        "$id": "94",
-        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, TinkerFlow]], System.Private.CoreLib",
+        "$id": "39",
+        "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IChapter, TinkerFlow]], mscorlib",
         "$values": [
           {
-            "$id": "95",
+            "$id": "40",
             "$type": "VRBuilder.Core.Chapter, TinkerFlow",
             "ChapterMetadata": {
-              "$id": "96",
+              "$id": "41",
               "$type": "VRBuilder.Core.ChapterMetadata, TinkerFlow",
               "LastSelectedStep": null,
               "EntryNodePosition": {
                 "x": 0.0,
                 "y": 0.0
               },
-              "Guid": "c466de93-4433-44b7-95da-1eed05e180c6"
+              "Guid": "a4c47069-8193-406c-b505-072b1a966af7",
+              "ViewTransform": null
             },
             "Data": {
-              "$id": "97",
+              "$id": "42",
               "$type": "VRBuilder.Core.Chapter+EntityData, TinkerFlow",
               "Name": "Chapter 1",
               "FirstStep": {
                 "$ref": "4"
               },
               "Steps": {
-                "$id": "98",
-                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, TinkerFlow]], System.Private.CoreLib",
+                "$id": "43",
+                "$type": "System.Collections.Generic.List`1[[VRBuilder.Core.IStep, TinkerFlow]], mscorlib",
                 "$values": [
                   {
                     "$ref": "4"
-                  },
-                  {
-                    "$ref": "52"
-                  },
-                  {
-                    "$ref": "72"
                   }
                 ]
               }
@@ -553,9 +240,9 @@
         ]
       },
       "FirstChapter": {
-        "$ref": "95"
+        "$ref": "40"
       },
-      "Name": "SampleScene",
+      "Name": "Untitled",
       "Mode": null,
       "Metadata": null
     }
