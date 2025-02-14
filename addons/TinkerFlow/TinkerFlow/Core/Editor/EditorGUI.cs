@@ -1,4 +1,3 @@
-#if UNITY_6000_0_OR_NEWER
 using System;
 using Godot;
 using TinkerFlow.Godot.Editor;
@@ -36,7 +35,7 @@ namespace VRBuilder.Core.Editor.Godot
             Error,
         }
 
-        public static ObjectDrawer ObjectField(Label label, Node obj, Type objType, bool allowSceneObjects)
+        public static ObjectDrawer ObjectField(string text, Resource obj, Type objType, bool allowSceneObjects)
         {
             var od = objectDrawerPrefab.Instantiate<ObjectDrawer>();
             od.AllowSceneObjects = allowSceneObjects;
@@ -60,4 +59,3 @@ namespace VRBuilder.Core.Editor.Godot
         }
     }
 }
-#endif

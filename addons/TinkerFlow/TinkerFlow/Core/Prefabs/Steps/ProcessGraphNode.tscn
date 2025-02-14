@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqjwq055osyy2"]
+
+[ext_resource type="Script" uid="uid://bb7fisov1xsop" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphNodes/StepGraphNode.cs" id="1_u6ogd"]
+[ext_resource type="Texture2D" uid="uid://co6auhii3dfqi" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_delete_light.png" id="1_w1vdw"]
+[ext_resource type="Texture2D" uid="uid://8bly8v5i656b" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_add_light.png" id="2_u6ogd"]
+
+[node name="GraphNode" type="GraphNode"]
+offset_right = 9.0
+offset_bottom = 55.0
+title = "<StepName>"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+script = ExtResource("1_u6ogd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Go to next Chapter"
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("1_w1vdw")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+text = "Add"
+icon = ExtResource("2_u6ogd")
+
+[node name="ProcessGraphNode" type="Control" parent="."]
+layout_mode = 2

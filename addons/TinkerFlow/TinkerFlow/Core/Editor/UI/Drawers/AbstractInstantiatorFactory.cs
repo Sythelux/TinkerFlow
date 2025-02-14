@@ -1,4 +1,3 @@
-#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
@@ -29,24 +28,23 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 DisabledMenuItem<T> disabled = menuOption as DisabledMenuItem<T>;
                 MenuItem<T> item = menuOption as MenuItem<T>;
 
-                // if (separator != null)
-                // {
-                //     return new TestableEditorElements.MenuSeparator(separator.PathToSubmenu);
-                // }
-                //
-                // if (disabled != null)
-                // {
-                //     return new TestableEditorElements.DisabledMenuItem(new GUIContent(disabled.Label));
-                // }
-                //
-                // if (item != null)
-                // {
-                //     return new TestableEditorElements.MenuItem(new GUIContent(item.DisplayedName), false, () => ChangeValue(() => item.GetNewItem(), () => currentValue, changeValueCallback));
-                // }
+                if (separator != null)
+                {
+                    return new TestableEditorElements.MenuSeparator(separator.PathToSubmenu);
+                }
+
+                if (disabled != null)
+                {
+                    return new TestableEditorElements.DisabledMenuItem(new Label { Text = disabled.Label });
+                }
+
+                if (item != null)
+                {
+                    return new TestableEditorElements.MenuItem(new Label { Text = item.DisplayedName }, false, () => ChangeValue(() => item.GetNewItem(), () => currentValue, changeValueCallback));
+                }
 
                 throw new InvalidCastException("There is a closed list of implementations of AddItemMenuOption.");
             }).ToList();
         }
     }
 }
-#endif

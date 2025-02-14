@@ -1,10 +1,8 @@
-#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System;
-using UnityEngine;
 
 namespace VRBuilder.Core.Editor.Tabs
 {
@@ -14,7 +12,7 @@ namespace VRBuilder.Core.Editor.Tabs
     internal class DynamicTab : ITab
     {
         /// <inheritdoc/>
-        public virtual GUIContent Label { get; }
+        public virtual string Label { get; }
 
         /// <inheritdoc/>
         public object GetValue()
@@ -40,7 +38,7 @@ namespace VRBuilder.Core.Editor.Tabs
         /// <param name="label">A label to display.</param>
         /// <param name="getter"><seealso cref="GetValue"/> implementation.</param>
         /// <param name="setter"><seealso cref="SetValue"/> implementation.</param>
-        public DynamicTab(GUIContent label, Func<object> getter, Action<object> setter)
+        public DynamicTab(string label, Func<object> getter, Action<object> setter)
         {
             Label = label;
             this.getter = getter;
@@ -48,5 +46,3 @@ namespace VRBuilder.Core.Editor.Tabs
         }
     }
 }
-
-#endif

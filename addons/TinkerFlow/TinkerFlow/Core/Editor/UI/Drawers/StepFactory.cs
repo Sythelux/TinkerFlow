@@ -27,15 +27,18 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (currentValue is Step.EntityData step)
             {
-                step.Metadata ??= new Metadata();
-                var container = inspectorStepPrefab.Instantiate<InspectorStep>();
-                container.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
-
                 //if ( lastStep != step )
                 {
-                    container.Step = step;
-                    ClearContainer(container.Behaviors);
-                    UpdateBehaviors(container.Behaviors, step.Behaviors, changeValueCallback, text);
+                    step.Metadata ??= new Metadata();
+                    var container = new TabContainer();
+                    container.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
+
+                    // container.Step = step;
+                    // ClearContainer(container.Behaviors);
+                    Control? control = DrawerLocator.GetDrawerForValue(step.Behaviors, step.Behaviors.GetType()).Create(step.Behaviors, changeValueCallback, "Behaviors");
+                    control.Name = "Behaviors";
+                    container.AddChild(control);
+                    // UpdateBehaviors(container.Behaviors, step.Behaviors, changeValueCallback, text);
                     // ClearContainer(container.Transitions);
                     // UpdateTransitions(container.Transitions, step.Transitions, changeValueCallback, label);
                     // ClearContainer(container.UnlockedElements);

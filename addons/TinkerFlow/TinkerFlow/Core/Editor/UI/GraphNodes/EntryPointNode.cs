@@ -13,10 +13,14 @@ namespace VRBuilder.Core.Editor.UI.Graphics
         protected readonly Label label;
 
         /// <inheritdoc/>
-        public override IStep[] Outputs => new[] { GlobalEditorHandler.GetCurrentChapter().Data.FirstStep };
+        public override IStep[] Outputs => [GlobalEditorHandler.GetCurrentChapter().Data.FirstStep];
 
         /// <inheritdoc/>
-        public override IStep EntryPoint => null;
+        public override IStep EntryPoint
+        {
+            get => null;
+            internal set => throw new ArgumentException("EntryPoint does not support setting a step.");
+        }
 
 
         public EntryPointNode() : base()

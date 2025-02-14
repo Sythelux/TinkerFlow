@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,23 +24,22 @@ namespace VRBuilder.Core.Editor
         private static readonly Dictionary<MemberInfo, HashSet<Attribute>> membersAttributesCache = new Dictionary<MemberInfo, HashSet<Attribute>>();
         private static readonly Dictionary<Type, HashSet<Attribute>> classAttributesCache = new Dictionary<Type, HashSet<Attribute>>();
 
-        // [DidReloadScripts]
-        // private static void OnScriptsReload()
-        // {
-        //     fieldAndPropertiesToDrawCache.Clear();
-        //     membersAttributesCache.Clear();
-        //     classAttributesCache.Clear();
-        // }
+        public static void OnScriptsReload()
+        {
+            fieldAndPropertiesToDrawCache.Clear();
+            membersAttributesCache.Clear();
+            classAttributesCache.Clear();
+        }
 
-        // public static IEnumerable<Attribute> GetAttributes(this Type type, bool isInherited)
-        // {
-        //     return type.GetAttributes<Attribute>(isInherited);
-        // }
+        public static IEnumerable<Attribute> GetAttributes(this Type type, bool isInherited)
+        {
+            return type.GetAttributes<Attribute>(isInherited);
+        }
 
-        // public static IEnumerable<Attribute> GetAttributes(this MemberInfo memberInfo, bool isInherited)
-        // {
-        //     return memberInfo.GetAttributes<Attribute>(isInherited);
-        // }
+        public static IEnumerable<Attribute> GetAttributes(this MemberInfo memberInfo, bool isInherited)
+        {
+            return memberInfo.GetAttributes<Attribute>(isInherited);
+        }
 
         public static IEnumerable<T> GetAttributes<T>(Type type, bool isInherited) where T : Attribute
         {
@@ -141,10 +141,10 @@ namespace VRBuilder.Core.Editor
             }
 
             Type type = value.GetType();
-            if (fieldAndPropertiesToDrawCache.ContainsKey(type))
-            {
-                return fieldAndPropertiesToDrawCache[type];
-            }
+            // if (fieldAndPropertiesToDrawCache.TryGetValue(type, out IEnumerable<MemberInfo>? draw))
+            // {
+            //     return draw;
+            // }
 
             HashSet<MethodInfo> getOverloads = new HashSet<MethodInfo>();
 
@@ -155,11 +155,12 @@ namespace VRBuilder.Core.Editor
             // Do it all the way up in the inheritance tree, skipping properties which were defined in more concrete implementation of the class.
             while (type != null)
             {
-                result = result.Concat(type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .GroupBy(propertyInfo => propertyInfo.Name)
-                    .SelectMany(groupByName => groupByName.GroupBy(propertyInfo => propertyInfo.DeclaringType).Select(groupByDeclaringType => groupByDeclaringType.First()))
-                    .Where(fieldInfo => fieldInfo.FieldType.GetInterfaces().Contains(typeof(IMetadata)) == false)
-                    .Cast<MemberInfo>());
+                if (type != typeof(GodotObject))
+                    result = result.Concat(type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        .GroupBy(propertyInfo => propertyInfo.Name)
+                        .SelectMany(groupByName => groupByName.GroupBy(propertyInfo => propertyInfo.DeclaringType).Select(groupByDeclaringType => groupByDeclaringType.First()))
+                        .Where(fieldInfo => fieldInfo.FieldType.GetInterfaces().Contains(typeof(IMetadata)) == false)
+                        .Cast<MemberInfo>());
 
                 type = type.BaseType;
             }
@@ -168,9 +169,10 @@ namespace VRBuilder.Core.Editor
 
             while (type != null)
             {
-                properties = properties.Concat(type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .Where(propertyInfo => propertyInfo.CanRead && propertyInfo.CanWrite)
-                    .Where(propertyInfo => propertyInfo.PropertyType.GetInterfaces().Contains(typeof(IMetadata)) == false));
+                if (type != typeof(GodotObject))
+                    properties = properties.Concat(type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        .Where(propertyInfo => propertyInfo.CanRead && propertyInfo.CanWrite)
+                        .Where(propertyInfo => propertyInfo.PropertyType.GetInterfaces().Contains(typeof(IMetadata)) == false));
 
                 type = type.BaseType;
             }
@@ -194,11 +196,12 @@ namespace VRBuilder.Core.Editor
 
             type = value.GetType();
 
-            fieldAndPropertiesToDrawCache[type] = result.Where(memberInfo => memberInfo.GetAttributes<HideInProcessInspectorAttribute>(true).Any() == false)
+            fieldAndPropertiesToDrawCache[type] = result
+                .Where(memberInfo => memberInfo.GetAttributes<HideInProcessInspectorAttribute>(true).Any() == false)
                 .Where(memberInfo => memberInfo.GetAttributes<DataMemberAttribute>(true).Any() && DrawerLocator.GetDrawerForMember(memberInfo, value) != null)
                 .OrderBy(memberInfo =>
                 {
-                    DrawingPriorityAttribute priorityAttribute = memberInfo.GetAttributes<Attribute>(true).FirstOrDefault(attribute => attribute is DrawingPriorityAttribute) as DrawingPriorityAttribute;
+                    DrawingPriorityAttribute priorityAttribute = memberInfo.GetAttributes(true).FirstOrDefault(attribute => attribute is DrawingPriorityAttribute) as DrawingPriorityAttribute;
 
                     if (priorityAttribute == null)
                     {
@@ -219,8 +222,8 @@ namespace VRBuilder.Core.Editor
             List<TProperty> properties = new List<TProperty>();
 
             IEnumerable<PropertyInfo> allProperties = data.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .Where(propertyInfo => propertyInfo.PropertyType.GetInterfaces().Contains(typeof(IMetadata)) == false)
-                    .Where(property => property.GetCustomAttribute<DataMemberAttribute>() != null);
+                .Where(propertyInfo => propertyInfo.PropertyType.GetInterfaces().Contains(typeof(IMetadata)) == false)
+                .Where(property => property.GetCustomAttribute<DataMemberAttribute>() != null);
 
             foreach (PropertyInfo property in allProperties)
             {
@@ -250,10 +253,10 @@ namespace VRBuilder.Core.Editor
             }
 
             IEntityCollectionData entityCollectionData = data as IEntityCollectionData;
-            if(entityCollectionData != null)
+            if (entityCollectionData != null)
             {
                 IEnumerable<IDataOwner> childDataOwners = entityCollectionData.GetChildren().Where(child => child is IDataOwner).Cast<IDataOwner>();
-                foreach(IDataOwner dataOwner in entityCollectionData.GetChildren())
+                foreach (IDataOwner dataOwner in entityCollectionData.GetChildren())
                 {
                     properties.AddRange(GetNestedPropertiesFromData<TProperty>(dataOwner.Data));
                 }

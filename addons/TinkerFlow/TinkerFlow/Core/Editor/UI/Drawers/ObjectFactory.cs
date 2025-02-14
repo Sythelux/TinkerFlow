@@ -14,7 +14,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     [DefaultProcessDrawer(typeof(object))]
     public partial class ObjectFactory : AbstractProcessFactory
     {
-        public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
+        public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
@@ -26,9 +26,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             var container = new VBoxContainer();
             container.Name = GetType().Name + "." + text;
+            // container.AddChild(CreateLabel(currentValue, changeValueCallback, label));
 
+            //TODO: some issues with: GroupsToUnlock, which is IDictionary, IBehaviorCollection is not there?
             foreach (MemberInfo memberInfoToDraw in GetMembersToDraw(currentValue))
             {
+                GD.Print("memberInfoToDraw: " + memberInfoToDraw.Name);
                 MemberInfo closuredMemberInfo = memberInfoToDraw;
                 if (closuredMemberInfo.GetAttributes<MetadataAttribute>(true).Any())
                 {
@@ -49,7 +52,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     {
                         ReflectionUtils.SetValueToPropertyOrField(currentValue, closuredMemberInfo, value);
                         changeValueCallback(currentValue);
-                    }, displayName.Text);
+                    }, displayName?.Text ?? null);
                     container.AddChild(control);
                 }
             }
@@ -84,6 +87,11 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             }
 
             return new List<EditorReportEntry>();
+        }
+
+        protected virtual Control CreateLabel<T>(T currentValue, Action<object> changeValueCallback, Label label)
+        {
+            return label;
         }
 
         /// <inheritdoc />

@@ -7,37 +7,26 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
     /// <summary>
     /// Step node in a graph view editor.
     /// </summary>
+    [Tool]
     public partial class StepGraphNode : ProcessGraphNode
     {
         protected IStep step;
         Button addButton;
 
         /// <inheritdoc/>
-        public override IStep EntryPoint => step;
+        public override IStep EntryPoint
+        {
+            get => step;
+            internal set
+            {
+                step = value;
+                SetTitle(step.Data.Name);
+                SetPosition(step.StepMetadata.Position);
+            }
+        }
 
         /// <inheritdoc/>
         public override IStep[] Outputs => step.Data.Transitions.Data.Transitions.Select(t => t.Data.TargetStep).ToArray();
-
-        public StepGraphNode(IStep step) : base()
-        {
-            this.step = step;
-            SetTitle(step.Data.Name);
-            SetPosition(step.StepMetadata.Position);
-
-            AddChild(new Label());
-            SetSlotEnabledLeft(0, true);
-
-            addButton = CreateAddButton();
-            AddChild(addButton);
-        }
-
-        Button CreateAddButton()
-        {
-            var button = new Button();
-            button.Text = "Add";
-            button.Icon = TinkerFlowPlugin.GetIcon("../VR-Builder-Lite/Source/Core/Resources/icon_add_light.png");
-            return button;
-        }
 
         /// <inheritdoc/>
         public override void Refresh()
@@ -166,12 +155,12 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
 
         public void AddRow(StepNodeRow? sourceRow, bool isDeletablePort, bool supportsAddingNewRows)
         {
-            var newRow = RowPrefab.Instantiate<StepNodeRow>();
-            newRow.Removable = isDeletablePort;
-            newRow.Addable = supportsAddingNewRows;
-            RemoveChild(addButton);
-            AddChild(newRow);
-            AddChild(addButton);
+            // var newRow = RowPrefab.Instantiate<StepNodeRow>();
+            // newRow.Removable = isDeletablePort;
+            // newRow.Addable = supportsAddingNewRows;
+            // RemoveChild(addButton);
+            // AddChild(newRow);
+            // AddChild(addButton);
         }
 
         public void RemoveRow(StepNodeRow row)

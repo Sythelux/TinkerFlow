@@ -1,4 +1,3 @@
-#if UNITY_6000_0_OR_NEWER
 using System.Linq;
 using Godot;
 using VRBuilder.Core.SceneObjects;
@@ -40,7 +39,7 @@ public partial class ObjectDrawer : Control
 		{
 			if (EditorInterface.Singleton.GetBaseControl().GetNode(nodes.AsStringArray().First()) is ProcessSceneObject reference)
 			{
-				ObjectLabel.Text = reference.UniqueName;
+				ObjectLabel.Text = reference.GetPath();
 				selectedObject = reference;
 				EmitSignal(SignalName.SelectedObjectChanged, Variant.From(reference));
 				return;
@@ -52,4 +51,3 @@ public partial class ObjectDrawer : Control
 	}
 }
 
-#endif

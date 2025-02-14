@@ -143,10 +143,16 @@ namespace TinkerFlow.Godot.Editor
                 if (node.Dirty)
                     RefreshNode(node);
 
-            if (Input.IsKeyPressed(Key.Delete))
-            {
+            // if (Input.IsKeyPressed(Key.Delete))
+            // {
+            //     ModifyStep(0);
+            // }
+        }
+
+        public override void _GuiInput(InputEvent @event)
+        {
+            if (@event is InputEventKey { Pressed: true, Keycode: Key.Delete })
                 ModifyStep(0);
-            }
         }
 
         public void AddStep(int id)

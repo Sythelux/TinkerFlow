@@ -2,21 +2,21 @@
 #elif GODOT
 using Godot;
 #endif
-
 using System;
 using System.Linq;
 using System.Reflection;
-using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
     public abstract partial class AbstractProcessFactory : IProcessDrawer
     {
+
         #region IProcessDrawer Members
 
-        public abstract Control Create<T>(T currentValue, Action<object> changeValueCallback, string text);
+        public abstract Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text);
 
         // public virtual Control DebugCreate<T>(T currentValue, Action<object> changeValueCallback, string text)
         // {
@@ -26,18 +26,20 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         //     return tmp;
         // }
 
-        public virtual Label GetLabel(MemberInfo memberInfo, object memberOwner)
+        public virtual Label? GetLabel(MemberInfo memberInfo, object memberOwner)
         {
             GD.Print($"AbstractProcessFactory.GetLabel({memberInfo.Name}, {memberOwner})");
             // Type memberType = Core.Utils.ReflectionUtils.GetDeclaredTypeOfPropertyOrField(memberInfo);
-            object? value = Core.Utils.ReflectionUtils.GetValueFromPropertyOrField(memberOwner, memberInfo);
+            object value = ReflectionUtils.GetValueFromPropertyOrField(memberOwner, memberInfo);
 
             // if (value != null)
             // {
             //     memberType = value.GetType();
             // }
 
-            Label valueLabel = GetLabel(value);
+            Label? valueLabel = GetLabel(value);
+            if (valueLabel == null)
+                return null;
 
             DisplayNameAttribute? displayNameAttribute = memberInfo.GetAttributes<DisplayNameAttribute>(true).FirstOrDefault();
             DisplayTooltipAttribute? displayTooltipAttribute = memberInfo.GetAttributes<DisplayTooltipAttribute>(true).FirstOrDefault();
@@ -60,16 +62,25 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             return valueLabel;
         }
 
-        public virtual Label GetLabel<T>(T value)
+        public virtual Label? GetLabel<T>(T value)
         {
             GD.Print($"AbstractProcessFactory.GetLabel({value})");
-            var nameable = value as INamedData;
             var l = new Label();
-
-            l.Text = nameable == null || string.IsNullOrEmpty(nameable.Name)
-                ? string.Empty
-                : nameable.Name;
-
+            switch (value)
+            {
+                case INamedData nameable:
+                    l.Text = string.IsNullOrEmpty(nameable.Name) ? string.Empty : nameable.Name;
+                    break;
+                case string stringValue:
+                    l.Text = stringValue;
+                    break;
+                case null:
+                    return null;
+                default:
+                    GD.PrintErr("AbstractProcessFactory.GetLabel: Unknown label type: " + value.GetType());
+                    l.Text = l.Text;
+                    break;
+            }
             return l;
         }
 
@@ -83,5 +94,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         }
 
         #endregion
+
     }
 }

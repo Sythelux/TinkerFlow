@@ -2,6 +2,7 @@ using System.IO;
 using System.Reflection;
 using Godot;
 using Godot.Collections;
+using VRBuilder.Core.Editor;
 using VRBuilder.Core.Editor.UI.Windows;
 
 namespace TinkerFlow.Godot.Editor
@@ -10,7 +11,7 @@ namespace TinkerFlow.Godot.Editor
     public partial class TinkerFlowPlugin : EditorPlugin
     {
         private static readonly Dictionary<string, Texture2D> iconCache = new Dictionary<string, Texture2D>();
-        private static string? defaultBasePath; // "res://addons/TinkerFlow/"
+        private static string? defaultBasePath; // should be: "res://addons/TinkerFlow/TinkerFlow/Core/"
 
         // private MyInspectorPlugin _plugin;
         public ProcessEditor? ProcessEditor { get; set; }
@@ -35,6 +36,8 @@ namespace TinkerFlow.Godot.Editor
                     ProcessEditor.StepDeselected += ProcessInspector.OnStepDeselected;
                 }
             }
+
+            EditorInterface.Singleton.ScriptChanged += EditorReflectionUtils.OnScriptsReload;
 
             _MakeVisible(false);
             // _plugin = new MyInspectorPlugin();
@@ -77,7 +80,6 @@ namespace TinkerFlow.Godot.Editor
 
         public static string ResourcePath(string subPath)
         {
-            // const string DefaultAddonBasePath = "res://addons/TinkerFlowPlugin/";
             defaultBasePath ??= typeof(TinkerFlowPlugin).GetCustomAttribute<ScriptPathAttribute>()?.Path
                 .Replace($"{nameof(TinkerFlowPlugin)}.cs", "");
             return Path.Join(defaultBasePath, subPath);

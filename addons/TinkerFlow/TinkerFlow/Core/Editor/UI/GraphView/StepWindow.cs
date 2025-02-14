@@ -112,7 +112,9 @@ namespace VRBuilder.Core.Editor.UI.Windows
             stepDrawer = DrawerLocator.GetDrawerForValue(step, typeof(Step))?.Create(step, ModifyStep, "Step");
             foreach (Node child in GetAllChildren(stepDrawer))
             {
-                child.Owner = child.GetParent();
+                // if (child is Control control)
+                //     control.SizeFlagsVertical = SizeFlags.ExpandFill;
+                child.Owner = stepDrawer;
             }
 
             var packedScene = new PackedScene();
@@ -155,7 +157,7 @@ namespace VRBuilder.Core.Editor.UI.Windows
         {
             yield return n;
             PrintDebugger.Indent();
-            GD.Print(PrintDebugger.Get()+n.Name);
+            GD.Print(PrintDebugger.Get() + n.Name);
             foreach (Node child in n.GetChildren(false))
             {
                 foreach (Node allChild in GetAllChildren(child))

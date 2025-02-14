@@ -1,6 +1,4 @@
-#if UNITY_5_3_OR_NEWER
-using UnityEditor
-﻿// Copyright (c) 2013-2019 Innoactive GmbH
+// Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
@@ -15,7 +13,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     [DefaultProcessDrawer(typeof(IDataOwner))]
     internal class DataOwnerFactory : AbstractProcessFactory
     {
-        public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
+        public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
@@ -27,7 +25,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             return dataDrawer.Create(data, _ => changeValueCallback(currentValue), text);
         }
 
-        public override Label GetLabel<T>(T value)
+        public override Label? GetLabel<T>(T value)
         {
             IData? data = (value as IDataOwner)?.Data;
 
@@ -43,7 +41,3 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         }
     }
 }
-#elif GODOT
-using Godot;
-//TODO
-#endif

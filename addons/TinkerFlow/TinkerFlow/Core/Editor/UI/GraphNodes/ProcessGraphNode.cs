@@ -1,5 +1,4 @@
 using Godot;
-using TinkerFlow.Godot.Editor;
 
 namespace VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
@@ -7,9 +6,6 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes;
 public abstract partial class ProcessGraphNode : GraphNode
 {
     protected const string emptyOutputPortText = "Go to next Chapter";
-    protected PackedScene RowPrefab = GD.Load<PackedScene>(TinkerFlowPlugin.ResourcePath("Prefabs/StepNodeRow.tscn"));
-    protected const string deleteIconFileName = "Eraser";
-    protected const string editIconFileName = "Edit";
 
     /// <summary>
     /// Steps this node leads to.
@@ -19,16 +15,9 @@ public abstract partial class ProcessGraphNode : GraphNode
     /// <summary>
     /// Step other nodes connect to.
     /// </summary>
-    public abstract IStep? EntryPoint { get; }
+    public abstract IStep? EntryPoint { get; internal set; }
 
     public bool Dirty { get; set; }
-
-    public void OnGuiInput(InputEvent @event)
-    {
-        if (Selected)
-            if (@event is InputEventKey { Pressed: true, Keycode: Key.Delete })
-                GetParent<ProcessGraph>().RemoveStep(this);
-    }
 
     /// <summary>
     /// Refreshes the node's graphics.

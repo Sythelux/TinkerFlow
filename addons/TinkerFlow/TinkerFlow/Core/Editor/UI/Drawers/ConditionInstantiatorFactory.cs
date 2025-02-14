@@ -1,4 +1,3 @@
-#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
@@ -12,6 +11,7 @@ using VRBuilder.Core.Editor.Configuration;
 using Godot;
 using Godot.Collections;
 using VRBuilder.Core.Editor.Godot;
+using VRBuilder.Core.Editor.Util;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -19,11 +19,13 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     /// Draws a dropdown button with all <see cref="InstantiationOption{ICondition}"/> in the project, and creates a new instance of choosen condition on click.
     /// </summary>
     [InstantiatorProcessDrawer(typeof(ICondition))]
-    internal partial class ConditionInstantiatorDrawer : AbstractInstantiatorFactory<ICondition>
+    internal partial class ConditionInstantiatorFactory : AbstractInstantiatorFactory<ICondition>
     {
         /// <inheritdoc />
         public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+
             var control = new VBoxContainer();
 
             if (EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any() == true)
@@ -59,7 +61,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             void OpenHelp()
             {
-                Process.Start(new ProcessStartInfo("https://www.mindport.co/vr-builder/manual/default-conditions") { UseShellExecute = true });
+                System.Diagnostics.Process.Start(new ProcessStartInfo("https://www.mindport.co/vr-builder/manual/default-conditions") { UseShellExecute = true });
             }
 
             if (EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any() == false)
@@ -73,4 +75,3 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         }
     }
 }
-#endif

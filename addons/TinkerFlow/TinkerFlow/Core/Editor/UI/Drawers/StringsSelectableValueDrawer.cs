@@ -1,16 +1,9 @@
-#if UNITY_5_3_OR_NEWER
-using UnityEditor
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
     /// <summary>
     /// Selectable value drawer letting the user choose between two string values.
     /// </summary>
-    public class StringsSelectableValueDrawer : SelectableValueDrawer<string, string>
+    public class StringsSelectableValueDrawer : SelectableValueFactory<string, string>
     {
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

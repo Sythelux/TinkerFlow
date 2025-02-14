@@ -173,7 +173,7 @@ namespace VRBuilder.Core.Editor.ProcessAssets
                 isSaving = true;
             }
 
-            FileAccess stream = null;
+            FileAccess? stream = null;
             try
             {
                 // if (FileAccess.FileExists(path))
@@ -182,9 +182,9 @@ namespace VRBuilder.Core.Editor.ProcessAssets
                 DirAccess? dir = DirAccess.Open(Path.GetDirectoryName(path));
                 dir?.MakeDirRecursive(Path.GetDirectoryName(path));
                 stream = FileAccess.Open(path, FileAccess.ModeFlags.ReadWrite);
-                stream.StoreBuffer(processData);
+                stream?.StoreBuffer(processData);
                 // stream.Write(processData, 0, processData.Length);
-                stream.Close();
+                stream?.Close();
             }
             catch (Exception ex)
             {

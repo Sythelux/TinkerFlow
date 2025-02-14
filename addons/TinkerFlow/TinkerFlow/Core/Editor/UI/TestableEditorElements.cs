@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using Godot;
+using System.Collections.Generic;
 using VRBuilder.Core.Exceptions;
 
 namespace VRBuilder.Core.Editor
@@ -41,7 +42,7 @@ namespace VRBuilder.Core.Editor
         public sealed class MenuItem : MenuOption
         {
             public Action Func { get; private set; }
-            public Action Func2 { get; private set; }
+            public Action<object> Func2 { get; private set; }
             public bool On { get; private set; }
             public object UserData { get; private set; }
 
@@ -51,7 +52,7 @@ namespace VRBuilder.Core.Editor
                 Func = func;
             }
 
-            public MenuItem(Label label, bool on, Action func, object userData) : base(label)
+            public MenuItem(Label label, bool on, Action<object> func, object userData) : base(label)
             {
                 On = on;
                 Func2 = func;
@@ -59,17 +60,18 @@ namespace VRBuilder.Core.Editor
             }
         }
 
-         public sealed class MenuSeparator : MenuOption
-         {
-             public MenuSeparator(string pathToSubmenu) : base(new Label { Text = pathToSubmenu })
-             {
-             }
-         }
+        public sealed class MenuSeparator : MenuOption
+        {
+            public MenuSeparator(string pathToSubmenu) : base(new Label { Text = pathToSubmenu })
+            {
+            }
+        }
+
 //
 //         private static readonly Queue<string> recordedSelections = new Queue<string>();
-//         private static readonly Queue<string> prepickedSelections = new Queue<string>();
+        private static readonly Queue<string> prepickedSelections = new Queue<string>();
 //
-//         public static DisplayMode Mode { get; private set; }
+        public static DisplayMode Mode { get; private set; }
 //
 //         public static void StartRecording()
 //         {
@@ -110,97 +112,100 @@ namespace VRBuilder.Core.Editor
 //             Mode = DisplayMode.Normal;
 //         }
 //
-//         public static void DisplayContextMenu(IList<MenuOption> options)
-//         {
-//             var mousePos = EditorInterface.Singleton.GetEditorViewport2D().GetMousePosition();
-//             DisplayDropdownMenu(mousePos, options);
-//         }
+        public static PopupMenu DisplayContextMenu(IList<MenuOption> options)
+        {
+            var mousePos = EditorInterface.Singleton.GetEditorViewport2D().GetMousePosition();
+            return DisplayDropdownMenu(mousePos, options);
+        }
 //
-//         public static void DisplayDropdownMenu(Vector2 position, IList<MenuOption> options)
-//         {
-//             if (Mode == DisplayMode.Playback)
-//             {
-//                 if (prepickedSelections.Count == 0)
-//                 {
-//                     return;
-//                 }
-//
-//                 int index;
-//                 if (int.TryParse(prepickedSelections.Dequeue(), out index) == false)
-//                 {
-//                     return;
-//                 }
-//
-//                 if (index == -1)
-//                 {
-//                     return;
-//                 }
-//
-//                 MenuItem item = options[index] as MenuItem;
-//                 if (item == null)
-//                 {
-//                     return;
-//                 }
-//
-//                 if (item.Func != null)
-//                 {
-//                     item.Func();
-//                 }
-//                 else if (item.Func2 != null)
-//                 {
-//                     item.Func2(item.UserData);
-//                 }
-//
-//                 return;
-//             }
-//
-//             PopupMenu menu = new PopupMenu();
-//
-//             for (int i = 0; i < options.Count; i++)
-//             {
-//                 MenuOption closuredOption = options[i];
-//
-//                 if (closuredOption is MenuSeparator)
-//                 {
-//                     menu.AddSeparator(closuredOption.Label.text);
-//                 }
-//                 else if (closuredOption is DisabledMenuItem)
-//                 {
-//                     menu.AddDisabledItem(closuredOption.Label);
-//                 }
-//                 else
-//                 {
-//                     MenuItem item = closuredOption as MenuItem;
-//
-//                     Action itemCallback;
-//
-//                     if (item.Func2 != null)
-//                     {
-//                         itemCallback = () => item.Func2(item.UserData);
-//                     }
-//                     else
-//                     {
-//                         itemCallback = () => item.Func();
-//                     }
-//
-//                     GenericMenu.MenuFunction finalCallback = new GenericMenu.MenuFunction(itemCallback);
-//
-//                     if (Mode == DisplayMode.Recording)
-//                     {
-//                         int closuredIndex = i;
-//                         finalCallback = () =>
-//                         {
-//                             recordedSelections.Enqueue(closuredIndex.ToString());
-//                             itemCallback();
-//                         };
-//                     }
-//
-//                     menu.AddItem(closuredOption.Label, item.On, finalCallback);
-//                 }
-//             }
-//
-//             menu.DropDown(position);
-//         }
+        public static PopupMenu DisplayDropdownMenu(Vector2 position, IList<MenuOption> options)
+        {
+            PopupMenu menu = new PopupMenu();
+
+            if (Mode == DisplayMode.Playback)
+            {
+                if (prepickedSelections.Count == 0)
+                {
+                    return menu;
+                }
+
+                int index;
+                if (int.TryParse(prepickedSelections.Dequeue(), out index) == false)
+                {
+                    return menu;
+                }
+
+                if (index == -1)
+                {
+                    return menu;
+                }
+
+                MenuItem item = options[index] as MenuItem;
+                if (item == null)
+                {
+                    return menu;
+                }
+
+                if (item.Func != null)
+                {
+                    item.Func();
+                }
+                else if (item.Func2 != null)
+                {
+                    item.Func2(item.UserData);
+                }
+
+                return menu;
+            }
+
+
+            for (int i = 0; i < options.Count; i++)
+            {
+                MenuOption closuredOption = options[i];
+
+                if (closuredOption is MenuSeparator)
+                {
+                    menu.AddSeparator(closuredOption.Label.Text);
+                }
+                else if (closuredOption is DisabledMenuItem)
+                {
+                    menu.AddItem(closuredOption.Label.Text);
+                    menu.SetItemDisabled(menu.ItemCount - 1, true);
+                }
+                else
+                {
+                    MenuItem item = closuredOption as MenuItem;
+
+                    Action itemCallback;
+
+                    if (item.Func2 != null)
+                    {
+                        itemCallback = () => item.Func2(item.UserData);
+                    }
+                    else
+                    {
+                        itemCallback = () => item.Func();
+                    }
+
+                    // GenericMenu.MenuFunction finalCallback = new GenericMenu.MenuFunction(itemCallback);
+                    //
+                    // if (Mode == DisplayMode.Recording)
+                    // {
+                    //     int closuredIndex = i;
+                    //     finalCallback = () =>
+                    //     {
+                    //         recordedSelections.Enqueue(closuredIndex.ToString());
+                    //         itemCallback();
+                    //     };
+                    // }
+
+                    // menu.AddItem(closuredOption.Label.Text, item.On, finalCallback);
+                }
+            }
+            // menu.DropDown(position);
+            menu.Show();
+            return menu;
+        }
 //
 //         public static void ClearProgressBar()
 //         {
