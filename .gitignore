@@ -1,7 +1,10 @@
 # Godot 4+ specific ignores
 **/.godot/
+
 # IDE
 **/.idea
 *.csproj.old*
-*.meta
 *.user
+
+# general
+**/tmp/
