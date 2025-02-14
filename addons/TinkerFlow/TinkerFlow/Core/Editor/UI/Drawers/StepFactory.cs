@@ -24,7 +24,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             Control parent = base.Create(currentValue, changeValueCallback, text);
             parent.Name = GetType().Name + "." + text;
 
-
             if (currentValue is Step.EntityData step)
             {
                 //if ( lastStep != step )
@@ -47,7 +46,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     parent.AddChild(container);
                 }
             }
-
             return parent;
         }
 

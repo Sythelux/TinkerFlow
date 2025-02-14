@@ -41,7 +41,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 oldIndex = 0;
             }
 
-            MenuButton menuButton = new MenuButton { Text = text };
+            MenuButton menuButton = new MenuButton { Text = text, Name = GetType().Name + "." + text };
             PopupMenu menu = menuButton.GetPopup();
 
             foreach (var po in PossibleOptions.Select(item => item.Label))

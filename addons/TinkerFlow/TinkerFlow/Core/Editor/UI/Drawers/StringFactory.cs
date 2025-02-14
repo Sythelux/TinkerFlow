@@ -22,7 +22,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             // var label = new Label { Text = text };
             // label.Owner = container;
             var value = Convert.ToString(currentValue);
-            var textEdit = new TextEdit();
+            var textEdit = new TextEdit { Name = GetType().Name };
             var size = textEdit.CustomMinimumSize;
             size.Y = 48;
             textEdit.CustomMinimumSize = size;

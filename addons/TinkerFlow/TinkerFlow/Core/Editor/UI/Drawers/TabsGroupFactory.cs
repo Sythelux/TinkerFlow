@@ -40,7 +40,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             Label[] labels = tabsGroup.Tabs.Select(tab => new Label{Text = tab.Label}).ToArray();
 
-            var tabContainer = new TabContainer();
+            var tabContainer = new TabContainer { Name = GetType().Name };
             tabContainer.TabSelected += tab =>
             {
                 if (tabsGroup.Selected != tab)

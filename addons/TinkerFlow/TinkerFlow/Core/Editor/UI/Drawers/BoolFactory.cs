@@ -21,7 +21,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             var value = Convert.ToBoolean(currentValue);
 
-            var container = new HBoxContainer();
+            var container = new HBoxContainer{ Name = GetType().Name + "." + text };
             Node checkBox = CreateCheckBox<T>(changeValueCallback, value);
             checkBox.Name = GetType().Name + "." + text;
             container.AddChild(checkBox);

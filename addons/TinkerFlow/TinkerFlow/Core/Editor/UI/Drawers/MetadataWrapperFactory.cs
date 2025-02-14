@@ -50,7 +50,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not MetadataWrapper wrapper)
-                return new Control();
+                return new Control{ Name = GetType().Name + "." + text };
 
             // If the drawn object is a ITransition, IBehavior or ICondition the list object will be part of a header.
             bool isPartOfHeader = wrapper.ValueDeclaredType == typeof(ITransition) || wrapper.ValueDeclaredType == typeof(IBehavior) || wrapper.ValueDeclaredType == typeof(ICondition);

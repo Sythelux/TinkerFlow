@@ -15,7 +15,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not string oldPath)
-                return new Control();
+                return new Control { Name = GetType().Name };
 
             var videoClip = ResourceLoader.Load<T>(oldPath);
 

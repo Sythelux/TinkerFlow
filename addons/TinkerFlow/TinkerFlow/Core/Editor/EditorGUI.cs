@@ -55,6 +55,8 @@ namespace VRBuilder.Core.Editor.Godot
                 MessageType.Error => $"[color=red]{message}[/color]",
                 _ => $"{message}"
             };
+            richTextLabel.BbcodeEnabled = true;
+            richTextLabel.FitContent = true;
             return richTextLabel;
         }
     }

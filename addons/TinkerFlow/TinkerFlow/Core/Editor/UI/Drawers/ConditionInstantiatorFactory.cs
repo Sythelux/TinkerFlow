@@ -26,7 +26,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            var control = new VBoxContainer();
+            var control = new VBoxContainer{ Name = GetType().Name + "." + text };
 
             if (EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any() == true)
             {

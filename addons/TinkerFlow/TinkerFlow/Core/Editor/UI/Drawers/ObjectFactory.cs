@@ -24,8 +24,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 return label;
             }
 
-            var container = new VBoxContainer();
-            container.Name = GetType().Name + "." + text;
+            var container = new VBoxContainer{ Name = GetType().Name + "." + text };
             // container.AddChild(CreateLabel(currentValue, changeValueCallback, label));
 
             //TODO: some issues with: GroupsToUnlock, which is IDictionary, IBehaviorCollection is not there?

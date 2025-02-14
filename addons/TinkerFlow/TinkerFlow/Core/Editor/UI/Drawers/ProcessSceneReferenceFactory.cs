@@ -30,12 +30,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not ProcessSceneReferenceBase reference)
-                return new Control();
+                return new Control { Name = GetType().Name + "." + text };
 
             Type valueType = reference.GetReferenceType();
             List<Guid> oldGuids = reference.Guids.ToList();
 
-            var control = new VBoxContainer();
+            var control = new VBoxContainer { Name = GetType().Name + "." + text };
             control.AddChild(new Label { Text = $"[b]{text}[/b]" });
 
             control.AddChild(DrawLimitationWarnings(reference.Guids, reference.AllowMultipleValues));
@@ -68,7 +68,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             if (!RuntimeConfigurator.Exists)
             {
-                return new Control();
+                return new Control { Name = GetType().Name };
             }
 
             int groupedObjectsCount = currentObjectGroups.SelectMany(group => RuntimeConfigurator.Configuration.SceneObjectRegistry.GetObjects(group)).Distinct().Count();
@@ -96,7 +96,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             }
 
             return string.IsNullOrEmpty(message)
-                ? new Control()
+                ? new Control { Name = GetType().Name }
                 : EditorGUI.HelpBox(message, messageType);
 
         }

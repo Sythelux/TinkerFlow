@@ -14,7 +14,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            var hSlider = new HSlider();
+            var hSlider = new HSlider{ Name = GetType().Name + "." + text };
             if (currentValue is float floatValue)
                 hSlider.Value = floatValue;
             hSlider.MaxValue = 1;

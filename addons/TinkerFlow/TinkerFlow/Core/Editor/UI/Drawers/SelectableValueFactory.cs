@@ -18,13 +18,13 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (RuntimeConfigurator.Exists == false)
             {
-                return new Control();
+                return new Control { Name = GetType().Name };
             }
 
             if (currentValue is not SelectableValue<TFirst, TSecond> selectableValue)
-                return new Control();
+                return new Control { Name = GetType().Name };
 
-            var toggleContainer = new VBoxContainer();
+            var toggleContainer = new VBoxContainer { Name = GetType().Name };
             var group = new ButtonGroup();
             var firstValueToggle = new Button
             {

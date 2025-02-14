@@ -47,7 +47,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             //
             // ChangeValue(() => ColorToList(newColor), () => ColorToList(oldColor), changeValueCallback);
 
-            return new Control();
+            return new Control{ Name = GetType().Name + "." + text };
         }
     }
 }

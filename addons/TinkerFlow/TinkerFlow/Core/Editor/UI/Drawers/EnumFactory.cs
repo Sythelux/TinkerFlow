@@ -20,7 +20,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            Control control = new Control();
+            Control control = new Control{ Name = GetType().Name + "." + text };
 
             // Enum oldValue = currentValue as Enum;
             //

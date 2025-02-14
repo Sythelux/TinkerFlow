@@ -21,14 +21,14 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not IList list)
-                return new Control();
+                return new Control{ Name = GetType().Name + "." + text };
 
             Type entryDeclaredType = ReflectionUtils.GetEntryType(currentValue);
 
-            var control = new VBoxContainer();
+            var control = new VBoxContainer{ Name = GetType().Name + "." + text };
 
-            if (!string.IsNullOrEmpty(text))
-                control.AddChild(new Label { Text = text });
+            // if (!string.IsNullOrEmpty(text))
+            //     control.AddChild(new Label { Text = text });
 
             object[] entries = new object[list.Count];
             list.CopyTo(entries, 0);

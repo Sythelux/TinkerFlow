@@ -12,7 +12,7 @@ namespace VRBuilder.Core.Editor.UI.Windows
     {
         private Control? stepDrawer;
         private IStep? step;
-        // private LineEdit? stepName;
+        private LineEdit? noStepLabel;
 
         public StepWindow()
         {
@@ -21,7 +21,7 @@ namespace VRBuilder.Core.Editor.UI.Windows
 
         public static StepWindow Instance { get; private set; }
 
-        // public LineEdit StepName => stepName ??= GetNode<LineEdit>("StepName");
+        public LineEdit NoStepLabel => noStepLabel ??= GetNode<LineEdit>("StepName");
 
         #region IStepView Members
 
@@ -91,16 +91,16 @@ namespace VRBuilder.Core.Editor.UI.Windows
 
         public void OnStepSelected(IStep? newStep)
         {
+            NoStepLabel.Visible = true;
             if (newStep == null)
                 return;
             step = newStep;
-            // StepName.Text = step.Data.Name;
-            // StepName.Editable = true;
             foreach (Node? node in GetChildren())
             {
                 var child = (Control)node;
                 child.Visible = true;
             }
+            NoStepLabel.Visible = false;
 
             if (stepDrawer != null)
             {
@@ -134,9 +134,6 @@ namespace VRBuilder.Core.Editor.UI.Windows
 
         public void OnStepDeselected(Step? oldStep)
         {
-            // StepName.Text = "None Selected";
-            // StepName.Editable = false;
-
             if (stepDrawer != null)
             {
                 RemoveChild(stepDrawer);
@@ -150,7 +147,7 @@ namespace VRBuilder.Core.Editor.UI.Windows
                 child.Visible = false;
             }
 
-            // StepName.Visible = true;
+            NoStepLabel.Visible = true;
         }
 
         public IEnumerable<Node> GetAllChildren(Node n)

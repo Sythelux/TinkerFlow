@@ -21,9 +21,9 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not Color color)
-                return new Control();
+                return new Control { Name = GetType().Name };
 
-            var colorPickerButton = new ColorPickerButton();
+            var colorPickerButton = new ColorPickerButton { Name = GetType().Name };
             colorPickerButton.Text = text;
             colorPickerButton.Color = color;
             colorPickerButton.ColorChanged += newColor =>

@@ -59,7 +59,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             // }
             //
             // return rect;
-            return new Control();
+            return new Control
+            {
+                Name = GetType().Name + "." + text
+            };
         }
     }
 }

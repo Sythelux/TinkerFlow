@@ -19,7 +19,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not LockableObjectsCollection lockableCol)
-                return new Control();
+                return new Control{ Name = GetType().Name + "." + text };
 
             lockableCollection = lockableCol;
 
@@ -128,7 +128,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             currentPosition = guiRect;*/
 
             // EditorDrawingHelper.HeaderLineHeight - 24f is just the magic number to make it properly fit...
-            return new Control();
+            return new Control{ Name = GetType().Name + "." + text };
         }
 
         /*private Control DrawSceneObject(ISceneObject sceneObject)

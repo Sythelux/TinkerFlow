@@ -98,7 +98,9 @@ namespace TinkerFlow.Godot.Editor
                         return theme.GetIcon(iconName, themeType);
             }
 
-            return ResourceLoader.Load<Texture2D>(ResourcePath(iconName));
+            if (ResourceLoader.Exists(ResourcePath(iconName)))
+                return ResourceLoader.Load<Texture2D>(ResourcePath(iconName));
+            return ResourceLoader.Load<Texture2D>(ResourcePath(Path.Join("../VR-Builder-Lite/Source/Core/Resources", iconName)));
         }
     }
 }

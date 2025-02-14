@@ -20,12 +20,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             var value = Convert.ToDouble(currentValue);
-            var container = new HBoxContainer();
             // var label = new Label { Text = text };
             SpinBox spinBox = CreateSpinBox<T>(changeValueCallback, value);
             spinBox.Name = GetType().Name + "." + text;
-            container.AddChild(spinBox);
-            return container;
+            return spinBox;
         }
 
         private SpinBox CreateSpinBox<T>(Action<object> changeValueCallback, double value)
