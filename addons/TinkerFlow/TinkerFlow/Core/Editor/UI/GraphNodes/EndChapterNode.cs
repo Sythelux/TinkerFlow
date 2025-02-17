@@ -100,7 +100,7 @@
 //             Guid newValue = value.newValue;
 //             Guid oldValue = value.previousValue;
 //
-//             RevertableChangesHandler.Do(new ProcessCommand(
+//             RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).Do(new ProcessCommand(
 //                 () =>
 //                 {
 //                     Behavior.Data.ChapterGuid = newValue;

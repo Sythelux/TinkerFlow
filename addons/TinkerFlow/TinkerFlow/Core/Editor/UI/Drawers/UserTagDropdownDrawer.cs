@@ -99,7 +99,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     bool isAlreadySceneObject = selectedSceneObject.GetComponent<ProcessSceneObject>() != null && typeof(ISceneObjectProperty).IsAssignableFrom(valueType);
                     Component[] alreadyAttachedProperties = selectedSceneObject.GetComponents(typeof(Component));
 
-                    RevertableChangesHandler.Do(
+                    RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).Do(
                         new ProcessCommand(
                             () => SceneObjectAutomaticSetup(selectedSceneObject, valueType),
                             () => UndoSceneObjectAutomaticSetup(selectedSceneObject, valueType, isAlreadySceneObject, alreadyAttachedProperties)));
@@ -151,6 +151,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 }
 
 #elif GODOT
-using Godot;
+
 //TODO
 #endif

@@ -6,10 +6,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
-using VRBuilder.Core.IO;
-using VRBuilder.Core.Serialization;
 using VRBuilder.Core.Editor.ProcessValidation;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
+using VRBuilder.Core.IO;
+using VRBuilder.Core.Serialization;
 
 namespace VRBuilder.Core.Editor.Configuration
 {
@@ -18,7 +18,7 @@ namespace VRBuilder.Core.Editor.Configuration
     /// </summary>
     public class DefaultEditorConfiguration : IEditorConfiguration
     {
-        private AllowedMenuItemsSettings allowedMenuItemsSettings;
+        private AllowedMenuItemsSettings? allowedMenuItemsSettings;
 
         /// <inheritdoc />
         public virtual string ProcessStreamingAssetsSubdirectory => "Processes";
@@ -33,21 +33,15 @@ namespace VRBuilder.Core.Editor.Configuration
         public IProcessAssetStrategy ProcessAssetStrategy => new SingleFileProcessAssetStrategy();
 
         /// <inheritdoc />
-        public virtual ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent => AllowedMenuItemsSettings.Instance.GetBehaviorMenuOptions().Cast<MenuOption<IBehavior>>().ToList().AsReadOnly();
+        public virtual ReadOnlyCollection<MenuOption<IBehavior>> BehaviorsMenuContent => AllowedMenuItemsSettings.GetBehaviorMenuOptions().Cast<MenuOption<IBehavior>>().ToList().AsReadOnly();
 
         /// <inheritdoc />
-        public virtual ReadOnlyCollection<MenuOption<ICondition>> ConditionsMenuContent => AllowedMenuItemsSettings.Instance.GetConditionMenuOptions().Cast<MenuOption<ICondition>>().ToList().AsReadOnly();
+        public virtual ReadOnlyCollection<MenuOption<ICondition>> ConditionsMenuContent => AllowedMenuItemsSettings.GetConditionMenuOptions().Cast<MenuOption<ICondition>>().ToList().AsReadOnly();
 
         /// <inheritdoc />
         public virtual AllowedMenuItemsSettings AllowedMenuItemsSettings
         {
-            get
-            {
-                if (allowedMenuItemsSettings == null)
-                    allowedMenuItemsSettings = AllowedMenuItemsSettings.Load();
-
-                return allowedMenuItemsSettings;
-            }
+            get => allowedMenuItemsSettings ??= AllowedMenuItemsSettings.Instance;
             set => allowedMenuItemsSettings = value;
         }
 

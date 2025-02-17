@@ -1,15 +1,13 @@
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Godot;
-using System.Security.Cryptography.X509Certificates;
 using VRBuilder.Core;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Editor;
 using VRBuilder.Core.Editor.ProcessAssets;
 using VRBuilder.Core.Editor.UI.Graphics;
-using VRBuilder.Core.Editor.UI.GraphView;
 using VRBuilder.Core.Editor.UI.GraphView.Instantiators;
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 using VRBuilder.Core.Editor.UI.Windows;
@@ -195,7 +193,7 @@ namespace TinkerFlow.Godot.Editor
         {
             GD.Print($"{GetType().Name}: {MethodBase.GetCurrentMethod()}");
 
-            // TODO: RevertableChangesHandler.FlushStack();
+            // TODO: RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).FlushStack();
 
             currentProcess = process;
 

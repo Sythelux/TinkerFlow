@@ -73,7 +73,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 // string newUniqueName = GetIDFromSelectedObject(selectedobject as Node, valueType, oldUniqueName);
                 // TODO: if (oldUniqueName != newUniqueName)
                 // {
-                //     RevertableChangesHandler.Do(
+                //     RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).Do(
                 //         new ProcessCommand(
                 //             () =>
                 //             {
@@ -89,7 +89,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 //
                 //     if (isUndoOperation)
                 //     {
-                //         RevertableChangesHandler.CollapseUndoOperations(undoGroupName);
+                //         RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).CollapseUndoOperations(undoGroupName);
                 //     }
                 // }
             }
@@ -206,7 +206,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 // bool isAlreadySceneObject = selectedSceneObject.GetComponent<ProcessSceneObject>() != null && typeof(ISceneObjectProperty).IsAssignableFrom(valueType);
                 // Component[] alreadyAttachedProperties = selectedSceneObject.GetComponents(typeof(Component));
 
-                // RevertableChangesHandler.Do(
+                // RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).Do(
                 //     new ProcessCommand(
                 //         () => SceneObjectAutomaticSetup(selectedSceneObject, valueType),
                 //         () => UndoSceneObjectAutomaticSetup(selectedSceneObject, valueType, isAlreadySceneObject, alreadyAttachedProperties)),
@@ -267,6 +267,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     }
 }
 #elif GODOT
-using Godot;
+
 //TODO
 #endif

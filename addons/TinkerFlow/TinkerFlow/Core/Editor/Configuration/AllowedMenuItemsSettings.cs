@@ -2,17 +2,17 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using Godot;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
+using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 using VRBuilder.Core.Settings;
 using VRBuilder.Core.Utils;
-using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
 namespace VRBuilder.Core.Editor.Configuration
 {
@@ -25,9 +25,11 @@ namespace VRBuilder.Core.Editor.Configuration
     [GlobalClass]
     public partial class AllowedMenuItemsSettings : SettingsObject<AllowedMenuItemsSettings>
     {
-        [Export] public global::Godot.Collections.Dictionary<string, bool> SerializedBehaviorSelections = new();
+        [Export]
+        public global::Godot.Collections.Dictionary<string, bool> SerializedBehaviorSelections = new();
 
-        [Export] public global::Godot.Collections.Dictionary<string, bool> SerializedConditionSelections = new();
+        [Export]
+        public global::Godot.Collections.Dictionary<string, bool> SerializedConditionSelections = new();
 
         private IList<MenuItem<IBehavior>>? behaviorMenuItems;
         private IList<MenuItem<ICondition>>? conditionMenuItems;
@@ -140,8 +142,8 @@ namespace VRBuilder.Core.Editor.Configuration
         /// If the <see cref="AllowedMenuItemsSettingsAssetPath"/> in the editor configuration is empty or null,
         /// it returns an empty <see cref="AllowedMenuItemsSettings"/> object.
         /// </summary>
-        public static AllowedMenuItemsSettings Load()
-        {
+        // public static AllowedMenuItemsSettings Load()
+        // {
             //TODO: should load from a submenu of projectsettings
             // string path = EditorConfigurator.Instance.AllowedMenuItemsSettingsAssetPath;
             // if (string.IsNullOrEmpty(path))
@@ -156,8 +158,8 @@ namespace VRBuilder.Core.Editor.Configuration
             //
             // if (settings != null) return settings.Data.As<AllowedMenuItemsSettings>();
             // // return JsonEditorConfigurationSerializer.Deserialize();
-            return new AllowedMenuItemsSettings();
-        }
+        //     return new AllowedMenuItemsSettings();
+        // }
 
         private IList<T> SetupItemList<T>(IDictionary<string, bool> userSelections)
         {
@@ -185,7 +187,7 @@ namespace VRBuilder.Core.Editor.Configuration
             return itemList;
         }
 
-        private void UpdateWithAllBehaviorsAndConditionsInProject()
+        internal void UpdateWithAllBehaviorsAndConditionsInProject()
         {
             IEnumerable<Type> implementedBehaviors = ReflectionUtils.GetConcreteImplementationsOf<MenuItem<IBehavior>>();
 
@@ -203,6 +205,8 @@ namespace VRBuilder.Core.Editor.Configuration
 
                 SerializedConditionSelections.Add(type.AssemblyQualifiedName, ShouldBeEnabled(type));
             }
+
+            Task.Run(RefreshMenuOptions);
         }
 
         private bool ShouldBeEnabled(Type type)

@@ -5,6 +5,8 @@ using Godot;
 using System;
 using System.Linq;
 using System.Reflection;
+using TinkerFlow.Core.Editor.Util;
+using TinkerFlow.Godot.Editor;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Utils;
 
@@ -86,11 +88,17 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         public virtual void ChangeValue<T>(Func<T> getNewValueCallback, Func<T> getOldValueCallback, Action<T> assignValueCallback)
         {
-            // ReSharper disable once ImplicitlyCapturedClosure
-            Action doCallback = () => assignValueCallback(getNewValueCallback());
-            // ReSharper disable once ImplicitlyCapturedClosure
-            Action undoCallback = () => assignValueCallback(getOldValueCallback());
-            // TODO: RevertableChangesHandler.Do(new ProcessCommand(doCallback, undoCallback));
+            var processCommand = new ProcessCommand(DoCallback, UndoCallback);
+            if (TinkerFlowPlugin.Instance?.GetUndoRedo() is EditorUndoRedoManager editorUndoRedoManager)
+            {
+                editorUndoRedoManager.CreateAction($"{nameof(AbstractProcessFactory)}.{nameof(ChangeValue)}");
+                editorUndoRedoManager.AddDoMethod(processCommand, nameof(ProcessCommand.Do));
+                editorUndoRedoManager.AddUndoMethod(processCommand, nameof(ProcessCommand.Undo));
+                editorUndoRedoManager.CommitAction();
+            }
+            return;
+            void UndoCallback() => assignValueCallback(getOldValueCallback());
+            void DoCallback() => assignValueCallback(getNewValueCallback());
         }
 
         #endregion

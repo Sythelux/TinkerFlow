@@ -1,6 +1,5 @@
 using Godot;
 using System.Linq;
-using TinkerFlow.Godot.Editor;
 
 namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
 {
@@ -55,7 +54,7 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
         // {
         //     ITransition transition = EntityFactory.CreateTransition();
         //
-        //     RevertableChangesHandler.Do(new ProcessCommand(
+        //     RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).Do(new ProcessCommand(
         //         () =>
         //         {
         //             step.Data.Transitions.Data.Transitions.Add(transition);
@@ -104,7 +103,7 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
         //     ITransition removedTransition = step.Data.Transitions.Data.Transitions[index];
         //     IChapter storedChapter = GlobalEditorHandler.GetCurrentChapter();
         //
-        //     RevertableChangesHandler.Do(new ProcessCommand(
+        //     RevertableChangesHandler (Godot: TinkerFlowPlugin.Instance.GetUndoRedo()).Do(new ProcessCommand(
         //         () =>
         //         {
         //             RemovePort(port);

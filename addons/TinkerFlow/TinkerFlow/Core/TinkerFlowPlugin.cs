@@ -1,8 +1,9 @@
-using System.IO;
-using System.Reflection;
 using Godot;
 using Godot.Collections;
+using System.IO;
+using System.Reflection;
 using VRBuilder.Core.Editor;
+using VRBuilder.Core.Editor.Configuration;
 using VRBuilder.Core.Editor.UI.Windows;
 
 namespace TinkerFlow.Godot.Editor
@@ -37,7 +38,8 @@ namespace TinkerFlow.Godot.Editor
                 }
             }
 
-            EditorInterface.Singleton.ScriptChanged += EditorReflectionUtils.OnScriptsReload;
+            EditorReflectionUtils.OnScriptsReload();
+            AllowedMenuItemsSettings.Instance.UpdateWithAllBehaviorsAndConditionsInProject();
 
             _MakeVisible(false);
             // _plugin = new MyInspectorPlugin();
@@ -92,7 +94,7 @@ namespace TinkerFlow.Godot.Editor
 
             if (EditorInterface.Singleton is EditorInterface editorInterface)
             {
-                var theme = editorInterface.GetEditorTheme();
+                Theme? theme = editorInterface.GetEditorTheme();
                 foreach (string themeType in theme.GetIconTypeList())
                     if (theme.HasIcon(iconName, themeType))
                         return theme.GetIcon(iconName, themeType);
@@ -100,7 +102,19 @@ namespace TinkerFlow.Godot.Editor
 
             if (ResourceLoader.Exists(ResourcePath(iconName)))
                 return ResourceLoader.Load<Texture2D>(ResourcePath(iconName));
-            return ResourceLoader.Load<Texture2D>(ResourcePath(Path.Join("../VR-Builder-Lite/Source/Core/Resources", iconName)));
+            const string vrBuilderLiteResourcePath = "../VR-Builder-Lite/Source/Core/Resources";
+            if (ResourceLoader.Exists(ResourcePath(Path.Join(vrBuilderLiteResourcePath, iconName))))
+                return ResourceLoader.Load<Texture2D>(ResourcePath(Path.Join(vrBuilderLiteResourcePath, iconName)));
+            foreach (string suffix in new[] { "png", "jpg", "gif", "svg" })
+            {
+                string fullName = string.Join('.', iconName, suffix);
+                if (ResourceLoader.Exists(ResourcePath(fullName)))
+                    return ResourceLoader.Load<Texture2D>(ResourcePath(fullName));
+                if (ResourceLoader.Exists(ResourcePath(Path.Join(vrBuilderLiteResourcePath, fullName))))
+                    return ResourceLoader.Load<Texture2D>(ResourcePath(Path.Join(vrBuilderLiteResourcePath, fullName)));
+            }
+            GD.PushWarning($"icon not found{iconName}");
+            return new Texture2D();
         }
     }
 }

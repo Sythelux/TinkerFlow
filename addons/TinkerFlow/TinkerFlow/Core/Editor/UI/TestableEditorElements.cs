@@ -5,11 +5,9 @@
 // using System;
 // using System.Collections.Generic;
 
-using System;
-using System.Linq;
 using Godot;
+using System;
 using System.Collections.Generic;
-using VRBuilder.Core.Exceptions;
 
 namespace VRBuilder.Core.Editor
 {
@@ -176,15 +174,22 @@ namespace VRBuilder.Core.Editor
                 {
                     MenuItem item = closuredOption as MenuItem;
 
-                    Action itemCallback;
+                    menu.AddItem(closuredOption.Label.Text, i);
+                    int i1 = i;
 
                     if (item.Func2 != null)
                     {
-                        itemCallback = () => item.Func2(item.UserData);
+                        menu.IndexPressed += index =>
+                        {
+                            if (i1 == index) item.Func2(item.UserData);
+                        };
                     }
                     else
                     {
-                        itemCallback = () => item.Func();
+                        menu.IndexPressed += index =>
+                        {
+                            if (i1 == index) item.Func();
+                        };
                     }
 
                     // GenericMenu.MenuFunction finalCallback = new GenericMenu.MenuFunction(itemCallback);
@@ -198,12 +203,10 @@ namespace VRBuilder.Core.Editor
                     //         itemCallback();
                     //     };
                     // }
-
                     // menu.AddItem(closuredOption.Label.Text, item.On, finalCallback);
                 }
             }
             // menu.DropDown(position);
-            menu.Show();
             return menu;
         }
 //

@@ -12,7 +12,6 @@ using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Editor.Configuration;
 using VRBuilder.Core.Editor.Godot;
 using VRBuilder.Core.Editor.Util;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -34,11 +33,13 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             row.Alignment = BoxContainer.AlignmentMode.Center;
             Button drawAddButton = EditorDrawingHelper.DrawAddButton("Add Behavior");
             //TODO: this needs to be watched and dynamically refreshed
-            drawAddButton.Disabled = DrawButtonAllowed;
+            drawAddButton.Disabled = !DrawButtonAllowed;
             drawAddButton.Pressed += () =>
             {
                 IList<TestableEditorElements.MenuOption> options = ConvertFromConfigurationOptionsToGenericMenuOptions(EditorConfigurator.Instance.BehaviorsMenuContent.ToList(), currentValue, changeValueCallback);
-                TestableEditorElements.DisplayContextMenu(options);
+                PopupMenu displayContextMenu = TestableEditorElements.DisplayContextMenu(options);
+                drawAddButton.AddChild(displayContextMenu);
+                displayContextMenu.PopupOnParent(new Rect2I((int)drawAddButton.GlobalPosition.X, (int)drawAddButton.GlobalPosition.Y, displayContextMenu.Size.X, 256));
                 if (currentValue != null)
                 {
                     GD.Print("Current value is not null");

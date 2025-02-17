@@ -2,14 +2,15 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
+using System.Threading.Tasks;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
-using VRBuilder.Core.Utils;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Editor.Configuration
 {
@@ -58,7 +59,7 @@ namespace VRBuilder.Core.Editor.Configuration
             //
             // ApplyConfigurationExtensions();
 
-            AllowedMenuItemsSettings.Instance.RefreshMenuOptions();
+            Task.Run(AllowedMenuItemsSettings.Instance.RefreshMenuOptions);
         }
 
         private static void ApplyConfigurationExtensions()
