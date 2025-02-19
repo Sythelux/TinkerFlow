@@ -37,11 +37,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         private readonly string listOfName = typeof(ListOfAttribute).FullName;
         private readonly string showHelpName = typeof(HelpAttribute).FullName;
         private readonly string showMenuName = typeof(MenuAttribute).FullName;
-        private static readonly Texture2D deleteIcon = EditorDrawingHelper.GetIcon("icon_delete");
-        private static readonly Texture2D arrowUpIcon = EditorDrawingHelper.GetIcon("icon_arrow_up");
-        private static readonly Texture2D arrowDownIcon = EditorDrawingHelper.GetIcon("icon_arrow_down");
-        private static readonly Texture2D helpIcon = EditorDrawingHelper.GetIcon("icon_help");
-        private static readonly Texture2D menuIcon = EditorDrawingHelper.GetIcon("icon_menu");
 
 
         /// <inheritdoc />
@@ -164,8 +159,9 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 {
                     var button = new Button
                     {
-                        Icon = helpIcon,
-                        Name = "DrawHelp.HelpButton"
+                        Icon = EditorDrawingHelper.HELP_ICON,
+                        Name = "DrawHelp.HelpButton",
+                        Flat = true
                     };
                     button.Pressed += () => Application.OpenURL(helpLinkAttribute.HelpLink);
                     control.AddChild(button);
@@ -178,17 +174,15 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             var control = DrawRecursively(wrapper, showMenuName, changeValueCallback, label);
             if (wrapper.Value?.GetType() != null)
             {
-                if (wrapper.Value.GetType().GetCustomAttribute(typeof(MenuAttribute)) is MenuAttribute menuAttribute)
+                var button = new Button
                 {
-                    var button = new Button
-                    {
-                        Icon = menuIcon,
-                        Name = "DrawHelp.MenuButton"
-                    };
-                    // menuAttribute.
-                    // button.Pressed += () => DrawEntityMenu;
-                    control.AddChild(button);
-                }
+                    Icon = EditorDrawingHelper.MENU_ICON,
+                    Name = "DrawHelp.MenuButton",
+                    Flat = true
+                };
+                // menuAttribute.
+                // button.Pressed += () => DrawEntityMenu;
+                control.AddChild(button);
             }
             return control;
         }
@@ -218,9 +212,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             var reorderDownButton = new Button
             {
-                Icon = arrowDownIcon,
+                Icon = EditorDrawingHelper.ARROW_DOWN_ICON,
                 Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsLast,
-                Name = "Reorderable.ReorderDownButton"
+                Name = "Reorderable.ReorderDownButton",
+                Flat = true
             };
             reorderDownButton.Pressed += () =>
             {
@@ -242,9 +237,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             var reorderUpButton = new Button
             {
-                Icon = arrowUpIcon,
+                Icon = EditorDrawingHelper.ARROW_UP_ICON,
                 Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsFirst,
-                Name = "Reorderable.ReorderUpButton"
+                Name = "Reorderable.ReorderUpButton",
+                Flat = true
             };
             reorderUpButton.Pressed += () =>
             {
@@ -292,7 +288,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             var deleteButton = new Button
             {
-                Icon = deleteIcon,
+                Icon = EditorDrawingHelper.DELETE_ICON,
                 Name = "DrawDeletable.DeleteButton"
             };
             deleteButton.Pressed += () =>
@@ -331,8 +327,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             var control = new HBoxContainer { Name = "Foldable.Container" };
             Button collapseButton = EditorDrawingHelper.DrawCollapseButton(collapsed: isToggledInValue);
             collapseButton.Flat = true;
-            var toggleLabel = new Label { Name = "Foldable.ToggleLabel" };
-            toggleLabel.Text = isToggledInValue ? text : "";
+            var toggleLabel = new Label
+            {
+                Name = "Foldable.ToggleLabel",
+                Text = text,
+                SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+            };
             var expandableContainer = new ExpandableVBoxContainer { Name = "Foldable.ExpandableContainer" };
             // expandableContainer.AddChild(new Label { Text = "Some" });
             // expandableContainer.AddChild(new Label { Text = "Junk" });
@@ -346,7 +346,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             control.AddChild(toggleLabel);
             control.AddChild(expandableContainer);
 
-            control.AddChild(DrawRecursively(wrapper, foldableName, (newWrapper) =>
+            expandableContainer.AddChild(DrawRecursively(wrapper, foldableName, (newWrapper) =>
             {
                 // We want the user to be aware that value has changed even if the foldable was collapsed (for example, undo/redo).
                 wrapper.Metadata[foldableName] = true;
@@ -359,7 +359,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 var oldIsToggledInValue = !(bool)wrapper.Metadata[foldableName];
                 if (newIsToggledInValue != oldIsToggledInValue)
                 {
-                    toggleLabel.Text = newIsToggledInValue ? text : "";
                     wrapper.Metadata[foldableName] = !newIsToggledInValue;
                     changeValueCallback(wrapper);
                 }
@@ -482,7 +481,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (wrapper.Metadata.Count > 1)
             {
-                GD.PushError( new NotImplementedException($"ListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method."));
+                GD.PushError(new NotImplementedException($"ListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method."));
             }
 
             var wrapperMetadata = (wrapper.Metadata[listOfName] as ListOfAttribute.Metadata);

@@ -5,6 +5,17 @@ namespace VRBuilder.Core.Editor.UI;
 
 internal class EditorDrawingHelper
 {
+    public static readonly Texture2D DELETE_ICON = TinkerFlowPlugin.GetIcon("Remove");
+    public static readonly Texture2D ARROW_UP_ICON = TinkerFlowPlugin.GetIcon("ArrowUp");
+    public static readonly Texture2D ARROW_DOWN_ICON = TinkerFlowPlugin.GetIcon("ArrowDown");
+    public static readonly Texture2D HELP_ICON = TinkerFlowPlugin.GetIcon("Help");
+    public static readonly Texture2D MENU_ICON = TinkerFlowPlugin.GetIcon("GuiTabMenuHl");
+    public static readonly Texture2D EDIT_ICON = TinkerFlowPlugin.GetIcon("Edit");
+    public static readonly Texture2D SHOW_ICON = TinkerFlowPlugin.GetIcon("Info");
+    public static readonly Texture2D ADD_ICON = TinkerFlowPlugin.GetIcon("Add");
+    public static readonly Texture2D PASTE_ICON = TinkerFlowPlugin.GetIcon("ActionPaste");
+
+
     //TODO: get all references to this function and unify it.
     public static Texture2D GetIcon(string path)
     {
@@ -17,17 +28,19 @@ internal class EditorDrawingHelper
 
     public static Button DrawAddButton(string description)
     {
-        var button = new Button();
-        button.Text = description;
-        button.Icon = GetIcon("icon_add");
-        button.Name = "AddButton";
+        var button = new Button
+        {
+            Text = description,
+            Icon = ADD_ICON,
+            Name = "AddButton"
+        };
         return button;
     }
 
     public static Button DrawHelpButton()
     {
         var button = new Button();
-        button.Icon = GetIcon("icon_help");
+        button.Icon = HELP_ICON;
         button.Name = "HelpButton";
         return button;
     }
@@ -35,7 +48,7 @@ internal class EditorDrawingHelper
     public static Button DrawPasteButton()
     {
         var button = new Button();
-        button.Icon = GetIcon("icon_paste");
+        button.Icon = PASTE_ICON;
         button.Name = "PasteButton";
         return button;
     }

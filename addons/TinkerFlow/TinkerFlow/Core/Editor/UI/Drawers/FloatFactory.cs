@@ -19,16 +19,24 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
+            var container = new HBoxContainer { Name = GetType().Name + ".Container" };
             var value = Convert.ToDouble(currentValue);
-            // var label = new Label { Text = text };
+            var label = new Label
+            {
+                Name = GetType().Name + ".Label",
+                Text = text,
+                SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+            };
             SpinBox spinBox = CreateSpinBox<T>(changeValueCallback, value);
-            spinBox.Name = GetType().Name + "." + text;
-            return spinBox;
+            container.AddChild(label);
+            container.AddChild(spinBox);
+            return container;
         }
 
         private SpinBox CreateSpinBox<T>(Action<object> changeValueCallback, double value)
         {
             var spinBox = new SpinBox();
+            spinBox.Name = GetType().Name + ".SpinBox";
             spinBox.Value = value;
             spinBox.CustomArrowStep = 1;
             spinBox.ValueChanged += OnValueChanged;

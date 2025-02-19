@@ -5,7 +5,9 @@
 using Godot;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Reflection;
+using TinkerFlow.Core.Editor.UI;
 using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
@@ -63,11 +65,23 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     changeValueCallback(list);
                 };
 
-                var block = new VBoxContainer { Name = "ListFactory.Block" };
+                var block = new VBoxContainer { Name = $"ListFactory.Block:{index}" };
+                var bg = new PanelContainer { Name = $"ListFactory.Block.Bg:{index}" };
+                var styleBoxFlat = new StyleBoxFlat
+                {
+                    BgColor = new Color(1f, 1f, 1f, 0.1f),
+                };
+                bg.AddThemeStyleboxOverride("panel", styleBoxFlat);
 
                 Label entryLabel = entryDrawer.GetLabel(entry);
-                block.AddChild(entryLabel);
-                block.AddChild(entryDrawer.Create(entry, entryValueChangedCallback, entryLabel.Text));
+                Control? header = entryDrawer.Create(entry, entryValueChangedCallback, entryLabel.Text);
+                ExpandableVBoxContainer body = header.GetChildren(true).OfType<ExpandableVBoxContainer>().First();
+
+                // block.AddChild(new HSeparator());
+                block.AddChild(bg);
+                bg.AddChild(header);
+                header.RemoveChild(body);
+                block.AddChild(body);
 
                 control.AddChild(block);
             }

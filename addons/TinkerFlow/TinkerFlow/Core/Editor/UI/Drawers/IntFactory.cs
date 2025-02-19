@@ -1,6 +1,6 @@
+using Godot;
 using System;
 using System.Reflection;
-using Godot;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -14,15 +14,23 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             var value = Convert.ToInt32(currentValue);
-            // var label = new Label { Text = text };
+            var container = new HBoxContainer { Name = GetType().Name + ".Container" };
+            var label = new Label
+            {
+                Name = GetType().Name + ".Label",
+                Text = text,
+                SizeFlagsHorizontal = Control.SizeFlags.ExpandFill
+            };
             SpinBox spinBox = CreateSpinBox<T>(changeValueCallback, value);
-            spinBox.Name = GetType().Name + "." + text;
-            return spinBox;
+            container.AddChild(label);
+            container.AddChild(spinBox);
+            return container;
         }
 
         private SpinBox CreateSpinBox<T>(Action<object> changeValueCallback, int value)
         {
             var spinBox = new SpinBox();
+            spinBox.Name = GetType().Name + ".SpinBox";
             spinBox.Value = value;
             spinBox.CustomArrowStep = 1;
             spinBox.ValueChanged += OnValueChanged;

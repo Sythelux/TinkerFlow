@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Reflection;
-using Godot;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -28,6 +28,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             textEdit.CustomMinimumSize = size;
             textEdit.Name = GetType().Name + "." + text;
             textEdit.Text = value;
+            textEdit.PlaceholderText = text;
             textEdit.TextChanged += OnValueChanged;
 
             return textEdit;

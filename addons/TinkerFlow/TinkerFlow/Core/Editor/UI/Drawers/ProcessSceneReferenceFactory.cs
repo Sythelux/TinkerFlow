@@ -19,9 +19,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         protected bool isUndoOperation;
         protected bool isExpanded;
 
-        private static readonly Texture2D deleteIcon = EditorDrawingHelper.GetIcon("icon_delete");
-        private static readonly Texture2D editIcon = EditorDrawingHelper.GetIcon("icon_edit");
-        private static readonly Texture2D showIcon = EditorDrawingHelper.GetIcon("icon_info"); //HelpSearch
         private static int buttonWidth = 24;
 
         public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)
@@ -35,7 +32,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             List<Guid> oldGuids = reference.Guids.ToList();
 
             var control = new VBoxContainer { Name = GetType().Name + "." + text };
-            control.AddChild(new Label { Text = $"[b]{text}[/b]" });
+            control.AddChild(new RichTextLabel { Text = $"[b]{text}[/b]", BbcodeEnabled = true });
 
             control.AddChild(DrawLimitationWarnings(reference.Guids, reference.AllowMultipleValues));
 
