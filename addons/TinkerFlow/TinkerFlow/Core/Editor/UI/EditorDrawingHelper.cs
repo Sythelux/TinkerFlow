@@ -5,7 +5,8 @@ namespace VRBuilder.Core.Editor.UI;
 
 internal class EditorDrawingHelper
 {
-    private static Texture2D AddIcon(string path)
+    //TODO: get all references to this function and unify it.
+    public static Texture2D GetIcon(string path)
     {
         path += EditorInterface.Singleton.GetEditorSettings().Get("interface/theme/base_color").AsColor().Luminance > 0.5
             ? "_dark"
@@ -16,26 +17,41 @@ internal class EditorDrawingHelper
 
     public static Button DrawAddButton(string description)
     {
-        return new Button
-        {
-            Text = description,
-            Icon = AddIcon("icon_add")
-        };
+        var button = new Button();
+        button.Text = description;
+        button.Icon = GetIcon("icon_add");
+        button.Name = "AddButton";
+        return button;
     }
 
     public static Button DrawHelpButton()
     {
-        return new Button
-        {
-            Icon = AddIcon("icon_help")
-        };
+        var button = new Button();
+        button.Icon = GetIcon("icon_help");
+        button.Name = "HelpButton";
+        return button;
     }
 
     public static Button DrawPasteButton()
     {
-        return new Button
-        {
-            Icon = AddIcon("icon_paste")
-        };
+        var button = new Button();
+        button.Icon = GetIcon("icon_paste");
+        button.Name = "PasteButton";
+        return button;
+    }
+
+    public static Button DrawCollapseButton(string? label = null, bool collapsed = false)
+    {
+        var guiTreeArrowRight = TinkerFlowPlugin.GetIcon("GuiTreeArrowRight");
+        var guiTreeArrowDown = TinkerFlowPlugin.GetIcon("GuiTreeArrowDown");
+
+        var button = new Button();
+        button.Icon = collapsed ? guiTreeArrowRight : guiTreeArrowDown;
+        button.Name = "CollapseButton";
+        button.ToggleMode = true;
+        if (label != null)
+            button.Text = label;
+        button.Toggled += toggledOn => button.Icon = toggledOn ? guiTreeArrowRight : guiTreeArrowDown;
+        return button;
     }
 }

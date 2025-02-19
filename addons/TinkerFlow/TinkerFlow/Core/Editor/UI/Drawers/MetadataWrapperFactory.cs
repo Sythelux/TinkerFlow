@@ -8,9 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using TinkerFlow.Godot.Editor;
-using VRBuilder.Core;
+using TinkerFlow.Core.Editor.UI;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Conditions;
@@ -38,10 +36,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         private readonly string reorderableListOfName = typeof(ReorderableListOfAttribute).FullName;
         private readonly string listOfName = typeof(ListOfAttribute).FullName;
         private readonly string showHelpName = typeof(HelpAttribute).FullName;
-        private static readonly Texture2D deleteIcon = TinkerFlowPlugin.GetIcon("icon_delete");
-        private static readonly Texture2D arrowUpIcon = TinkerFlowPlugin.GetIcon("icon_arrow_up");
-        private static readonly Texture2D arrowDownIcon = TinkerFlowPlugin.GetIcon("icon_arrow_down");
-        private static readonly Texture2D helpIcon = TinkerFlowPlugin.GetIcon("icon_help");
+        private readonly string showMenuName = typeof(MenuAttribute).FullName;
+        private static readonly Texture2D deleteIcon = EditorDrawingHelper.GetIcon("icon_delete");
+        private static readonly Texture2D arrowUpIcon = EditorDrawingHelper.GetIcon("icon_arrow_up");
+        private static readonly Texture2D arrowDownIcon = EditorDrawingHelper.GetIcon("icon_arrow_down");
+        private static readonly Texture2D helpIcon = EditorDrawingHelper.GetIcon("icon_help");
+        private static readonly Texture2D menuIcon = EditorDrawingHelper.GetIcon("icon_menu");
 
 
         /// <inheritdoc />
@@ -50,15 +50,26 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not MetadataWrapper wrapper)
-                return new Control{ Name = GetType().Name + "." + text };
+                return new Control { Name = GetType().Name + "." + text };
 
             // If the drawn object is a ITransition, IBehavior or ICondition the list object will be part of a header.
             bool isPartOfHeader = wrapper.ValueDeclaredType == typeof(ITransition) || wrapper.ValueDeclaredType == typeof(IBehavior) || wrapper.ValueDeclaredType == typeof(ICondition);
+
+            if (wrapper.Metadata.ContainsKey(deletableName))
+            {
+                return DrawDeletable(wrapper, changeValueCallback, text, isPartOfHeader);
+            }
+
+            if (wrapper.Metadata.ContainsKey(showMenuName))
+            {
+                return DrawMenu(wrapper, changeValueCallback, text, isPartOfHeader);
+            }
 
             if (wrapper.Metadata.ContainsKey(showHelpName))
             {
                 return DrawHelp(wrapper, changeValueCallback, text, isPartOfHeader);
             }
+
             if (wrapper.Metadata.ContainsKey(reorderableName))
             {
                 return DrawReorderable(wrapper, changeValueCallback, text, isPartOfHeader);
@@ -67,11 +78,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             if (wrapper.Metadata.ContainsKey(separatedName))
             {
                 return DrawSeparated(wrapper, changeValueCallback, text);
-            }
-
-            if (wrapper.Metadata.ContainsKey(deletableName))
-            {
-                return DrawDeletable(wrapper, changeValueCallback, text, isPartOfHeader);
             }
 
             if (wrapper.Metadata.ContainsKey(foldableName))
@@ -104,7 +110,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 return DrawListOf(wrapper, changeValueCallback, text);
             }
 
-            throw new NotImplementedException("Wrapper drawer for this kind of metadata is not implemented.");
+            GD.PushError(new NotImplementedException($"Wrapper drawer for this kind of metadata is not implemented:{string.Join(", ", wrapper.Metadata.Keys)}"));
+            return new Control { Name = GetType().Name + ".NotImplementedException" };
         }
 
         /// <inheritdoc />
@@ -117,7 +124,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         public override Label? GetLabel<T>(T value)
         {
             // Assert that value is never null, as we always call MetadataWrapper on freshly created instance.
-            MetadataWrapper wrapper = value as MetadataWrapper;
+            var wrapper = value as MetadataWrapper;
             IProcessDrawer valueDrawer = DrawerLocator.GetDrawerForValue(wrapper.Value, wrapper.ValueDeclaredType);
 
             return valueDrawer.GetLabel(wrapper.Value);
@@ -153,12 +160,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             var control = DrawRecursively(wrapper, showHelpName, changeValueCallback, text);
             if (wrapper.Value?.GetType() != null)
             {
-                HelpLinkAttribute helpLinkAttribute = wrapper.Value.GetType().GetCustomAttribute(typeof(HelpLinkAttribute)) as HelpLinkAttribute;
-                if (helpLinkAttribute != null)
+                if (wrapper.Value.GetType().GetCustomAttribute(typeof(HelpLinkAttribute)) is HelpLinkAttribute helpLinkAttribute)
                 {
                     var button = new Button
                     {
                         Icon = helpIcon,
+                        Name = "DrawHelp.HelpButton"
                     };
                     button.Pressed += () => Application.OpenURL(helpLinkAttribute.HelpLink);
                     control.AddChild(button);
@@ -166,6 +173,44 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             }
             return control;
         }
+        private Control DrawMenu(MetadataWrapper wrapper, Action<object> changeValueCallback, string label, bool isPartOfHeader)
+        {
+            var control = DrawRecursively(wrapper, showMenuName, changeValueCallback, label);
+            if (wrapper.Value?.GetType() != null)
+            {
+                if (wrapper.Value.GetType().GetCustomAttribute(typeof(MenuAttribute)) is MenuAttribute menuAttribute)
+                {
+                    var button = new Button
+                    {
+                        Icon = menuIcon,
+                        Name = "DrawHelp.MenuButton"
+                    };
+                    // menuAttribute.
+                    // button.Pressed += () => DrawEntityMenu;
+                    control.AddChild(button);
+                }
+            }
+            return control;
+        }
+
+        // private void DrawEntityMenu(MetadataWrapper wrapper, Action<object> changeValueCallback)
+        // {
+        //     GenericMenu menu = new GenericMenu();
+        //
+        //     menu.AddItem(new GUIContent("Remove"), false, () => Delete(wrapper, changeValueCallback));
+        //     menu.AddItem(new GUIContent("Copy"), false, () => Copy(wrapper, changeValueCallback));
+        //
+        //     if (CanPaste(wrapper))
+        //     {
+        //         menu.AddItem(new GUIContent("Paste"), false, () => Paste(wrapper, changeValueCallback));
+        //     }
+        //     else
+        //     {
+        //         menu.AddDisabledItem(new GUIContent("Paste"));
+        //     }
+        //
+        //     menu.ShowAsContext();
+        // }
 
         private Control DrawReorderable(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
         {
@@ -174,7 +219,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             var reorderDownButton = new Button
             {
                 Icon = arrowDownIcon,
-                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsLast
+                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsLast,
+                Name = "Reorderable.ReorderDownButton"
             };
             reorderDownButton.Pressed += () =>
             {
@@ -197,7 +243,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             var reorderUpButton = new Button
             {
                 Icon = arrowUpIcon,
-                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsFirst
+                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsFirst,
+                Name = "Reorderable.ReorderUpButton"
             };
             reorderUpButton.Pressed += () =>
             {
@@ -228,7 +275,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             // Rect wrappedRect = rect;
             // wrappedRect.y += EditorDrawingHelper.VerticalSpacing;
             //
-            // wrappedRect = DrawRecursively(wrappedRect, wrapper, separatedName, changeValueCallback, label);
+            // wrappedRect = DrawRecursively(wrappedwrapper, separatedName, changeValueCallback, label);
             //
             // wrappedRect.height += EditorDrawingHelper.VerticalSpacing;
             //
@@ -236,7 +283,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             //
             // rect.height = wrappedRect.height;
             // return rect;
-            return new Control();
+            return new Control { Name = "DrawSeparated" };
         }
 
         private Control DrawDeletable(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
@@ -246,6 +293,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             var deleteButton = new Button
             {
                 Icon = deleteIcon,
+                Name = "DrawDeletable.DeleteButton"
             };
             deleteButton.Pressed += () =>
             {
@@ -269,69 +317,60 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawFoldable(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
         {
-            //TODO:
-            // if (wrapper.Metadata[foldableName] == null)
-            // {
-            //     wrapper.Metadata[foldableName] = true;
-            //     changeValueCallback(wrapper);
-            // }
-            //
-            // bool oldIsFoldedOutValue = (bool)wrapper.Metadata[foldableName];
-            //
-            // GUIStyle foldoutStyle = new GUIStyle(EditorStyles.foldout)
-            // {
-            //     fontStyle = FontStyle.Bold,
-            //     fontSize = 12
-            // };
-            //
-            // GUIStyle labelStyle = new GUIStyle(EditorStyles.label)
-            // {
-            //     fontStyle = FontStyle.Bold,
-            //     fontSize = 12
-            // };
-            //
-            // Rect foldoutRect = new Rect(rect.x, rect.y, rect.width, EditorDrawingHelper.HeaderLineHeight);
-            //
-            // if (isPartOfHeader)
-            // {
-            //     EditorGUI.DrawRect(new Rect(0, foldoutRect.y, foldoutRect.width + foldoutRect.x + 8, foldoutRect.height), new Color(62f / 256f, 62f / 256f, 62f / 256f));
-            //     EditorGUI.DrawRect(new Rect(0, foldoutRect.y, foldoutRect.width + foldoutRect.x + 8, 1), new Color(26f / 256f, 26f / 256f, 26f / 256f));
-            //     EditorGUI.DrawRect(new Rect(0, foldoutRect.y + foldoutRect.height, foldoutRect.width + foldoutRect.x + 8, 1), new Color(48f / 256f, 48f / 256f, 48f / 256f));
-            // }
-            //
-            // bool newIsFoldedOutValue = EditorDrawingHelper.DrawFoldoutWithReducedFocusArea(foldoutRect, oldIsFoldedOutValue, oldIsFoldedOutValue ? new GUIContent() : label, foldoutStyle, labelStyle);
-            //
-            // if (newIsFoldedOutValue != oldIsFoldedOutValue)
-            // {
-            //     wrapper.Metadata[foldableName] = newIsFoldedOutValue;
-            //     changeValueCallback(wrapper);
-            // }
-            //
-            // // Collapsed
-            // if (newIsFoldedOutValue == false)
-            // {
-            //     rect.height = EditorDrawingHelper.HeaderLineHeight;
-            //     return rect;
-            // }
-            //
-            // rect.height = 0f;
-            //
-            // Rect wrappedRect = rect;
-            // wrappedRect.x += EditorDrawingHelper.IndentationWidth;
-            // wrappedRect.width -= EditorDrawingHelper.IndentationWidth;
-            //
-            // return DrawRecursively(wrappedRect, wrapper, foldableName, (newWrapper) =>
-            // {
-            //     // We want the user to be aware that value has changed even if the foldable was collapsed (for example, undo/redo).
-            //     wrapper.Metadata[foldableName] = true;
-            //     changeValueCallback(wrapper);
-            // }, label);
-            return new Control();
+            if (wrapper.Metadata[foldableName] == null)
+            {
+                wrapper.Metadata[foldableName] = true;
+                changeValueCallback(wrapper);
+            }
+
+            if (isPartOfHeader)
+            {
+            }
+            var isToggledInValue = !(bool)wrapper.Metadata[foldableName];
+
+            var control = new HBoxContainer { Name = "Foldable.Container" };
+            Button collapseButton = EditorDrawingHelper.DrawCollapseButton(collapsed: isToggledInValue);
+            collapseButton.Flat = true;
+            var toggleLabel = new Label { Name = "Foldable.ToggleLabel" };
+            toggleLabel.Text = isToggledInValue ? text : "";
+            var expandableContainer = new ExpandableVBoxContainer { Name = "Foldable.ExpandableContainer" };
+            // expandableContainer.AddChild(new Label { Text = "Some" });
+            // expandableContainer.AddChild(new Label { Text = "Junk" });
+            // expandableContainer.AddChild(new Label { Text = "To" });
+            // expandableContainer.AddChild(new Label { Text = "Test" });
+            expandableContainer.SetToggled(isToggledInValue);
+            collapseButton.Toggled += OnCollapseButtonOnToggled;
+            collapseButton.Toggled += OnToggledEventHandler;
+
+            control.AddChild(collapseButton);
+            control.AddChild(toggleLabel);
+            control.AddChild(expandableContainer);
+
+            control.AddChild(DrawRecursively(wrapper, foldableName, (newWrapper) =>
+            {
+                // We want the user to be aware that value has changed even if the foldable was collapsed (for example, undo/redo).
+                wrapper.Metadata[foldableName] = true;
+                changeValueCallback(wrapper);
+            }, text));
+            return control;
+
+            void OnToggledEventHandler(bool newIsToggledInValue)
+            {
+                var oldIsToggledInValue = !(bool)wrapper.Metadata[foldableName];
+                if (newIsToggledInValue != oldIsToggledInValue)
+                {
+                    toggleLabel.Text = newIsToggledInValue ? text : "";
+                    wrapper.Metadata[foldableName] = !newIsToggledInValue;
+                    changeValueCallback(wrapper);
+                }
+            }
+
+            void OnCollapseButtonOnToggled(bool toggled) => expandableContainer.SetToggled(toggled);
         }
 
         private Control DrawIsBlockingToggle(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
-            IDataOwner? dataOwner = wrapper.Value as IDataOwner;
+            var dataOwner = wrapper.Value as IDataOwner;
 
             var control = DrawRecursively(wrapper, drawIsBlockingToggleName, changeValueCallback, text);
 
@@ -361,7 +400,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             if (wrapper.Value is IList == false)
             {
                 GD.PushWarning("ExtendableListAttribute can be used only with IList members.");
-                return new Control();
+                return new Control { Name = "DrawExtendableList" };
             }
 
             Type? elementType = (wrapper.Metadata[extendableListName] as ExtendableListAttribute.SerializedTypeWrapper)?.Type;
@@ -387,7 +426,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
                     if (wrapper.Metadata.ContainsKey(listOfName))
                     {
-                        ListOfAttribute.Metadata temp = (ListOfAttribute.Metadata)wrapper.Metadata[listOfName];
+                        var temp = (ListOfAttribute.Metadata)wrapper.Metadata[listOfName];
                         temp.ChildMetadata.Add(temp.ChildAttributes.ToDictionary(attribute => attribute.Name, attribute => attribute.GetDefaultMetadata(null)));
                         wrapper.Metadata[listOfName] = temp;
                     }
@@ -405,14 +444,14 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             if (wrapper.Value is IList == false)
             {
                 GD.PushWarning("KeepPopulated can be used only with IList members.");
-                return new Control();
+                return new Control { Name = "HandleKeepPopulated" };
             }
 
-            IList list = (IList)wrapper.Value;
+            var list = (IList)wrapper.Value;
 
             if (list.Count == 0)
             {
-                Type? entryType = (Type)wrapper.Metadata[keepPopulatedName];
+                var entryType = (Type)wrapper.Metadata[keepPopulatedName];
                 if (entryType != null)
                 {
                     Type listType = ReflectionUtils.GetEntryType(list);
@@ -446,10 +485,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 throw new NotImplementedException($"ListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method.");
             }
 
-            ListOfAttribute.Metadata wrapperMetadata = (wrapper.Metadata[listOfName] as ListOfAttribute.Metadata);
+            var wrapperMetadata = (wrapper.Metadata[listOfName] as ListOfAttribute.Metadata);
             List<Dictionary<string, object>> listOfMetadata = wrapperMetadata.ChildMetadata;
 
-            IList list = (IList)wrapper.Value;
+            var list = (IList)wrapper.Value;
 
             if (listOfMetadata == null)
             {
@@ -459,7 +498,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             if (listOfMetadata.Count != list.Count)
             {
                 listOfMetadata.Clear();
-                for (int i = 0; i < list.Count; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
                     listOfMetadata.Add(wrapperMetadata.ChildAttributes.ToDictionary(attribute => attribute.Name, attribute => attribute.GetDefaultMetadata(null)));
                 }
@@ -480,7 +519,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 throw new NotImplementedException($"ReorderableListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method.");
             }
 
-            ListOfAttribute.Metadata wrapperMetadata = (wrapper.Metadata[reorderableListOfName] as ListOfAttribute.Metadata);
+            var wrapperMetadata = (wrapper.Metadata[reorderableListOfName] as ListOfAttribute.Metadata);
             List<Dictionary<string, object>> listOfMetadata = wrapperMetadata.ChildMetadata;
 
             int wrapperCount = ((IList)wrapper.Value).Count;
@@ -493,7 +532,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             if (listOfMetadata.Count != wrapperCount)
             {
                 listOfMetadata.Clear();
-                for (int i = 0; i < wrapperCount; i++)
+                for (var i = 0; i < wrapperCount; i++)
                 {
                     listOfMetadata.Add(wrapperMetadata.ChildAttributes.ToDictionary(attribute => attribute.Name, attribute => attribute.GetDefaultMetadata(null)));
                     listOfMetadata[i].Add(reorderableName, new ReorderableElementMetadata());
@@ -521,10 +560,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         private IList<MetadataWrapper> GetListOfWrappers(MetadataWrapper wrapper, List<Dictionary<string, object>> listOfMetadata)
         {
             Type entryType = ReflectionUtils.GetEntryType(wrapper.Value);
-            IList wrapperValueList = (IList)wrapper.Value;
+            var wrapperValueList = (IList)wrapper.Value;
 
             List<MetadataWrapper> listOfWrappers = new List<MetadataWrapper>();
-            for (int i = 0; i < wrapperValueList.Count; i++)
+            for (var i = 0; i < wrapperValueList.Count; i++)
             {
                 listOfWrappers.Add(new MetadataWrapper()
                 {
@@ -542,7 +581,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             IList<MetadataWrapper> listOfWrappers = ConvertListOfMetadataToList(wrapper);
 
             IProcessDrawer valueDrawer = DrawerLocator.GetDrawerForValue(wrapper.Value, wrapper.ValueDeclaredType);
-            IList list = (IList)wrapper.Value;
+            var list = (IList)wrapper.Value;
 
             return valueDrawer?.Create(listOfWrappers, (newValue) =>
             {
@@ -553,7 +592,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
                 ((ListOfAttribute.Metadata)wrapper.Metadata[listOfName]).ChildMetadata = newListOfWrappers.Select(childWrapper => childWrapper.Metadata).ToList();
                 changeValueCallback(wrapper);
-            }, text) ?? new Control();
+            }, text) ?? new Control { Name = "DrawListOf" };
         }
 
         private Control DrawReorderableListOf(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
@@ -561,11 +600,11 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             IList<MetadataWrapper> listOfWrappers = ConvertReorderableListOfMetadataToList(wrapper);
 
             IProcessDrawer? valueDrawer = DrawerLocator.GetDrawerForValue(wrapper.Value, wrapper.ValueDeclaredType);
-            IList list = (IList)wrapper.Value;
+            var list = (IList)wrapper.Value;
 
-            for (int i = 0; i < listOfWrappers.Count; i++)
+            for (var i = 0; i < listOfWrappers.Count; i++)
             {
-                ReorderableElementMetadata metadata = (ReorderableElementMetadata)listOfWrappers[i].Metadata[reorderableName];
+                var metadata = (ReorderableElementMetadata)listOfWrappers[i].Metadata[reorderableName];
                 metadata.IsFirst = i == 0;
                 metadata.IsLast = i == listOfWrappers.Count - 1;
             }
@@ -574,34 +613,38 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             {
                 List<MetadataWrapper> newListOfWrappers = ((List<MetadataWrapper>)newValue).ToList();
 
-                for (int i = 0; i < newListOfWrappers.Count; i++)
+                for (var i = 0; i < newListOfWrappers.Count; i++)
                 {
-                    ReorderableElementMetadata metadata = (ReorderableElementMetadata)newListOfWrappers[i].Metadata[reorderableName];
+                    var metadata = (ReorderableElementMetadata)newListOfWrappers[i].Metadata[reorderableName];
 
-                    if (metadata.MoveDown && metadata.MoveUp == false)
+                    switch (metadata.MoveDown)
                     {
-                        metadata.MoveDown = false;
-                        if (i < newListOfWrappers.Count - 1)
+                        case true when metadata.MoveUp == false:
                         {
-                            (newListOfWrappers[i], newListOfWrappers[i + 1]) = (newListOfWrappers[i + 1], newListOfWrappers[i]);
-                        }
+                            metadata.MoveDown = false;
+                            if (i < newListOfWrappers.Count - 1)
+                            {
+                                (newListOfWrappers[i], newListOfWrappers[i + 1]) = (newListOfWrappers[i + 1], newListOfWrappers[i]);
+                            }
 
-                        // Repeat at same index because unprocessed element switched position to i.
-                        i--;
-                    }
-                    else if (metadata.MoveDown == false && metadata.MoveUp)
-                    {
-                        metadata.MoveUp = false;
-                        if (i > 0)
-                        {
-                            (newListOfWrappers[i], newListOfWrappers[i - 1]) = (newListOfWrappers[i - 1], newListOfWrappers[i]);
+                            // Repeat at same index because unprocessed element switched position to i.
+                            i--;
+                            break;
                         }
-                    }
-                    else
-                    {
-                        // Reset, if both actions are true
-                        metadata.MoveDown = false;
-                        metadata.MoveUp = false;
+                        case false when metadata.MoveUp:
+                        {
+                            metadata.MoveUp = false;
+                            if (i > 0)
+                            {
+                                (newListOfWrappers[i], newListOfWrappers[i - 1]) = (newListOfWrappers[i - 1], newListOfWrappers[i]);
+                            }
+                            break;
+                        }
+                        default:
+                            // Reset, if both actions are true
+                            metadata.MoveDown = false;
+                            metadata.MoveUp = false;
+                            break;
                     }
                 }
 
@@ -610,7 +653,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
                 ((ListOfAttribute.Metadata)wrapper.Metadata[reorderableListOfName]).ChildMetadata = newListOfWrappers.Select(childWrapper => childWrapper.Metadata).ToList();
                 changeValueCallback(wrapper);
-            }, text) ?? new Control();
+            }, text) ?? new Control { Name = "DrawReorderableListOf" };
         }
 
         private Control DrawRecursively(MetadataWrapper wrapper, string currentDrawerName, Action<object> changeValueCallback, string text)
@@ -632,7 +675,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     changeValueCallback(wrapper);
                 }
 
-                rect = valueDrawer?.Create(wrapper.Value, ValueChanged, text) ?? new Control();
+                rect = valueDrawer?.Create(wrapper.Value, ValueChanged, text) ?? new Control { Name = "DrawRecursively" };
             }
 
             return rect;
@@ -640,16 +683,18 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawWrapperRecursively(MetadataWrapper parentWrapper, Action<object> changeValueCallback, string removedMetadataName, string text)
         {
-            MetadataWrapper wrappedWrapper = new MetadataWrapper()
+            var wrappedWrapper = new MetadataWrapper()
             {
                 Value = parentWrapper.Value,
                 ValueDeclaredType = parentWrapper.ValueDeclaredType,
                 Metadata = parentWrapper.Metadata.Where(kvp => kvp.Key != removedMetadataName).ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
             };
 
+            return Create(wrappedWrapper, WrappedWrapperChanged, text) ?? new Control { Name = "DrawWrapperRecursively" };
+
             void WrappedWrapperChanged(object newValue)
             {
-                MetadataWrapper newWrapper = (MetadataWrapper)newValue;
+                var newWrapper = (MetadataWrapper)newValue;
 
                 foreach (string key in newWrapper.Metadata.Keys)
                 {
@@ -660,8 +705,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
                 changeValueCallback(parentWrapper);
             }
-
-            return Create(wrappedWrapper, WrappedWrapperChanged, text) ?? new Control();
         }
     }
 }

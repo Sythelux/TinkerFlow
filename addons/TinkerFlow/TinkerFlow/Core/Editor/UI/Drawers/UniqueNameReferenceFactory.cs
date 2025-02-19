@@ -61,7 +61,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             Control checkForMisconfigurationIssues = CheckForMisconfigurationIssues(selectedSceneObject, valueType);
             control.AddChild(checkForMisconfigurationIssues);
 
-            var hBoxContainer = new HBoxContainer();
+            var hBoxContainer = new HBoxContainer{Name="UniqueNameReference"};
             var label = new Label { Text = text };
             hBoxContainer.AddChild(label);
 

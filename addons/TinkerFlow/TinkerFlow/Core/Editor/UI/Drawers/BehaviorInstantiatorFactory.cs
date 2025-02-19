@@ -29,8 +29,11 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             var container = new VBoxContainer { Name = GetType().Name + "." + text };
 
-            var row = new HBoxContainer();
-            row.Alignment = BoxContainer.AlignmentMode.Center;
+            var row = new HBoxContainer
+            {
+                Name = GetType().Name + ".row",
+                Alignment = BoxContainer.AlignmentMode.Center
+            };
             Button drawAddButton = EditorDrawingHelper.DrawAddButton("Add Behavior");
             //TODO: this needs to be watched and dynamically refreshed
             drawAddButton.Disabled = !DrawButtonAllowed;

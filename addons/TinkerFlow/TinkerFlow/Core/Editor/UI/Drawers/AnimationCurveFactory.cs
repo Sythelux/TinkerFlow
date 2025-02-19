@@ -20,8 +20,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            var container = new HBoxContainer();
-            container.Name = GetType().Name + "." + text;
+            var container = new HBoxContainer { Name = GetType().Name + "." + text };
             // can't use the editor one because of: https://github.com/godotengine/godot-proposals/issues/3244
             // so make this good eventually.
             if (currentValue is Curve curve)
@@ -32,11 +31,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 line.Width = 10;
                 line.SetCurve(curve);
                 line.Draw += OnDraw;
-                
+
                 void OnDraw()
                 {
                     ChangeValue(() => line.GetCurve(), () => curve, changeValueCallback);
                 }
+
                 container.AddChild(line);
             }
 

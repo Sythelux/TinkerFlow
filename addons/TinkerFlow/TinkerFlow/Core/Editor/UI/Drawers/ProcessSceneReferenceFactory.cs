@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TinkerFlow.Godot.Editor;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Editor.Godot;
 using VRBuilder.Core.SceneObjects;
@@ -20,9 +19,9 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         protected bool isUndoOperation;
         protected bool isExpanded;
 
-        private static readonly Texture2D deleteIcon = TinkerFlowPlugin.GetIcon("icon_delete");
-        private static readonly Texture2D editIcon = TinkerFlowPlugin.GetIcon("icon_edit");
-        private static readonly Texture2D showIcon = TinkerFlowPlugin.GetIcon("icon_info");
+        private static readonly Texture2D deleteIcon = EditorDrawingHelper.GetIcon("icon_delete");
+        private static readonly Texture2D editIcon = EditorDrawingHelper.GetIcon("icon_edit");
+        private static readonly Texture2D showIcon = EditorDrawingHelper.GetIcon("icon_info"); //HelpSearch
         private static int buttonWidth = 24;
 
         public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)

@@ -11,8 +11,14 @@ config_version=5
 [TinkerFlow]
 
 Editors/LastEditedProcessName="SampleScene"
-AllowedMenuItemsSettings/SerializedBehaviorSelections={}
-AllowedMenuItemsSettings/SerializedConditionSelections={}
+AllowedMenuItemsSettings/SerializedBehaviorSelections={
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.BehaviorSequenceMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.ConfettiMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.DelayMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true
+}
+AllowedMenuItemsSettings/SerializedConditionSelections={
+"VRBuilder.Core.Editor.UI.MenuItems.Conditions.TimeoutMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true
+}
 LifeCycleLoggingConfig/LogSteps=true
 LifeCycleLoggingConfig/LogChapters=true
 
@@ -23,6 +29,7 @@ Editor.Godots/LastEditedProcessName="SampleScene"
 [application]
 
 config/name="TinkerFlow"
+run/main_scene="uid://dagvs0h2x2v0d"
 config/features=PackedStringArray("4.4", "C#")
 config/icon="res://icon.svg"
 

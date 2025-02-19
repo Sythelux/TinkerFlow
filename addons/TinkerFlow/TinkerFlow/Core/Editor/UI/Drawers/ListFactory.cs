@@ -5,6 +5,7 @@
 using Godot;
 using System;
 using System.Collections;
+using System.Reflection;
 using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
@@ -18,14 +19,14 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// <inheritdoc />
         public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
-            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not IList list)
-                return new Control{ Name = GetType().Name + "." + text };
+                return new Control { Name = GetType().Name + "." + text };
 
             Type entryDeclaredType = ReflectionUtils.GetEntryType(currentValue);
 
-            var control = new VBoxContainer{ Name = GetType().Name + "." + text };
+            var control = new VBoxContainer { Name = GetType().Name + "." + text };
 
             // if (!string.IsNullOrEmpty(text))
             //     control.AddChild(new Label { Text = text });
@@ -62,13 +63,13 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     changeValueCallback(list);
                 };
 
-                var row = new HBoxContainer();
+                var block = new VBoxContainer { Name = "ListFactory.Block" };
 
                 Label entryLabel = entryDrawer.GetLabel(entry);
-                row.AddChild(entryLabel);
-                row.AddChild(entryDrawer.Create(entry, entryValueChangedCallback, entryLabel.Text));
+                block.AddChild(entryLabel);
+                block.AddChild(entryDrawer.Create(entry, entryValueChangedCallback, entryLabel.Text));
 
-                control.AddChild(row);
+                control.AddChild(block);
             }
             return control;
         }

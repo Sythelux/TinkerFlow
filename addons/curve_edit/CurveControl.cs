@@ -115,7 +115,7 @@
 //     // Add a new curve point inspector (label and a CurvePointInspector), also hook them up
 //     public void AddPointInspector(int index)
 //     {
-//         HBoxContainer box = new HBoxContainer();
+//         HBoxContainer box = new HBoxContainer{Name="CurveControl"};
 //
 //         Button button = new Button();
 //         button.Text = "Remove";
