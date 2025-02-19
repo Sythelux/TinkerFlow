@@ -482,7 +482,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (wrapper.Metadata.Count > 1)
             {
-                throw new NotImplementedException($"ListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method.");
+                GD.PushError( new NotImplementedException($"ListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method."));
             }
 
             var wrapperMetadata = (wrapper.Metadata[listOfName] as ListOfAttribute.Metadata);
@@ -516,7 +516,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (wrapper.Metadata.Count > 1)
             {
-                throw new NotImplementedException($"ReorderableListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method.");
+                GD.PushError(new NotImplementedException($"ReorderableListOfAttribute attribute should have the lowest priority. Check MetadataWrapperDrawer.Draw method."));
             }
 
             var wrapperMetadata = (wrapper.Metadata[reorderableListOfName] as ListOfAttribute.Metadata);

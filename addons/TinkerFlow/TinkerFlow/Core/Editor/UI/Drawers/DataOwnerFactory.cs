@@ -2,11 +2,10 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Linq;
 using System.Reflection;
-using Godot;
-using VRBuilder.Core;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -17,7 +16,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            if (currentValue == null) throw new NullReferenceException("Attempting to draw null object.");
+            if (currentValue == null) GD.PushError(new NullReferenceException("Attempting to draw null object."));
 
             IData? data = (currentValue as IDataOwner)?.Data;
             IProcessDrawer dataDrawer = DrawerLocator.GetDrawerForMember(EditorReflectionUtils.GetFieldsAndPropertiesToDraw(currentValue).First(member => member.Name == "Data"), currentValue);

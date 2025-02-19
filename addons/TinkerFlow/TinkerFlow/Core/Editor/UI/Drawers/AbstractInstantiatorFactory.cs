@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
@@ -22,29 +22,26 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// </summary>
         protected IList<TestableEditorElements.MenuOption> ConvertFromConfigurationOptionsToGenericMenuOptions(IList<MenuOption<T>> options, object currentValue, Action<object> changeValueCallback)
         {
-            return options.Select<MenuOption<T>, TestableEditorElements.MenuOption>(menuOption =>
+            return options.Select<MenuOption<T>, TestableEditorElements.MenuOption?>(menuOption =>
             {
-                MenuSeparator<T> separator = menuOption as MenuSeparator<T>;
-                DisabledMenuItem<T> disabled = menuOption as DisabledMenuItem<T>;
-                MenuItem<T> item = menuOption as MenuItem<T>;
-
-                if (separator != null)
+                if (menuOption is MenuSeparator<T> separator)
                 {
                     return new TestableEditorElements.MenuSeparator(separator.PathToSubmenu);
                 }
 
-                if (disabled != null)
+                if (menuOption is DisabledMenuItem<T> disabled)
                 {
                     return new TestableEditorElements.DisabledMenuItem(new Label { Text = disabled.Label });
                 }
 
-                if (item != null)
+                if (menuOption is MenuItem<T> item)
                 {
                     return new TestableEditorElements.MenuItem(new Label { Text = item.DisplayedName }, false, () => ChangeValue(() => item.GetNewItem(), () => currentValue, changeValueCallback));
                 }
 
-                throw new InvalidCastException("There is a closed list of implementations of AddItemMenuOption.");
-            }).ToList();
+                GD.PushError(new InvalidCastException("There is a closed list of implementations of AddItemMenuOption."));
+                return null;
+            }).Where(option => option != null).ToList();
         }
     }
 }

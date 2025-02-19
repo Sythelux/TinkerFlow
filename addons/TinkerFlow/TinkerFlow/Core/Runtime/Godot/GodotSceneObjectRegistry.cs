@@ -53,9 +53,9 @@
 //         /// <inheritdoc />
 //         public void Register(ISceneObject obj)
 //         {
-//             if (ContainsGuid(obj.Guid)) throw new AlreadyRegisteredException(obj);
+//             if (ContainsGuid(obj.Guid)) GD.PushError( new AlreadyRegisteredException(obj));
 //
-//             if (ContainsName(obj.UniqueName)) throw new NameNotUniqueException(obj);
+//             if (ContainsName(obj.UniqueName)) GD.PushError( new NameNotUniqueException(obj));
 //
 //             registeredEntities.Add(obj.Guid, obj);
 //         }
@@ -75,7 +75,7 @@
 //         /// <inheritdoc />
 //         public ISceneObject GetByName(string name)
 //         {
-//             if (ContainsName(name) == false) throw new MissingEntityException(string.Format("Could not find scene entity '{0}'", name));
+//             if (ContainsName(name) == false) GD.PushError(new MissingEntityException(string.Format("Could not find scene entity '{0}'", name)));
 //
 //             return registeredEntities.First(entity => entity.Value.UniqueName == name).Value;
 //         }
@@ -95,7 +95,7 @@
 //             }
 //             catch (KeyNotFoundException)
 //             {
-//                 throw new MissingEntityException(string.Format("Could not find scene entity with identifier '{0}'", guid.ToString()));
+//                 GD.PushError( new MissingEntityException(string.Format("Could not find scene entity with identifier '{0}'", guid.ToString())));
 //             }
 //         }
 //
@@ -115,3 +115,4 @@
 //         }
 //     }
 // }
+

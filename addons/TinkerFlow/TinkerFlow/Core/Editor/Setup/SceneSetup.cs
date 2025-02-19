@@ -69,7 +69,7 @@ namespace VRBuilder.Core.Editor.Setup
 
             if (prefabsGUIDs.Any() == false)
             {
-                throw new FileNotFoundException($"No prefabs found that match \"{prefab}\".");
+                GD.PushError(new FileNotFoundException($"No prefabs found that match \"{prefab}\"."));
             }
 
             string assetPath = AssetDatabase.GUIDToAssetPath(prefabsGUIDs.First());

@@ -42,7 +42,7 @@
 //             {
 //                 UserSceneObject user = Users.FirstOrDefault();
 //
-//                 if (user == null) throw new Exception("Could not find a UserSceneObject in the scene.");
+//                 if (user == null) GD.PushError(new Exception("Could not find a UserSceneObject in the scene."));
 //
 //                 return user;
 //             }

@@ -27,11 +27,14 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Instantiators
         /// <inheritdoc/>
         public ProcessGraphNode InstantiateNode(IStep step)
         {
-            StepGraphNode processGraphNode = ProcessGraphNodePrefab.Instantiate() as StepGraphNode
-                                             ?? throw new InvalidOperationException($"Root Element of {ProcessGraphNodePrefab.ResourcePath} needs to have {nameof(StepGraphNode)} attached.");
-            processGraphNode.EntryPoint = step;
-            return processGraphNode;
+            if (ProcessGraphNodePrefab.Instantiate() is StepGraphNode processGraphNode)
+            {
+                processGraphNode.EntryPoint = step;
+                return processGraphNode;
+            }
 
+            GD.PushError(new InvalidOperationException($"Root Element of {ProcessGraphNodePrefab.ResourcePath} needs to have {nameof(StepGraphNode)} attached."));
+            return null;
         }
     }
 }

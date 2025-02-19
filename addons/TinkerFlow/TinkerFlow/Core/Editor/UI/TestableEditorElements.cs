@@ -302,7 +302,7 @@ namespace VRBuilder.Core.Editor
 //         {
 //             if (Mode != expected)
 //             {
-//                 throw new InvalidStateException(string.Format("{0} was expected to be in {1} mode, but was in {2}.", typeof(TestableEditorElements).Name, Mode, expected));
+//                 GD.PushError(new InvalidStateException(string.Format("{0} was expected to be in {1} mode, but was in {2}.", typeof(TestableEditorElements).Name, Mode, expected)));
 //             }
 //         }
 //

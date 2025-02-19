@@ -1,13 +1,12 @@
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Godot;
-using VRBuilder.Core;
 using VRBuilder.Core.Attributes;
-using VRBuilder.Core.Utils;
 using VRBuilder.Core.Editor.Configuration;
 using VRBuilder.Core.Editor.ProcessValidation;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -24,7 +23,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 return label;
             }
 
-            var container = new VBoxContainer{ Name = GetType().Name + "." + text };
+            var container = new VBoxContainer { Name = GetType().Name + "." + text };
             // container.AddChild(CreateLabel(currentValue, changeValueCallback, label));
 
             //TODO: some issues with: GroupsToUnlock, which is IDictionary, IBehaviorCollection is not there?
@@ -158,7 +157,10 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             else if (metadataField != null)
                 ownerObjectMetadata = metadataField.GetValue(ownerObject) as Metadata ?? new Metadata();
             else
-                throw new MissingFieldException($"No metadata property on object {ownerObject}.");
+            {
+                GD.PushError(new MissingFieldException($"No metadata property on object {ownerObject}."));
+                return new Control { Name = $"{ownerObject}.Missing" };
+            }
 
             object? memberValue = ReflectionUtils.GetValueFromPropertyOrField(ownerObject, drawnMemberInfo);
             IProcessDrawer memberDrawer = DrawerLocator.GetDrawerForMember(drawnMemberInfo, ownerObject);

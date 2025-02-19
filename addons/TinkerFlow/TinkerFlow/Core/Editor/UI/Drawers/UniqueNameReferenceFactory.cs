@@ -47,7 +47,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (valueProperty == null)
             {
-                throw new ArgumentException("Only ObjectReference<> implementations should inherit from the UniqueNameReference type.");
+                GD.PushError(new ArgumentException("Only ObjectReference<> implementations should inherit from the UniqueNameReference type."));
             }
 
             string oldUniqueName = uniqueNameReference?.UniqueName;

@@ -106,8 +106,8 @@ namespace VRBuilder.Core.Editor.Configuration
         //     try
         //     {
         //         if (settings == null)
-        //             throw new NullReferenceException("The allowed menu items settings file cannot be saved "
-        //                                              + "because the settings are null.");
+        //             GD.PushError(new NullReferenceException("The allowed menu items settings file cannot be saved "
+        //                                              + "because the settings are null."));
         //
         //         string serialized = JsonEditorConfigurationSerializer.Serialize(settings);
         //

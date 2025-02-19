@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using VRBuilder.Core;
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
 namespace VRBuilder.Core.Editor.UI.Graphics
@@ -19,7 +18,7 @@ namespace VRBuilder.Core.Editor.UI.Graphics
         public override IStep EntryPoint
         {
             get => null;
-            internal set => throw new ArgumentException("EntryPoint does not support setting a step.");
+            internal set => GD.PushError(new ArgumentException("EntryPoint does not support setting a step."));
         }
 
 
