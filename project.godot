@@ -55,4 +55,4 @@ enabled=PackedStringArray("res://addons/TinkerFlow/plugin.cfg", "res://addons/as
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Localisation/Default.csv")
+locale/translations=PackedStringArray("res://Localisation/Default.de_DE.translation", "res://Localisation/Default.en_GB.translation")
