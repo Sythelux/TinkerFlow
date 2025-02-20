@@ -8,6 +8,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VRBuilder.Core.Editor
 {
@@ -30,19 +31,14 @@ namespace VRBuilder.Core.Editor
             }
         }
 
-        public sealed class DisabledMenuItem : MenuOption
-        {
-            public DisabledMenuItem(Label label) : base(label)
-            {
-            }
-        }
+        public sealed class DisabledMenuItem(Label label) : MenuOption(label);
 
         public sealed class MenuItem : MenuOption
         {
-            public Action Func { get; private set; }
-            public Action<object> Func2 { get; private set; }
+            public Action? Func { get; private set; }
+            public Action<object>? Func2 { get; private set; }
             public bool On { get; private set; }
-            public object UserData { get; private set; }
+            public object? UserData { get; private set; }
 
             public MenuItem(Label label, bool on, Action func) : base(label)
             {
@@ -58,12 +54,7 @@ namespace VRBuilder.Core.Editor
             }
         }
 
-        public sealed class MenuSeparator : MenuOption
-        {
-            public MenuSeparator(string pathToSubmenu) : base(new Label { Text = pathToSubmenu })
-            {
-            }
-        }
+        public sealed class MenuSeparator(string pathToSubmenu) : MenuOption(new Label { Text = pathToSubmenu });
 
 //
 //         private static readonly Queue<string> recordedSelections = new Queue<string>();
@@ -112,104 +103,121 @@ namespace VRBuilder.Core.Editor
 //
         public static PopupMenu DisplayContextMenu(IList<MenuOption> options)
         {
-            var mousePos = EditorInterface.Singleton.GetEditorViewport2D().GetMousePosition();
+            Vector2 mousePos = EditorInterface.Singleton.GetEditorViewport2D().GetMousePosition();
             return DisplayDropdownMenu(mousePos, options);
         }
 //
         public static PopupMenu DisplayDropdownMenu(Vector2 position, IList<MenuOption> options)
         {
-            PopupMenu menu = new PopupMenu();
+            var menu = new PopupMenu();
+            menu.PreferNativeMenu = true;
+            menu.AllowSearch = true;
 
             if (Mode == DisplayMode.Playback)
             {
                 if (prepickedSelections.Count == 0)
-                {
                     return menu;
-                }
 
-                int index;
-                if (int.TryParse(prepickedSelections.Dequeue(), out index) == false)
-                {
+                if (int.TryParse(prepickedSelections.Dequeue(), out int index) == false)
                     return menu;
-                }
 
                 if (index == -1)
-                {
                     return menu;
-                }
 
-                MenuItem item = options[index] as MenuItem;
-                if (item == null)
-                {
+                if (options[index] is not MenuItem item)
                     return menu;
-                }
 
                 if (item.Func != null)
-                {
                     item.Func();
-                }
-                else if (item.Func2 != null)
-                {
-                    item.Func2(item.UserData);
-                }
-
+                else if (item.UserData != null)
+                    item.Func2?.Invoke(item.UserData);
                 return menu;
             }
 
 
-            for (int i = 0; i < options.Count; i++)
+            foreach (MenuOption closedOption in options)
             {
-                MenuOption closuredOption = options[i];
+                string[] splitLabel = closedOption.Label.Text.Split("/");
+                closedOption.Label.Text = splitLabel[^1];
+                PopupMenu subMenu = GenerateSubmenus(splitLabel.Take(splitLabel.Length - 1), ref menu);
 
-                if (closuredOption is MenuSeparator)
+                switch (closedOption)
                 {
-                    menu.AddSeparator(closuredOption.Label.Text);
-                }
-                else if (closuredOption is DisabledMenuItem)
-                {
-                    menu.AddItem(closuredOption.Label.Text);
-                    menu.SetItemDisabled(menu.ItemCount - 1, true);
-                }
-                else
-                {
-                    MenuItem item = closuredOption as MenuItem;
-
-                    menu.AddItem(closuredOption.Label.Text, i);
-                    int i1 = i;
-
-                    if (item.Func2 != null)
+                    case MenuSeparator:
+                        subMenu.AddSeparator(closedOption.Label.Text);
+                        break;
+                    case DisabledMenuItem:
+                        subMenu.AddItem(closedOption.Label.Text);
+                        subMenu.SetItemDisabled(menu.ItemCount - 1, true);
+                        break;
+                    default:
                     {
-                        menu.IndexPressed += index =>
-                        {
-                            if (i1 == index) item.Func2(item.UserData);
-                        };
-                    }
-                    else
-                    {
-                        menu.IndexPressed += index =>
-                        {
-                            if (i1 == index) item.Func();
-                        };
-                    }
+                        var item = closedOption as MenuItem;
+                        subMenu.AddItem(closedOption.Label.Text);
 
-                    // GenericMenu.MenuFunction finalCallback = new GenericMenu.MenuFunction(itemCallback);
-                    //
-                    // if (Mode == DisplayMode.Recording)
-                    // {
-                    //     int closuredIndex = i;
-                    //     finalCallback = () =>
-                    //     {
-                    //         recordedSelections.Enqueue(closuredIndex.ToString());
-                    //         itemCallback();
-                    //     };
-                    // }
-                    // menu.AddItem(closuredOption.Label.Text, item.On, finalCallback);
+                        if (item?.Func2 != null)
+                        {
+                            subMenu.IndexPressed += index =>
+                            {
+                                if (subMenu.GetItemText((int)index) == item.Label.Text)
+                                    if (item.UserData != null)
+                                        item.Func2(item.UserData);
+                            };
+                        }
+                        else
+                        {
+                            subMenu.IndexPressed += index =>
+                            {
+                                if (subMenu.GetItemText((int)index) == item?.Label.Text)
+                                    item.Func?.Invoke();
+                            };
+                        }
+
+                        // GenericMenu.MenuFunction finalCallback = new GenericMenu.MenuFunction(itemCallback);
+                        //
+                        // if (Mode == DisplayMode.Recording)
+                        // {
+                        //     int closuredIndex = i;
+                        //     finalCallback = () =>
+                        //     {
+                        //         recordedSelections.Enqueue(closuredIndex.ToString());
+                        //         itemCallback();
+                        //     };
+                        // }
+                        // menu.AddItem(closuredOption.Label.Text, item.On, finalCallback);
+                        break;
+                    }
                 }
             }
             // menu.DropDown(position);
             return menu;
         }
-//
+        static PopupMenu GenerateSubmenus(IEnumerable<string> split, ref PopupMenu menu)
+        {
+            PopupMenu popupMenu = menu;
+            foreach (string menuName in split)
+            {
+                if (!TryGetSubMenu(popupMenu, menuName, out PopupMenu subMenu))
+                    popupMenu.AddSubmenuNodeItem(menuName, subMenu);
+                popupMenu = subMenu;
+            }
+            return popupMenu;
+        }
+
+        static bool TryGetSubMenu(PopupMenu popupMenu, string menuName, out PopupMenu subMenu)
+        {
+            for (var i = 0; i < popupMenu.ItemCount; i++)
+            {
+                if (popupMenu.GetItemText(i) == menuName)
+                {
+                    subMenu = popupMenu.GetItemSubmenuNode(i);
+                    return true;
+                }
+            }
+            subMenu = new PopupMenu();
+            return false;
+        }
+        //
 //         public static void ClearProgressBar()
 //         {
 //             EditorUtility.ClearProgressBar();
