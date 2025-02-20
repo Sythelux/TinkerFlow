@@ -1,9 +1,13 @@
-﻿namespace TinkerFlow.Core.Editor.Scenes;
+using System;
 
-public class SceneUtility
+namespace TinkerFlow.Core.Editor.Scenes
 {
-    public static int GetBuildIndexByScenePath(string dataScenePath)
+    public class SceneUtility
     {
-        throw new System.NotImplementedException();
+
+        public static int GetBuildIndexByScenePath(string dataScenePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

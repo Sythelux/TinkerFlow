@@ -2,13 +2,13 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
+using TinkerFlow.Core.Editor.Scenes;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Configuration.Modes;
-using VRBuilder.Core.Godot;
 using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core

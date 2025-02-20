@@ -1,6 +1,8 @@
 #if GODOT
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TinkerFlow.Core.Editor.Scenes;
 
 namespace VRBuilder.Core.Godot
 {
@@ -10,7 +12,7 @@ namespace VRBuilder.Core.Godot
         //TODO: somehow merge with NodeExtension and or completely refactor to be Godot conform
         public static IEnumerable<T> GetActiveAndInactiveComponents<T>()
         {
-            return SceneManager.Instance.GetChildren(true).OfType<T>();
+            return SceneManager.Instance?.GetChildren(true).OfType<T>() ?? Array.Empty<T>();
         }
     }
 }
