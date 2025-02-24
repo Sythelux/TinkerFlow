@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c2wwh0xsrqomo"]
 
-[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/ObjectDrawer.cs" id="1_eolwd"]
-[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/DropForwardToParent.cs" id="2_mjt1c"]
+[ext_resource type="Script" uid="uid://bfogh55twuhw4" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/ObjectDrawer.cs" id="1_eolwd"]
+[ext_resource type="Script" uid="uid://dxtmuegr2vofc" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/DropForwardToParent.cs" id="2_mjt1c"]
 
 [node name="ObjectDrawer" type="HBoxContainer"]
 anchors_preset = 15

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwu26e1jy8icq"]
+[gd_scene load_steps=7 format=3 uid="uid://cwu26e1jy8icq"]
 
 [ext_resource type="Script" uid="uid://0svmmghf2e8e" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/RuntimeConfigurator.cs" id="1_tmdxv"]
 [ext_resource type="Script" uid="uid://b1wc4ftnr6gtm" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/SceneConfiguration.cs" id="2_xhjjv"]
@@ -9,6 +9,10 @@
 script = ExtResource("4_60ceu")
 serializedGuid = PackedByteArray(65, 150, 227, 66, 111, 221, 100, 70, 159, 235, 211, 160, 224, 130, 140, 156)
 
+[sub_resource type="Resource" id="Resource_pspt0"]
+script = ExtResource("4_60ceu")
+serializedGuid = PackedByteArray(164, 149, 155, 36, 229, 17, 118, 72, 159, 136, 15, 52, 64, 79, 97, 134)
+
 [node name="SampleScene" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -18,7 +22,7 @@ transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0
 script = ExtResource("1_tmdxv")
 runtimeConfigurationName = "VRBuilder.Core.Configuration.DefaultRuntimeConfiguration; TinkerFlow; Version=1.0.0.0; Culture=neutral; PublicKeyToken=null"
 selectedProcessStreamingAssetsPath = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
-processStringLocalizationTable = "uid://ucg5o7waefd1"
+processStringLocalizationTable = "res://Localisation/Default.csv"
 
 [node name="SceneConfiguration" type="Node" parent="PROCESS_CONFIGURATION"]
 script = ExtResource("2_xhjjv")
@@ -31,3 +35,4 @@ serializedGuid = SubResource("Resource_yn7lh")
 
 [node name="ProcessSceneObject" type="Node" parent="Node3D"]
 script = ExtResource("3_6ubhu")
+serializedGuid = SubResource("Resource_pspt0")

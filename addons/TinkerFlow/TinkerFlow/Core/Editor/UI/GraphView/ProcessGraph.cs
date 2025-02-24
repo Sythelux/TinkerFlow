@@ -42,8 +42,8 @@ namespace TinkerFlow.Godot.Editor
         private VBoxContainer? chapterViewContainer;
         private Vector2 popUpPosition;
 
-        [Export]
-        public PackedScene? StepNode { get; set; }
+        // [Export]
+        // public PackedScene? StepNode { get; set; } //TODO: invalid cast exception resource to PackedScene
 
         public RuntimeConfigurator? RuntimeConfigurator => runtimeConfigurator ??= EditorInterface.Singleton.GetEditedSceneRoot()?.GetChildren().OfType<RuntimeConfigurator>().FirstOrDefault();
 
@@ -153,24 +153,24 @@ namespace TinkerFlow.Godot.Editor
                 ModifyStep(0);
         }
 
-        public void AddStep(int id)
-        {
-            var step = StepNode?.Instantiate<ProcessGraphNode>();
-            switch (id)
-            {
-                //case 0: header
-                case 1: //step
-                    if (step != null)
-                    {
-                        step.Position = popUpPosition;
-                        AddChild(step);
-                    }
-
-                    break;
-            }
-
-            // AddNodeMenu.Hide();
-        }
+        // public void AddStep(int id)
+        // {
+        //     var step = StepNode?.Instantiate<ProcessGraphNode>();
+        //     switch (id)
+        //     {
+        //         //case 0: header
+        //         case 1: //step
+        //             if (step != null)
+        //             {
+        //                 step.Position = popUpPosition;
+        //                 AddChild(step);
+        //             }
+        //
+        //             break;
+        //     }
+        //
+        //     // AddNodeMenu.Hide();
+        // }
 
         public void RemoveStep(ProcessGraphNode processGraphNode)
         {
@@ -314,7 +314,7 @@ namespace TinkerFlow.Godot.Editor
             // }
 
             AddNodeMenu.Clear();
-            AddNodeMenu.AddItem("New");
+            AddNodeMenu.AddSeparator("New:");
             AddNodeMenu.SetItemAsSeparator(0, true);
             AddNodeMenu.SetItemAsCheckable(0, false);
             foreach (IStepNodeInstantiator instantiator in instantiators.Where(i => i.IsInNodeMenu).OrderBy(i => i.Priority))

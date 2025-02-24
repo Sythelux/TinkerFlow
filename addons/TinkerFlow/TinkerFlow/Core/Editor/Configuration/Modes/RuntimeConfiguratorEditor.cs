@@ -10,6 +10,7 @@ using FileAccess = Godot.FileAccess;
 namespace VRBuilder.Core.Configuration
 {
     ///<author email="Sythelux Rikd">Sythelux Rikd</author>
+    [Icon("res://addons/TinkerFlow/TinkerFlow/Core/Resources/TinkerFlow.svg")]
     public partial class RuntimeConfigurator
     {
         private static readonly List<Type> configurationTypes;

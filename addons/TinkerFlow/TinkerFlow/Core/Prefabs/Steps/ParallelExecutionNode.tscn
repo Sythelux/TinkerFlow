@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://daugokkd8c78v"]
 
-[ext_resource type="Texture2D" uid="uid://blqdb4088muqp" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon-non-optional_light.png" id="1_b1wlv"]
-[ext_resource type="Texture2D" uid="uid://b2cr78hycax2m" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_edit_light.png" id="2_5r017"]
-[ext_resource type="Texture2D" uid="uid://co6auhii3dfqi" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_delete_light.png" id="3_3ycel"]
-[ext_resource type="Texture2D" uid="uid://8bly8v5i656b" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_add_light.png" id="4_r722y"]
+[ext_resource type="Texture2D" uid="uid://dj3e1yevc46xd" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon-non-optional_light.png" id="1_b1wlv"]
+[ext_resource type="Texture2D" uid="uid://b0hspa1ax3sib" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_edit_light.png" id="2_5r017"]
+[ext_resource type="Texture2D" uid="uid://bkv1gn1h5fgw8" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_delete_light.png" id="3_3ycel"]
+[ext_resource type="Texture2D" uid="uid://o6ckvunyxq0b" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_add_light.png" id="4_r722y"]
 
 [node name="GraphNode" type="GraphNode"]
 offset_right = 9.0

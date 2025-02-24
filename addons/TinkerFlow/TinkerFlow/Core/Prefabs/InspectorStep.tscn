@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://brkfxwgxp1vgn"]
 
-[ext_resource type="Script" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphEdit/InspectorStep.cs" id="1_4qayl"]
+[ext_resource type="Script" uid="uid://13to0bddiewm" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphEdit/InspectorStep.cs" id="1_4qayl"]
 
 [node name="Step" type="VBoxContainer"]
 anchors_preset = 15

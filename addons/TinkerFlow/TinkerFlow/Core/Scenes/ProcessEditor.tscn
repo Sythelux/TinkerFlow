@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bte4b6xunlfhn" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessEditor.cs" id="1_b4nao"]
 [ext_resource type="Script" uid="uid://dubgwd8hxt2dl" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessGraph.cs" id="2_hl13x"]
-[ext_resource type="Texture2D" uid="uid://bqwrsbqcu2dsw" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_expand_chapter_dark.png" id="4_rrkbu"]
-[ext_resource type="PackedScene" uid="uid://ousqiboihk4a" path="res://addons/TinkerFlow/TinkerFlow/Core/Prefabs/StepNode.tscn" id="4_torf1"]
+[ext_resource type="Texture2D" uid="uid://3e6twfytmhb7" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_expand_chapter_dark.png" id="4_rrkbu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_otjmm"]
 content_margin_left = 850.0
+
+[sub_resource type="Resource" id="Resource_8oimw"]
+metadata/__load_path__ = "res://addons/TinkerFlow/TinkerFlow/Core/Prefabs/StepNode.tscn"
 
 [node name="ProcessEditor" type="Control"]
 layout_mode = 3
@@ -46,7 +48,7 @@ size_flags_vertical = 3
 theme_override_styles/menu_panel = SubResource("StyleBoxEmpty_otjmm")
 right_disconnects = true
 script = ExtResource("2_hl13x")
-StepNode = ExtResource("4_torf1")
+StepNode = SubResource("Resource_8oimw")
 AddNodeMenu = NodePath("../AddNodePopup")
 EditNodeMenu = NodePath("../NodePopupMenu")
 

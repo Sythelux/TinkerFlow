@@ -20,7 +20,12 @@ namespace VRBuilder.Core.Editor.UI.Windows
 		public Step.EntityData? Step
 		{
 			get => step;
-			set => step = value;
+			set
+			{
+				step = value;
+				stepDescription ??= GetNode<LineEdit>("Description");
+				stepDescription.Text = value?.Description;
+			}
 		}
 	}
 }

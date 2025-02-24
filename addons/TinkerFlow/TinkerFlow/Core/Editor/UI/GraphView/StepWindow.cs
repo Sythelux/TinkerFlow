@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Godot;
+using VRBuilder.Core.Editor.Godot;
 using VRBuilder.Core.Editor.UI.Drawers;
 using VRBuilder.Core.Editor.UI.GraphView;
 
@@ -110,19 +111,23 @@ namespace VRBuilder.Core.Editor.UI.Windows
             }
 
             stepDrawer = DrawerLocator.GetDrawerForValue(step, typeof(Step))?.Create(step, ModifyStep, "Step");
-            foreach (Node child in GetAllChildren(stepDrawer))
-            {
-                // if (child is Control control)
-                //     control.SizeFlagsVertical = SizeFlags.ExpandFill;
-                child.Owner = stepDrawer;
-            }
-
-            var packedScene = new PackedScene();
-            packedScene.Pack(stepDrawer);
-            ResourceSaver.Save(packedScene, "res://tmp/stepDrawer.tscn");
             if (stepDrawer != null)
             {
-                AddChild(stepDrawer);
+                foreach (var child in GetAllChildren(stepDrawer))
+                    if (child.Owner != stepDrawer)
+                        child.Owner = stepDrawer;
+
+                var packedScene = new PackedScene();
+                packedScene.Pack(stepDrawer);
+                ResourceSaver.Save(packedScene, "res://tmp/stepDrawer.tscn");
+                if (stepDrawer != null)
+                {
+                    AddChild(stepDrawer);
+                }
+            }
+            else
+            {
+                AddChild(EditorGUI.HelpBox("No Stepdrawer", EditorGUI.MessageType.Warning));
             }
         }
 
@@ -162,6 +167,7 @@ namespace VRBuilder.Core.Editor.UI.Windows
                     yield return allChild;
                 }
             }
+
             PrintDebugger.UnIndent();
         }
 
