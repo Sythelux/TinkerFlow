@@ -1,7 +1,6 @@
-using Godot;
 using System;
 using System.Reflection;
-using VRBuilder.Core.Editor.Godot;
+using Godot;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -12,21 +11,25 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     {
         public override Control? Create<T1>(T1 currentValue, Action<object> changeValueCallback, string text)
         {
-            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+            GD.Print(
+                $"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not string oldPath)
                 return new Control { Name = GetType().Name };
 
-            var videoClip = ResourceLoader.Load<T>(oldPath);
+            var editorResourcePicker = new EditorResourcePicker();
+            editorResourcePicker.BaseType = "Resource";
+            editorResourcePicker.EditedResource = ResourceLoader.Load<Resource>(oldPath);
+            editorResourcePicker.ResourceChanged += EditorResourcePickerOnResourceChanged;
 
-            ObjectDrawer objectField = EditorGUI.ObjectField(text, videoClip, typeof(T), false);
+            return editorResourcePicker;
 
-            objectField.SelectedObjectChanged += selectedObject =>
+            void EditorResourcePickerOnResourceChanged(Resource resource)
             {
-                var newPath = (selectedObject.Obj as Resource)?.ResourcePath;
+                var newPath = resource?.ResourcePath;
                 if (string.IsNullOrEmpty(newPath) == false)
                 {
-                    if (newPath.Contains("Resources"))
+                    /*if (newPath.Contains("Resources"))
                     {
                         newPath = newPath.Remove(0, newPath.IndexOf("Resources", StringComparison.Ordinal) + 10);
                     }
@@ -34,7 +37,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     {
                         GD.PushError("The object is not in the path of a 'Resources' folder.");
                         newPath = "";
-                    }
+                    }*/
 
                     if (newPath.Contains('.'))
                     {
@@ -46,9 +49,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 {
                     ChangeValue(() => newPath, () => oldPath, changeValueCallback);
                 }
-            };
-
-            return objectField;
+            }
         }
     }
 }
