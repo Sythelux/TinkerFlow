@@ -18,29 +18,32 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// <inheritdoc />
         public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
-            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+            GD.Print(
+                $"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            var container = new HBoxContainer { Name = GetType().Name + "." + text };
-            // can't use the editor one because of: https://github.com/godotengine/godot-proposals/issues/3244
-            // so make this good eventually.
             if (currentValue is Curve curve)
             {
-                Line2D line = new Line2D();
-                line.BeginCapMode = Line2D.LineCapMode.Round;
-                line.JointMode = Line2D.LineJointMode.Round;
-                line.Width = 10;
-                line.SetCurve(curve);
-                line.Draw += OnDraw;
-
                 void OnDraw()
                 {
-                    ChangeValue(() => line.GetCurve(), () => curve, changeValueCallback);
+                    ChangeValue(() => curve, () => curve, changeValueCallback);
                 }
 
-                container.AddChild(line);
+                curve.Changed += OnDraw;
+
+                var button = new Button
+                {
+                    Name = GetType().Name + "." + text,
+                    Text = "Edit in Inspector"
+                };
+
+                button.Pressed += () => EditorInterface.Singleton.EditResource(curve);
+                return button;
             }
 
-            return container;
+            return new Control
+            {
+                Name = GetType().Name + "." + text
+            };
         }
     }
 }
