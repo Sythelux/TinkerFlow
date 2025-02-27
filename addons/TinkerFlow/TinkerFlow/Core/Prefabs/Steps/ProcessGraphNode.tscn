@@ -45,13 +45,16 @@ layout_mode = 2
 text = "Go to next Chapter"
 
 [node name="Button" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 icon = ExtResource("1_w1vdw")
+expand_icon = true
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
 text = "Add"
 icon = ExtResource("2_u6ogd")
+expand_icon = true
 
 [node name="ProcessGraphNode" type="Control" parent="."]
 layout_mode = 2

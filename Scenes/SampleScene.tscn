@@ -22,7 +22,7 @@ transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0
 script = ExtResource("1_tmdxv")
 runtimeConfigurationName = "VRBuilder.Core.Configuration.DefaultRuntimeConfiguration; TinkerFlow; Version=1.0.0.0; Culture=neutral; PublicKeyToken=null"
 selectedProcessStreamingAssetsPath = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
-processStringLocalizationTable = "res://Localisation/Default.csv"
+processStringLocalizationTable = "uid://qoe5nuyq046b"
 
 [node name="SceneConfiguration" type="Node" parent="PROCESS_CONFIGURATION"]
 script = ExtResource("2_xhjjv")

@@ -46,21 +46,30 @@ layout_mode = 2
 
 [node name="ParallelPathLabel" type="Button" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Parallel Path 1"
 
 [node name="OptionalSwitch" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 icon = ExtResource("1_b1wlv")
+expand_icon = true
 
 [node name="Edit" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 icon = ExtResource("2_5r017")
+expand_icon = true
 
 [node name="Delete" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 icon = ExtResource("3_3ycel")
+expand_icon = true
 
 [node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 text = "Add"
 icon = ExtResource("4_r722y")
+expand_icon = true
