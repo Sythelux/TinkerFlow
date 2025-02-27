@@ -2,10 +2,11 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
+using Newtonsoft.Json;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
@@ -42,6 +43,22 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 GD.PushError(new InvalidCastException("There is a closed list of implementations of AddItemMenuOption."));
                 return null;
             }).Where(option => option != null).ToList();
+        }
+
+        public static bool TryParseJson<T>(string @this, out T result)
+        {
+            bool success = true;
+            var settings = new JsonSerializerSettings
+            {
+                Error = (sender, args) =>
+                {
+                    success = false;
+                    args.ErrorContext.Handled = true;
+                },
+                MissingMemberHandling = MissingMemberHandling.Error
+            };
+            result = JsonConvert.DeserializeObject<T>(@this, settings);
+            return success;
         }
     }
 }

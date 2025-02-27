@@ -6,12 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using Godot;
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Editor.Configuration;
-using Godot;
-using Godot.Collections;
 using VRBuilder.Core.Editor.Godot;
-using VRBuilder.Core.Editor.Util;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -21,57 +20,82 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     [InstantiatorProcessDrawer(typeof(ICondition))]
     internal partial class ConditionInstantiatorFactory : AbstractInstantiatorFactory<ICondition>
     {
+        bool? drawButtonAllowed;
+
+        public bool DrawButtonAllowed
+        {
+            get
+            {
+                drawButtonAllowed ??= EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any();
+                return (bool)drawButtonAllowed;
+            }
+        }
+
         /// <inheritdoc />
         public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
-            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{System.Reflection.MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
-            var control = new VBoxContainer{ Name = GetType().Name + "." + text };
+            var container = new VBoxContainer { Name = GetType().Name + "." + text };
 
-            if (EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any() == true)
+            var row = new HBoxContainer
             {
-                var tree = new Tree();
+                Name = GetType().Name + ".row",
+                Alignment = BoxContainer.AlignmentMode.Center
+            };
 
-                var drawAddButton = EditorDrawingHelper.DrawAddButton("Add Condition");
-                var popupMenu = new PopupMenu();
-                drawAddButton.AddChild(popupMenu);
-                drawAddButton.Pressed += OnButtonPressed;
-                tree.AddChild(drawAddButton);
+            Button drawAddButton = EditorDrawingHelper.DrawAddButton("Add Condition");
 
-                void OnButtonPressed()
-                {
-                    var options = ConvertFromConfigurationOptionsToGenericMenuOptions(EditorConfigurator.Instance.ConditionsMenuContent, currentValue, changeValueCallback);
-                    foreach (TestableEditorElements.MenuOption control in options)
-                    {
-                        if (control is TestableEditorElements.MenuSeparator separator)
-                            popupMenu.AddSeparator(separator.Label.Text);
-                        else
-                            popupMenu.AddItem(control.Label.Text);
-                    }
+            drawAddButton.Disabled = !DrawButtonAllowed;
+            drawAddButton.Pressed += OnDrawAddButtonPressed;
 
-                    popupMenu.Show();
-                }
+            row.AddChild(drawAddButton);
 
-                control.AddChild(tree);
+
+            var pasteButton = EditorDrawingHelper.DrawPasteButton();
+            //TODO: this needs to be watched and dynamically refreshed
+            bool tryParseJson = TryParseJson(DisplayServer.ClipboardGet(), out ICondition result);
+            pasteButton.Disabled = !DisplayServer.ClipboardHas() || tryParseJson;
+
+            pasteButton.Pressed += OnPasteButtonPressed;
+
+            Button drawHelpButton = EditorDrawingHelper.DrawHelpButton();
+            drawHelpButton.Pressed += OnDrawHelpButtonPressed;
+            row.AddChild(drawHelpButton);
+
+            container.AddChild(row);
+
+            if (EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any() == false)
+            {
+                container.AddChild(new VSeparator());
+                container.AddChild(EditorGUI.HelpBox("Your project does not contain any Conditions. Either create one or import a VR Builder Component.", EditorGUI.MessageType.Error));
+                container.AddChild(new VSeparator());
             }
 
+            return container;
 
-            var helpButton = EditorDrawingHelper.DrawHelpButton();
-            helpButton.Pressed += OpenHelp;
+            void OnDrawAddButtonPressed()
+            {
+                IList<TestableEditorElements.MenuOption> options = ConvertFromConfigurationOptionsToGenericMenuOptions(EditorConfigurator.Instance.ConditionsMenuContent.ToList(), currentValue, changeValueCallback);
+                PopupMenu displayContextMenu = TestableEditorElements.DisplayContextMenu(options);
+                drawAddButton.AddChild(displayContextMenu);
+                displayContextMenu.PopupOnParent(new Rect2I((int)drawAddButton.GlobalPosition.X, (int)drawAddButton.GlobalPosition.Y, displayContextMenu.Size.X, 256));
+                if (currentValue != null)
+                {
+                    GD.Print("Current value is not null");
+                }
+            }
 
-            void OpenHelp()
+            void OnDrawHelpButtonPressed()
             {
                 System.Diagnostics.Process.Start(new ProcessStartInfo("https://www.mindport.co/vr-builder/manual/default-conditions") { UseShellExecute = true });
             }
 
-            if (EditorConfigurator.Instance.AllowedMenuItemsSettings.GetConditionMenuOptions().Any() == false)
+            void OnPasteButtonPressed()
             {
-                control.AddChild(new VSeparator());
-                control.AddChild(EditorGUI.HelpBox("Your project does not contain any Conditions. Either create one or import a VR Builder Component.", EditorGUI.MessageType.Error));
-                control.AddChild(new VSeparator());
+                IEntity entity = result;
+                changeValueCallback(entity);
             }
-
-            return control;
         }
     }
 }
