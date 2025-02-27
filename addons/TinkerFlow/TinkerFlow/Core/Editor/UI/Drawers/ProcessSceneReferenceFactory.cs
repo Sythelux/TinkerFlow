@@ -1,12 +1,15 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Godot;
+using Godot.Collections;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Editor.Godot;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Settings;
+using VRBuilder.Core.Utils;
+using Array = Godot.Collections.Array;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -18,84 +21,91 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     {
         protected bool isUndoOperation;
         protected bool isExpanded;
+        private Action<object> changeValueCallback;
 
         private static int buttonWidth = 24;
 
         public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
-            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+            GD.Print(
+                $"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not ProcessSceneReferenceBase reference)
                 return new Control { Name = GetType().Name + "." + text };
 
+
             Type valueType = reference.GetReferenceType();
             List<Guid> oldGuids = reference.Guids.ToList();
+            var stringNames = new Array<StringName>();
+            stringNames.AddRange(ReflectionUtils.GetConcreteImplementationsOf(valueType)
+                .Select(type => new StringName(type.Name)));
 
-            var control = new VBoxContainer { Name = GetType().Name + "." + text };
-            control.AddChild(new RichTextLabel { Text = $"[b]{text}[/b]", BbcodeEnabled = true });
+            var nodePathCallback = new NodePathCallback();
+            nodePathCallback.ChangeValueCallback = changeValueCallback;
+            var callback = new Callable(nodePathCallback, nameof(nodePathCallback.OnNodeSelected));
 
-            control.AddChild(DrawLimitationWarnings(reference.Guids, reference.AllowMultipleValues));
+            var nodeSelectButton = new Button();
+            nodeSelectButton.Text = $"Select {text}";
+            nodeSelectButton.Pressed += () => EditorInterface.Singleton.PopupNodeSelector(callback, stringNames);
 
-            /*control.AddChild(DrawDragAndDropArea(changeValueCallback, reference, oldGuids, text));
-
-            control.AddChild(DrawMisconfigurationOnSelectedGameObjects(reference, valueType));*/
-
-            return control;
+            return nodeSelectButton;
         }
 
-        private string GetReferenceValue(ProcessSceneReferenceBase reference)
-        {
-            if (reference.IsEmpty())
-            {
-                return "";
-            }
-            else
-            {
-                return reference.ToString();
-            }
-        }
-
-        private IEnumerable<Guid> GetAllGuids(ISceneObject obj)
-        {
-            return new List<Guid>() { obj.Guid }.Concat(obj.Guids);
-        }
-
-        private Control DrawLimitationWarnings(IEnumerable<Guid> currentObjectGroups, bool allowMultipleValues)
-        {
-            if (!RuntimeConfigurator.Exists)
-            {
-                return new Control { Name = GetType().Name };
-            }
-
-            int groupedObjectsCount = currentObjectGroups.SelectMany(group => RuntimeConfigurator.Configuration.SceneObjectRegistry.GetObjects(group)).Distinct().Count();
-
-            string message = string.Empty;
-            EditorGUI.MessageType messageType = EditorGUI.MessageType.None;
-
-            if (!allowMultipleValues && groupedObjectsCount > 1)
-            {
-                message = "This only supports a single scene object at a time.";
-                messageType = EditorGUI.MessageType.Warning;
-            }
-            else if (groupedObjectsCount == 0)
-            {
-                if (SceneObjectGroups.Instance.Groups.Any(group => currentObjectGroups.Contains(group.Guid)))
-                {
-                    message = "No objects found. A valid object must be spawned before this step.";
-                    messageType = EditorGUI.MessageType.Warning;
-                }
-                else
-                {
-                    message = "No objects found in scene. This will result in a null reference.";
-                    messageType = EditorGUI.MessageType.Error;
-                }
-            }
-
-            return string.IsNullOrEmpty(message)
-                ? new Control { Name = GetType().Name }
-                : EditorGUI.HelpBox(message, messageType);
-
-        }
+        //
+        // private string GetReferenceValue(ProcessSceneReferenceBase reference)
+        // {
+        //     if (reference.IsEmpty())
+        //     {
+        //         return "";
+        //     }
+        //     else
+        //     {
+        //         return reference.ToString();
+        //     }
+        // }
+        //
+        // private IEnumerable<Guid> GetAllGuids(ISceneObject obj)
+        // {
+        //     return new List<Guid>() { obj.Guid }.Concat(obj.Guids);
+        // }
+        //
+        // private Control DrawLimitationWarnings(IEnumerable<Guid> currentObjectGroups, bool allowMultipleValues)
+        // {
+        //     if (!RuntimeConfigurator.Exists)
+        //     {
+        //         return new Control { Name = GetType().Name };
+        //     }
+        //
+        //     int groupedObjectsCount = currentObjectGroups
+        //         .SelectMany(group => RuntimeConfigurator.Configuration.SceneObjectRegistry.GetObjects(group)).Distinct()
+        //         .Count();
+        //
+        //     string message = string.Empty;
+        //     EditorGUI.MessageType messageType = EditorGUI.MessageType.None;
+        //
+        //     if (!allowMultipleValues && groupedObjectsCount > 1)
+        //     {
+        //         message = "This only supports a single scene object at a time.";
+        //         messageType = EditorGUI.MessageType.Warning;
+        //     }
+        //     else if (groupedObjectsCount == 0)
+        //     {
+        //         if (SceneObjectGroups.Instance.Groups.Any(group => currentObjectGroups.Contains(group.Guid)))
+        //         {
+        //             message = "No objects found. A valid object must be spawned before this step.";
+        //             messageType = EditorGUI.MessageType.Warning;
+        //         }
+        //         else
+        //         {
+        //             message = "No objects found in scene. This will result in a null reference.";
+        //             messageType = EditorGUI.MessageType.Error;
+        //         }
+        //     }
+        //
+        //     return string.IsNullOrEmpty(message)
+        //         ? new Control { Name = GetType().Name }
+        //         : EditorGUI.HelpBox(message, messageType);
+        // }
 
         /*private Node DrawDragAndDropArea(Action<object> changeValueCallback, ProcessSceneReferenceBase reference, List<Guid> oldGuids, string text)
         {
@@ -515,5 +525,21 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 };
             }
         }*/
+    }
+
+    public partial class NodePathCallback : GodotObject
+    {
+        private Action<object> changeValueCallback;
+
+        public Action<object> ChangeValueCallback
+        {
+            get => changeValueCallback;
+            set => changeValueCallback = value;
+        }
+
+        public void OnNodeSelected(NodePath nodePath)
+        {
+            changeValueCallback.Invoke(nodePath);
+        }
     }
 }

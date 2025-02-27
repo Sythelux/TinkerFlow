@@ -14,8 +14,6 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     public partial class StepFactory : ObjectFactory
     {
         private Step.EntityData? lastStep;
-        protected PackedScene inspectorStepPrefab = GD.Load<PackedScene>(TinkerFlowPlugin.ResourcePath("Prefabs/InspectorStep.tscn"));
-        protected PackedScene processInspectorBehaviorUIPrefab = GD.Load<PackedScene>(TinkerFlowPlugin.ResourcePath("Prefabs/ProcessInspectorBehaviorUI.tscn"));
 
         public override Control Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
@@ -26,7 +24,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (currentValue is Step.EntityData step)
             {
-                //if ( lastStep != step )
+                if ( lastStep != step )
                 {
                     step.Metadata ??= new Metadata();
                     var container = new TabContainer();
@@ -62,17 +60,17 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         {
             foreach (IBehavior behavior in stepBehaviors.Data.Behaviors)
             {
-                var behaviorUi = processInspectorBehaviorUIPrefab.Instantiate<VBoxContainer>();
-                if (behaviorUi.GetNode("%Label") is Label labelUi)
-                    labelUi.Text = behavior.Data.Name;
-                IProcessDrawer? factory = DrawerLocator.GetDrawerForValue(behavior, typeof(object));
-                if (factory != null)
-                {
-                    Control control = factory.Create(behavior, changeValueCallback, text);
-                    behaviorUi.GetNode("%Values").AddChild(control);
-                }
+                // var behaviorUi = processInspectorBehaviorUIPrefab.Instantiate<VBoxContainer>();
+                // if (behaviorUi.GetNode("%Label") is Label labelUi)
+                //     labelUi.Text = behavior.Data.Name;
+                // IProcessDrawer? factory = DrawerLocator.GetDrawerForValue(behavior, typeof(object));
+                // if (factory != null)
+                // {
+                //     Control control = factory.Create(behavior, changeValueCallback, text);
+                //     behaviorUi.GetNode("%Values").AddChild(control);
+                // }
 
-                container.AddChild(behaviorUi);
+                // container.AddChild(behaviorUi);
             }
         }
 
