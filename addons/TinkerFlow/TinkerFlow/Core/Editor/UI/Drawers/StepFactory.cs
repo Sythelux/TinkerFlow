@@ -1,11 +1,8 @@
 using System;
 using System.Reflection;
 using Godot;
-using TinkerFlow.Godot.Editor;
-using VRBuilder.Core;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.SceneObjects;
-using VRBuilder.Core.Editor.UI.Windows;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -24,25 +21,30 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
             if (currentValue is Step.EntityData step)
             {
-                if ( lastStep != step )
-                {
+                // if ( lastStep != step )
+                // {
                     step.Metadata ??= new Metadata();
                     var container = new TabContainer();
                     container.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
 
                     // container.Step = step;
                     // ClearContainer(container.Behaviors);
-                    Control? control = DrawerLocator.GetDrawerForValue(step.Behaviors, step.Behaviors.GetType()).Create(step.Behaviors, changeValueCallback, "Behaviors");
-                    control.Name = "Behaviors";
-                    container.AddChild(control);
+                    Control? behaviorControl = DrawerLocator.GetDrawerForValue(step.Behaviors, step.Behaviors.GetType())
+                        .Create(step.Behaviors, changeValueCallback, "Behaviors");
+                    behaviorControl.Name = "Behaviors";
+                    container.AddChild(behaviorControl);
                     // UpdateBehaviors(container.Behaviors, step.Behaviors, changeValueCallback, text);
                     // ClearContainer(container.Transitions);
+                    Control? transitionControl = DrawerLocator.GetDrawerForValue(step.Transitions, step.Transitions.GetType())
+                        .Create(step.Transitions, changeValueCallback, "Transitions");
+                    transitionControl.Name = "Transitions";
+                    container.AddChild(transitionControl);
                     // UpdateTransitions(container.Transitions, step.Transitions, changeValueCallback, label);
                     // ClearContainer(container.UnlockedElements);
                     // UpdateUnlockedElements(container.UnlockedElements, new LockableObjectsCollection(step), changeValueCallback, label);
                     lastStep = step;
                     parent.AddChild(container);
-                }
+                // }
             }
             return parent;
         }
