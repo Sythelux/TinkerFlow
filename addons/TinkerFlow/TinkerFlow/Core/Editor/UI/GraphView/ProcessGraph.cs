@@ -10,6 +10,7 @@ using VRBuilder.Core.Editor.ProcessAssets;
 using VRBuilder.Core.Editor.UI.Graphics;
 using VRBuilder.Core.Editor.UI.GraphView.Instantiators;
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
+using VRBuilder.Core.Editor.UI.GraphView.Windows;
 using VRBuilder.Core.Editor.UI.Windows;
 using VRBuilder.Core.Editor.Util;
 using VRBuilder.Core.Entities.Factories;

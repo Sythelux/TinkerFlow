@@ -7,7 +7,7 @@ namespace RebuildCsOnFocus.addons.rebuild_cs_on_focus;
 [Tool]
 public partial class RebuildCsPlugin : EditorPlugin
 {
-   RebuildOnFocusUi? _rebuildOnFocusUi;
+   RebuildOnFocusUi _rebuildOnFocusUi = default!;
    Callable _buildCallable;
    Node _godotSharpEditorPlugin = default!;
    bool _rebuildEnabled;
@@ -17,7 +17,7 @@ public partial class RebuildCsPlugin : EditorPlugin
    public override void _EnterTree()
    {
       _godotSharpEditorPlugin = GetParent().GetChildren().First(n => n.HasMethod("BuildProjectPressed"));
-      // AddUiControl();
+      AddUiControl();
       FindEditorBuildShortcut();
       ConnectEditorSignals();
    }
@@ -26,16 +26,16 @@ public partial class RebuildCsPlugin : EditorPlugin
    {
       _rebuildEnabled = false;
       _scanning = false;
-      // RemoveControlFromContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
+      RemoveControlFromContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
       _godotSharpEditorPlugin.Set("SkipBuildBeforePlaying", false);
-      _rebuildOnFocusUi?.QueueFree();
+      _rebuildOnFocusUi.QueueFree();
    }
 
    void ConnectEditorSignals()
    {
       GetTree().Root.Connect(Window.SignalName.FocusEntered, new Callable(this, MethodName.RootOnFocusEntered));
 
-      GetEditorInterface()
+      EditorInterface.Singleton
          .GetResourceFilesystem()
          .Connect(EditorFileSystem.SignalName.ResourcesReload, new Callable(this, MethodName.OnResourcesReload));
    }
@@ -44,7 +44,7 @@ public partial class RebuildCsPlugin : EditorPlugin
    {
       var dir = GetScript().As<CSharpScript>().ResourcePath.GetBaseDir();
       _rebuildOnFocusUi = GD.Load<PackedScene>($"{dir}/rebuild_on_focus.tscn").Instantiate<RebuildOnFocusUi>();
-      _rebuildOnFocusUi?.Connect(RebuildOnFocusUi.SignalName.SettingChanged, new Callable(this, MethodName.SettingChanged));
+      _rebuildOnFocusUi.Connect(RebuildOnFocusUi.SignalName.SettingChanged, new Callable(this, MethodName.SettingChanged));
       AddControlToContainer(CustomControlContainer.Toolbar, _rebuildOnFocusUi);
    }
 
@@ -61,13 +61,13 @@ public partial class RebuildCsPlugin : EditorPlugin
    {
       if (!_rebuildEnabled) return;
       _scanning = true;
-      GetEditorInterface().GetResourceFilesystem().ScanSources();
+      EditorInterface.Singleton.GetResourceFilesystem().ScanSources();
    }
 
    public override void _Process(double delta)
    {
       if (!_scanning) return;
-      if (GetEditorInterface().GetResourceFilesystem().IsScanning()) return;
+      if (EditorInterface.Singleton.GetResourceFilesystem().IsScanning()) return;
       _scanning = false;
    }
 
@@ -95,8 +95,9 @@ public partial class RebuildCsPlugin : EditorPlugin
       var bottomBar = node.GetParent();
       RemoveControlFromBottomPanel(node);
       node.QueueFree();
-      
-      var msBuildPanel = bottomBar.GetChildren().FirstOrDefault(c => c.HasMethod(_msBuildPanelBuildMethod));
+
+      var msBuildPanel = bottomBar.GetChildren()
+         .FirstOrDefault(c => c.HasMethod(_msBuildPanelBuildMethod));
 
       if (msBuildPanel != null)
       {

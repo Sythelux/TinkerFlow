@@ -2,7 +2,7 @@ using Godot;
 using VRBuilder.Core.Editor;
 using VRBuilder.Core.Editor.UI.GraphView.Windows;
 
-namespace VRBuilder.Core.Editor.UI.Windows
+namespace VRBuilder.Core.Editor.UI.GraphView.Windows
 {
     /// <summary>
     /// Base class for a process GUI editor window.

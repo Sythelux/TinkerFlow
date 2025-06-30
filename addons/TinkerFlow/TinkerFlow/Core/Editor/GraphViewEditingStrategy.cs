@@ -25,7 +25,7 @@ namespace VRBuilder.Core.Editor
         public IChapter? CurrentChapter { get; protected set; }
 
         /// <inheritdoc/>
-        public void HandleNewProcessWindow(IProcessEditorWindow window)
+        public void HandleNewProcessWindow(ProcessEditorWindow window)
         {
             processWindow = window as ProcessEditorWindow;
             processWindow?.SetProcess(CurrentProcess);
@@ -47,7 +47,7 @@ namespace VRBuilder.Core.Editor
         }
 
         /// <inheritdoc/>
-        public void HandleProcessWindowClosed(IProcessEditorWindow window)
+        public void HandleProcessWindowClosed(ProcessEditorWindow window)
         {
             if (processWindow != window) return;
 

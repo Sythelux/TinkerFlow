@@ -6,6 +6,7 @@ using System.IO;
 using Godot;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Editor.Godot;
+using VRBuilder.Core.Editor.UI.GraphView.Windows;
 using VRBuilder.Core.Editor.UI.Windows;
 
 namespace VRBuilder.Core.Editor
