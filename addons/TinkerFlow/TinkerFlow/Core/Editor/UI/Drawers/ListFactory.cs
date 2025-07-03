@@ -2,11 +2,11 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using Godot;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
+using Godot;
 using TinkerFlow.Core.Editor.UI;
 using VRBuilder.Core.Utils;
 
@@ -80,12 +80,22 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 // block.AddChild(new HSeparator());
                 block.AddChild(bg);
                 bg.AddChild(header);
+
                 header.RemoveChild(body);
-                block.AddChild(body);
+                block.AddChild(DrawWrap(body));
 
                 control.AddChild(block);
             }
+
             return control;
+        }
+
+        private Node DrawWrap(Node body)
+        {
+            var marginContainer = new MarginContainer();
+            marginContainer.AddThemeConstantOverride("margin_left", EditorDrawingHelper.MARGIN_LEFT);
+            marginContainer.AddChild(body);
+            return marginContainer;
         }
     }
 }

@@ -2,13 +2,10 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using Godot;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Godot;
 using VRBuilder.Core.Attributes;
-using VRBuilder.Core.Editor.ProcessValidation;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -19,6 +16,38 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     [DefaultProcessDrawer(typeof(INamedData))]
     public class NameableFactory : ObjectFactory
     {
+        // public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)
+        // {
+        //     var block = base.Create(currentValue, changeValueCallback, text);
+        //     if (block == null)
+        //         return null;
+        //     var body = block.GetChildren(true).OfType<ExpandableVBoxContainer>().FirstOrDefault();
+        //     if (body == null)
+        //         return block;
+        //
+        //     var bg = new PanelContainer { Name = $"{nameof(NameableFactory)}.Block.Bg" };
+        //     var styleBoxFlat = new StyleBoxFlat
+        //     {
+        //         BgColor = new Color(1f, 1f, 1f, 0.1f),
+        //     };
+        //     bg.AddThemeStyleboxOverride("panel", styleBoxFlat);
+        //
+        //     block.RemoveChild(body);
+        //     var header = new VBoxContainer();
+        //     for (int i = 0; i < block.GetChildCount(); i++)
+        //     {
+        //         var child = block.GetChild(i);
+        //         block.RemoveChild(child);
+        //         header.AddChild(child);
+        //     }
+        //
+        //     bg.AddChild(header);
+        //     block.AddChild(bg);
+        //     block.AddChild(body);
+        //
+        //     return block;
+        // }
+
         protected virtual Control CreateLabel<T>(T currentValue, Action<object> changeValueCallback, Label label)
         {
             if (currentValue is not INamedData nameable)

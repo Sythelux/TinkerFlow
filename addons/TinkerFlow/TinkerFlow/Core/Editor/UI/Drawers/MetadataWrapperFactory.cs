@@ -2,12 +2,12 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using Godot;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Godot;
 using TinkerFlow.Core.Editor.UI;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Behaviors;
@@ -42,7 +42,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// <inheritdoc />
         public override Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text)
         {
-            GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
+            // GD.Print($"{PrintDebugger.Get()}{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}({currentValue?.GetType().Name}, {text})");
 
             if (currentValue is not MetadataWrapper wrapper)
                 return new Control { Name = GetType().Name + "." + text };
@@ -152,39 +152,56 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawHelp(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}|{(isPartOfHeader ? "header:yes" : "header:no")}");
+
             var control = DrawRecursively(wrapper, showHelpName, changeValueCallback, text);
             if (wrapper.Value?.GetType() != null)
             {
                 if (wrapper.Value.GetType().GetCustomAttribute(typeof(HelpLinkAttribute)) is HelpLinkAttribute helpLinkAttribute)
                 {
-                    var button = new Button
-                    {
-                        Icon = EditorDrawingHelper.HELP_ICON,
-                        Name = "DrawHelp.HelpButton",
-                        Flat = true
-                    };
+                    var button = DrawHelpButton();
                     button.Pressed += () => Application.OpenURL(helpLinkAttribute.HelpLink);
                     control.AddChild(button);
                 }
             }
+
             return control;
         }
-        private Control DrawMenu(MetadataWrapper wrapper, Action<object> changeValueCallback, string label, bool isPartOfHeader)
+
+        private static Button DrawHelpButton()
         {
-            var control = DrawRecursively(wrapper, showMenuName, changeValueCallback, label);
+            return new Button
+            {
+                Icon = EditorDrawingHelper.HELP_ICON,
+                Name = "DrawHelp.HelpButton",
+                Flat = true
+            };
+        }
+
+        private Control DrawMenu(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
+        {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}|{(isPartOfHeader ? "header:yes" : "header:no")}");
+
+            var control = DrawRecursively(wrapper, showMenuName, changeValueCallback, text);
             if (wrapper.Value?.GetType() != null)
             {
-                var button = new Button
-                {
-                    Icon = EditorDrawingHelper.MENU_ICON,
-                    Name = "DrawHelp.MenuButton",
-                    Flat = true
-                };
+                var button = DrawMenuButton();
                 // menuAttribute.
                 // button.Pressed += () => DrawEntityMenu;
                 control.AddChild(button);
             }
+
             return control;
+        }
+
+        private static Button DrawMenuButton()
+        {
+            return new Button
+            {
+                Icon = EditorDrawingHelper.MENU_ICON,
+                Name = "DrawHelp.MenuButton",
+                Flat = true
+            };
         }
 
         // private void DrawEntityMenu(MetadataWrapper wrapper, Action<object> changeValueCallback)
@@ -208,15 +225,11 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawReorderable(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}|{(isPartOfHeader ? "header:yes" : "header:no")}");
+
             var control = DrawRecursively(wrapper, reorderableName, changeValueCallback, text);
 
-            var reorderDownButton = new Button
-            {
-                Icon = EditorDrawingHelper.ARROW_DOWN_ICON,
-                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsLast,
-                Name = "Reorderable.ReorderDownButton",
-                Flat = true
-            };
+            var reorderDownButton = ReorderDownButton(wrapper);
             reorderDownButton.Pressed += () =>
             {
                 object oldValue = wrapper.Value;
@@ -235,13 +248,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             };
             control.AddChild(reorderDownButton);
 
-            var reorderUpButton = new Button
-            {
-                Icon = EditorDrawingHelper.ARROW_UP_ICON,
-                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsFirst,
-                Name = "Reorderable.ReorderUpButton",
-                Flat = true
-            };
+            var reorderUpButton = ReorderUpButton(wrapper);
             reorderUpButton.Pressed += () =>
             {
                 object oldValue = wrapper.Value;
@@ -263,8 +270,32 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             return control;
         }
 
+        private Button ReorderDownButton(MetadataWrapper wrapper)
+        {
+            return new Button
+            {
+                Icon = EditorDrawingHelper.ARROW_DOWN_ICON,
+                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsLast,
+                Name = "Reorderable.ReorderDownButton",
+                Flat = true
+            };
+        }
+
+        private Button ReorderUpButton(MetadataWrapper wrapper)
+        {
+            return new Button
+            {
+                Icon = EditorDrawingHelper.ARROW_UP_ICON,
+                Disabled = ((ReorderableElementMetadata)wrapper.Metadata[reorderableName]).IsFirst,
+                Name = "Reorderable.ReorderUpButton",
+                Flat = true
+            };
+        }
+
         private Control DrawSeparated(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}");
+
             //TODO:
             // EditorDrawingHelper.DrawRect(new Rect(0f, rect.y - 1f, rect.x + rect.width, 1f), Color.grey);
             //
@@ -284,13 +315,11 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawDeletable(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}|{(isPartOfHeader ? "header:yes" : "header:no")}");
+
             Control control = DrawRecursively(wrapper, deletableName, changeValueCallback, text);
 
-            var deleteButton = new Button
-            {
-                Icon = EditorDrawingHelper.DELETE_ICON,
-                Name = "DrawDeletable.DeleteButton"
-            };
+            var deleteButton = DeleteButton(wrapper);
             deleteButton.Pressed += () =>
             {
                 object oldValue = wrapper.Value;
@@ -311,20 +340,35 @@ namespace VRBuilder.Core.Editor.UI.Drawers
             return control;
         }
 
+        private static Button DeleteButton(MetadataWrapper wrapper)
+        {
+            return new Button
+            {
+                Icon = EditorDrawingHelper.DELETE_ICON,
+                // Disabled = wrapper.Value,
+                Name = "DrawDeletable.DeleteButton",
+                Flat = true
+            };
+        }
+
         private Control DrawFoldable(MetadataWrapper wrapper, Action<object> changeValueCallback, string text, bool isPartOfHeader)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}|{(isPartOfHeader ? "header:yes" : "header:no")}");
+
             if (wrapper.Metadata[foldableName] == null)
             {
                 wrapper.Metadata[foldableName] = true;
                 changeValueCallback(wrapper);
             }
 
+            Control control;
             if (isPartOfHeader)
-            {
-            }
+                control = new HBoxContainer { Name = "Foldable.Container" };
+            else
+                control = new VBoxContainer { Name = "Foldable.Container" };
+
             var isToggledInValue = !(bool)wrapper.Metadata[foldableName];
 
-            var control = new HBoxContainer { Name = "Foldable.Container" };
             Button collapseButton = EditorDrawingHelper.DrawCollapseButton(collapsed: isToggledInValue);
             collapseButton.Flat = true;
             var toggleLabel = new Label
@@ -369,6 +413,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawIsBlockingToggle(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}");
+
             var dataOwner = wrapper.Value as IDataOwner;
 
             var control = DrawRecursively(wrapper, drawIsBlockingToggleName, changeValueCallback, text);
@@ -396,6 +442,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawExtendableList<T>(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}");
+
             if (wrapper.Value is IList == false)
             {
                 GD.PushWarning("ExtendableListAttribute can be used only with IList members.");
@@ -440,6 +488,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control HandleKeepPopulated(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}");
+
             if (wrapper.Value is IList == false)
             {
                 GD.PushWarning("KeepPopulated can be used only with IList members.");
@@ -577,6 +627,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawListOf(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}");
+
             IList<MetadataWrapper> listOfWrappers = ConvertListOfMetadataToList(wrapper);
 
             IProcessDrawer valueDrawer = DrawerLocator.GetDrawerForValue(wrapper.Value, wrapper.ValueDeclaredType);
@@ -596,6 +648,8 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control DrawReorderableListOf(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
         {
+            GD.Print($"{GetType().Name}.{MethodBase.GetCurrentMethod()?.Name}:{text}");
+
             IList<MetadataWrapper> listOfWrappers = ConvertReorderableListOfMetadataToList(wrapper);
 
             IProcessDrawer? valueDrawer = DrawerLocator.GetDrawerForValue(wrapper.Value, wrapper.ValueDeclaredType);
@@ -637,6 +691,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                             {
                                 (newListOfWrappers[i], newListOfWrappers[i - 1]) = (newListOfWrappers[i - 1], newListOfWrappers[i]);
                             }
+
                             break;
                         }
                         default:

@@ -5,6 +5,7 @@ namespace VRBuilder.Core.Editor.UI;
 
 internal class EditorDrawingHelper
 {
+    public static readonly int MARGIN_LEFT = 24;
     public static readonly Texture2D DELETE_ICON = TinkerFlowPlugin.GetIcon("Remove");
     public static readonly Texture2D ARROW_UP_ICON = TinkerFlowPlugin.GetIcon("ArrowUp");
     public static readonly Texture2D ARROW_DOWN_ICON = TinkerFlowPlugin.GetIcon("ArrowDown");
