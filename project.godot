@@ -21,10 +21,17 @@ AllowedMenuItemsSettings/SerializedBehaviorSelections={
 "VRBuilder.Core.Editor.UI.MenuItems.Behaviors.EnableObjectsMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
 "VRBuilder.Core.Editor.UI.MenuItems.Behaviors.HighlightObjectMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
 "VRBuilder.Core.Editor.UI.MenuItems.Behaviors.LoadSceneMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.MoveObjectMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.PlayResourceAudioMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.ScalingMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.SetParentMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
 "VRBuilder.Core.Editor.UI.MenuItems.Behaviors.StartParticleEmissionMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
-"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.StopParticleEmissionMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.StopParticleEmissionMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Behaviors.TextToSpeechMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true
 }
 AllowedMenuItemsSettings/SerializedConditionSelections={
+"VRBuilder.Core.Editor.UI.MenuItems.Conditions.ObjectInColliderMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
+"VRBuilder.Core.Editor.UI.MenuItems.Conditions.ObjectInRangeMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true,
 "VRBuilder.Core.Editor.UI.MenuItems.Conditions.TimeoutMenuItem, TinkerFlow, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": true
 }
 LifeCycleLoggingConfig/LogSteps=true
@@ -37,7 +44,7 @@ Editor.Godots/LastEditedProcessName="SampleScene"
 [application]
 
 config/name="TinkerFlow"
-run/main_scene="uid://dagvs0h2x2v0d"
+run/main_scene="uid://cwu26e1jy8icq"
 config/features=PackedStringArray("4.4", "C#")
 config/icon="res://icon.svg"
 
@@ -51,7 +58,7 @@ project/assembly_name="TinkerFlow"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/TinkerFlow/plugin.cfg", "res://addons/async_resource_loader/plugin.cfg", "res://addons/curve_edit/plugin.cfg", "res://addons/inspector-gadget/plugin.cfg", "res://addons/rebuild_cs_on_focus/plugin.cfg")
+enabled=PackedStringArray("res://addons/TinkerFlow/plugin.cfg", "res://addons/async_resource_loader/plugin.cfg")
 
 [internationalization]
 

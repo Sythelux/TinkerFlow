@@ -20,7 +20,7 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
             {
                 step = value;
                 SetTitle(step.Data.Name);
-                SetPosition(step.StepMetadata.Position);
+                SetPositionOffset(step.StepMetadata.Position);
             }
         }
 

@@ -28,6 +28,7 @@ namespace VRBuilder.Core.Editor.UI.Graphics
             label = new Label();
             label.Text = emptyOutputPortText;
             AddChild(label);
+            SetSlotEnabledRight(0, true);
             // IsEntryPoint = true;
 
             // capabilities = Capabilities.Selectable;
