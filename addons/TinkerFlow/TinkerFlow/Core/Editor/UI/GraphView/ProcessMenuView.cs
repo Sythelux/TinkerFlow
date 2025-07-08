@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using VRBuilder.Core;
 
@@ -6,6 +5,14 @@ namespace TinkerFlow.Godot.Editor
 {
     public partial class ProcessMenuView : Resource
     {
+        public const float ExtendedMenuWidth = 330f;
+        public const float MinimizedMenuWidth = ExpandButtonWidth + (ChapterPaddingTop * 2f);
+
+        public const float ExpandButtonHeight = ExpandButtonWidth;
+        public const float ExpandButtonWidth = 28f;
+
+        public const float ChapterPaddingTop = 8f;
+
         private int activeChapter;
         protected IProcess Process { get; private set; }
         public ProcessGraph ParentWindow { get; set; }

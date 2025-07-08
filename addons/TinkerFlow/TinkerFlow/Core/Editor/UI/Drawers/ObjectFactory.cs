@@ -1,8 +1,8 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Godot;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Editor.Configuration;
 using VRBuilder.Core.Editor.ProcessValidation;
@@ -148,6 +148,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 
         private Control CreateAndDrawMetadataWrapper(object ownerObject, MemberInfo drawnMemberInfo, Action<object> changeValueCallback)
         {
+            Control c = new VBoxContainer();
             PropertyInfo? metadataProperty = ownerObject.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(property => typeof(Metadata).IsAssignableFrom(property.PropertyType));
             FieldInfo? metadataField = ownerObject.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(field => typeof(Metadata).IsAssignableFrom(field.FieldType));
             Metadata? ownerObjectMetadata;
@@ -172,8 +173,35 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 Value = memberValue
             };
 
+            IProcessDrawer? wrapperDrawer = DrawerLocator.GetDrawerForValue(wrapper, typeof(MetadataWrapper));
+            Label displayName = memberDrawer.GetLabel(drawnMemberInfo, ownerObject);
+
             void WrapperChangedCallback(object newValue)
             {
+                var isMetadataDirty = false; //TODO: isMetaDataDirty doesn't work outside of immediateUI
+
+                List<MetadataAttribute> declaredAttributes = drawnMemberInfo.GetAttributes<MetadataAttribute>(true).ToList();
+
+                Dictionary<string, object> obsoleteMetadataRemoved = wrapper.Metadata.Keys.ToList().Where(key => declaredAttributes.Any(attribute => attribute.Name == key)).ToDictionary(key => key, key => wrapper.Metadata[key]);
+
+                if (obsoleteMetadataRemoved.Count < wrapper.Metadata.Count)
+                {
+                    wrapper.Metadata = obsoleteMetadataRemoved;
+                    isMetadataDirty = true;
+                }
+
+                foreach (MetadataAttribute metadataAttribute in declaredAttributes)
+                    if (wrapper.Metadata.ContainsKey(metadataAttribute.Name) == false)
+                    {
+                        wrapper.Metadata[metadataAttribute.Name] = metadataAttribute.GetDefaultMetadata(drawnMemberInfo);
+                        isMetadataDirty = true;
+                    }
+                    else if (metadataAttribute.IsMetadataValid(wrapper.Metadata[metadataAttribute.Name]) == false)
+                    {
+                        wrapper.Metadata[metadataAttribute.Name] = metadataAttribute.GetDefaultMetadata(drawnMemberInfo);
+                        isMetadataDirty = true;
+                    }
+
                 var newWrapper = (MetadataWrapper)newValue;
                 foreach (string key in newWrapper.Metadata.Keys.ToList()) wrapper.Metadata[key] = newWrapper.Metadata[key];
 
@@ -185,41 +213,17 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                 if (metadataProperty != null) metadataProperty.SetValue(ownerObject, ownerObjectMetadata, null);
 
                 ReflectionUtils.SetValueToPropertyOrField(ownerObject, drawnMemberInfo, newWrapper.Value);
+                if (c.GetChildCount() > 0)
+                    c.RemoveChild(c.GetChild(0));
+                c.AddChild(wrapperDrawer?.Create(wrapper, (Action<object>)WrapperChangedCallback, displayName.Text) ?? new Label { Text = "No Drawer for MetadataWrapper" });
 
-                changeValueCallback(ownerObject);
+                if (isMetadataDirty)
+                    changeValueCallback(ownerObject);
             }
 
-            var isMetadataDirty = false;
+            WrapperChangedCallback(wrapper);
 
-            List<MetadataAttribute> declaredAttributes = drawnMemberInfo.GetAttributes<MetadataAttribute>(true).ToList();
-
-            Dictionary<string, object> obsoleteMetadataRemoved = wrapper.Metadata.Keys.ToList().Where(key => declaredAttributes.Any(attribute => attribute.Name == key)).ToDictionary(key => key, key => wrapper.Metadata[key]);
-
-            if (obsoleteMetadataRemoved.Count < wrapper.Metadata.Count)
-            {
-                wrapper.Metadata = obsoleteMetadataRemoved;
-                isMetadataDirty = true;
-            }
-
-            foreach (MetadataAttribute metadataAttribute in declaredAttributes)
-                if (wrapper.Metadata.ContainsKey(metadataAttribute.Name) == false)
-                {
-                    wrapper.Metadata[metadataAttribute.Name] = metadataAttribute.GetDefaultMetadata(drawnMemberInfo);
-                    isMetadataDirty = true;
-                }
-                else if (metadataAttribute.IsMetadataValid(wrapper.Metadata[metadataAttribute.Name]) == false)
-                {
-                    wrapper.Metadata[metadataAttribute.Name] = metadataAttribute.GetDefaultMetadata(drawnMemberInfo);
-                    isMetadataDirty = true;
-                }
-
-            if (isMetadataDirty) WrapperChangedCallback(wrapper);
-
-            IProcessDrawer? wrapperDrawer = DrawerLocator.GetDrawerForValue(wrapper, typeof(MetadataWrapper));
-
-            Label displayName = memberDrawer.GetLabel(drawnMemberInfo, ownerObject);
-
-            return wrapperDrawer?.Create(wrapper, (Action<object>)WrapperChangedCallback, displayName.Text) ?? new Label { Text = "No Drawer for MetadataWrapper" };
+            return c;
         }
     }
 }

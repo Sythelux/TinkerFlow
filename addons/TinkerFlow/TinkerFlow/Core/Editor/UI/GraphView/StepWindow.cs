@@ -137,7 +137,7 @@ namespace VRBuilder.Core.Editor.UI.Windows
             GlobalEditorHandler.CurrentStepModified(step);
         }
 
-        public void OnStepDeselected(Step? oldStep)
+        public void OnStepDeselected(IStep? oldStep)
         {
             if (stepDrawer != null)
             {

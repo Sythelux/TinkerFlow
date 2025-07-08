@@ -1,9 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cwu26e1jy8icq"]
+[gd_scene load_steps=9 format=3 uid="uid://cwu26e1jy8icq"]
 
 [ext_resource type="Script" uid="uid://0svmmghf2e8e" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/RuntimeConfigurator.cs" id="1_tmdxv"]
 [ext_resource type="Script" uid="uid://b1wc4ftnr6gtm" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/SceneConfiguration.cs" id="2_xhjjv"]
+[ext_resource type="Script" uid="uid://lvx3ueigemub" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/Configuration/DefaultRuntimeConfiguration.cs" id="2_yn7lh"]
 [ext_resource type="Script" uid="uid://7iwdn013fvhj" path="res://addons/TinkerFlow/TinkerFlow/Core/Runtime/SceneObjects/ProcessSceneObject.cs" id="3_6ubhu"]
 [ext_resource type="Script" uid="uid://dskx3qouwcvfm" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Runtime/SceneObjects/SerializableGuid.cs" id="4_60ceu"]
+
+[sub_resource type="Resource" id="Resource_3lawf"]
+script = ExtResource("2_yn7lh")
+user = null
 
 [sub_resource type="Resource" id="Resource_yn7lh"]
 script = ExtResource("4_60ceu")
@@ -23,16 +28,24 @@ script = ExtResource("1_tmdxv")
 runtimeConfigurationName = "VRBuilder.Core.Configuration.DefaultRuntimeConfiguration; TinkerFlow; Version=1.0.0.0; Culture=neutral; PublicKeyToken=null"
 selectedProcessStreamingAssetsPath = "res://StreamingAssets/Processes/SampleScene/SampleScene.json"
 processStringLocalizationTable = "uid://qoe5nuyq046b"
+runtimeConfiguration = SubResource("Resource_3lawf")
 
 [node name="SceneConfiguration" type="Node" parent="PROCESS_CONFIGURATION"]
 script = ExtResource("2_xhjjv")
+DefaultConfettiPrefab = ""
 
 [node name="User" type="Node3D" parent="."]
 script = ExtResource("3_6ubhu")
+IsLocked = false
+IsAlwaysUnlocked = false
+resetObjectId = false
 serializedGuid = SubResource("Resource_yn7lh")
 
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="ProcessSceneObject" type="Node" parent="Node3D"]
 script = ExtResource("3_6ubhu")
+IsLocked = false
+IsAlwaysUnlocked = false
+resetObjectId = false
 serializedGuid = SubResource("Resource_pspt0")

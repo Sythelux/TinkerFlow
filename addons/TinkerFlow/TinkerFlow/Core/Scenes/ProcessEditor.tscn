@@ -1,16 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://b35claxvsahil"]
+[gd_scene load_steps=7 format=3 uid="uid://b35claxvsahil"]
 
 [ext_resource type="Script" uid="uid://bte4b6xunlfhn" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessEditor.cs" id="1_b4nao"]
 [ext_resource type="Script" uid="uid://dubgwd8hxt2dl" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessGraph.cs" id="2_hl13x"]
-[ext_resource type="Texture2D" uid="uid://3e6twfytmhb7" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_expand_chapter_dark.png" id="4_rrkbu"]
+[ext_resource type="Script" uid="uid://bremdhr0ost33" path="res://addons/TinkerFlow/TinkerFlow/Core/Editor/UI/GraphView/ProcessMenuView.cs" id="3_0hxn7"]
+[ext_resource type="Texture2D" uid="uid://bqwrsbqcu2dsw" path="res://addons/TinkerFlow/TinkerFlow/VR-Builder-Lite/Source/Core/Resources/icon_expand_chapter_dark.png" id="4_rrkbu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_otjmm"]
 content_margin_left = 850.0
 
-[sub_resource type="Resource" id="Resource_8oimw"]
-metadata/__load_path__ = "res://addons/TinkerFlow/TinkerFlow/Core/Prefabs/StepNode.tscn"
+[sub_resource type="Resource" id="Resource_ohkqr"]
+script = ExtResource("3_0hxn7")
+ParentWindow = null
+activeChapter = 0
 
-[node name="ProcessEditor" type="Control"]
+[node name="ProcessEditor" type="Control" node_paths=PackedStringArray("graph")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +22,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_b4nao")
+BaseColor = Color(0, 0, 0, 0)
+chapterHierarchy = null
+graph = NodePath("Main/HBoxContainer2/ProcessGraph")
 
 [node name="Main" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -36,7 +42,7 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProcessGraph" type="GraphEdit" parent="Main/HBoxContainer2" node_paths=PackedStringArray("AddNodeMenu", "EditNodeMenu")]
+[node name="ProcessGraph" type="GraphEdit" parent="Main/HBoxContainer2" node_paths=PackedStringArray("AddNodeMenu", "EditNodeMenu", "addNodeMenu", "editNodeMenu", "entryNode")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -48,41 +54,54 @@ size_flags_vertical = 3
 theme_override_styles/menu_panel = SubResource("StyleBoxEmpty_otjmm")
 right_disconnects = true
 script = ExtResource("2_hl13x")
-StepNode = SubResource("Resource_8oimw")
 AddNodeMenu = NodePath("../AddNodePopup")
 EditNodeMenu = NodePath("../NodePopupMenu")
+SelectedNode = null
+addNodeMenu = NodePath("../AddNodePopup")
+editNodeMenu = NodePath("../NodePopupMenu")
+entryNode = NodePath("@GraphNode@22918")
+chapterMenu = SubResource("Resource_ohkqr")
+lastConfigurator = null
+runtimeConfigurator = null
+chapterViewContainer = null
+popUpPosition = Vector2(0, 0)
 
-[node name="ChapterViewBG" type="Panel" parent="Main/HBoxContainer2"]
+[node name="Panel" type="PanelContainer" parent="Main/HBoxContainer2"]
+clip_contents = true
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 32.0
-grow_vertical = 2
-
-[node name="ChapterView" type="VBoxContainer" parent="Main/HBoxContainer2/ChapterViewBG"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+offset_right = 40.0
 grow_vertical = 2
 size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Main/HBoxContainer2/Panel"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="ChapterView" type="VBoxContainer" parent="Main/HBoxContainer2/Panel/MarginContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="Main/HBoxContainer2/ChapterViewBG/ChapterView"]
+[node name="Button" type="Button" parent="Main/HBoxContainer2/Panel/MarginContainer/ChapterView"]
 layout_mode = 2
 size_flags_horizontal = 8
 icon = ExtResource("4_rrkbu")
 flat = true
+icon_alignment = 2
 
 [node name="AddNodePopup" type="PopupMenu" parent="Main/HBoxContainer2"]
 size = Vector2i(116, 2)
 prefer_native_menu = true
 item_count = 3
-item_0/text = "New"
-item_0/id = 0
+item_0/text = "New:"
+item_0/id = -1
 item_0/separator = true
 item_1/text = "Step"
 item_1/id = 1

@@ -479,11 +479,29 @@ namespace VRBuilder.Core.Editor.UI.Drawers
                     }
 
                     wrapper.Value = list;
+                    // ClearExtendableList(wrapper, control);
+                    // var c2 = DrawRecursively(wrapper, extendableListName, changeValueCallback, text);
+                    // foreach (var child in c2.GetChildren())
+                    // {
+                    //     control.AddChild(child);
+                    //     c2.RemoveChild(control);
+                    // }
                     changeValueCallback(wrapper);
                 }, ""));
             }
 
             return control;
+        }
+
+        private void ClearExtendableList(MetadataWrapper wrapper, Control control)
+        {
+            var nodes = control.GetChildren();
+            for (var i = nodes.Count - 1; i >= 0; i--)
+            {
+                var child = nodes[i];
+                child.Free();
+                control.RemoveChild(child);
+            }
         }
 
         private Control HandleKeepPopulated(MetadataWrapper wrapper, Action<object> changeValueCallback, string text)
