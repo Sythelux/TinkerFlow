@@ -1,7 +1,7 @@
-using Godot;
-using Godot.Collections;
 using System.IO;
 using System.Reflection;
+using Godot;
+using Godot.Collections;
 using VRBuilder.Core.Editor;
 using VRBuilder.Core.Editor.Configuration;
 using VRBuilder.Core.Editor.UI.Windows;
@@ -23,7 +23,12 @@ namespace TinkerFlow.Godot.Editor
         {
             Instance = this;
             ProcessInspector = GD.Load<PackedScene>(ResourcePath("Scenes/ProcessInspector.tscn")).Instantiate<StepWindow>();
-            AddControlToDock(DockSlot.LeftUl, ProcessInspector);
+            var sc = new ScrollContainer();
+            sc.AddChild(ProcessInspector);
+            sc.Name = ProcessInspector.Name;
+            sc.HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled;
+            sc.VerticalScrollMode = ScrollContainer.ScrollMode.Reserve;
+            AddControlToDock(DockSlot.LeftUl, sc);
 
             ProcessEditor = ResourceLoader.Load<PackedScene>(ResourcePath("Scenes/ProcessEditor.tscn")).Instantiate<ProcessEditor>();
             if (ProcessEditor != null)

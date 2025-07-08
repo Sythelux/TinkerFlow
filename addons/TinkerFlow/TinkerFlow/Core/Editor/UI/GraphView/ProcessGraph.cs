@@ -1,8 +1,8 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Godot;
 using VRBuilder.Core;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Editor;
@@ -11,7 +11,6 @@ using VRBuilder.Core.Editor.UI.Graphics;
 using VRBuilder.Core.Editor.UI.GraphView.Instantiators;
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 using VRBuilder.Core.Editor.UI.GraphView.Windows;
-using VRBuilder.Core.Editor.UI.Windows;
 using VRBuilder.Core.Editor.Util;
 using VRBuilder.Core.Entities.Factories;
 
@@ -21,7 +20,6 @@ namespace TinkerFlow.Godot.Editor
     [Tool]
     public partial class ProcessGraph : ProcessEditorWindow //ProcessGraphView.cs
     {
-
         #region Delegates
 
         [Signal]
@@ -80,8 +78,14 @@ namespace TinkerFlow.Godot.Editor
 
             BuildContextualMenu();
 
-            // chapterMenu.MenuExtendedChanged += (sender, args) => { chapterViewContainer.style.width = args.IsExtended ? ProcessMenuView.ExtendedMenuWidth : ProcessMenuView.MinimizedMenuWidth; };
+            chapterMenu.MenuExtendedChanged += OnMenuExtendedChanged;
             // chapterMenu.RefreshRequested += (sender, args) => { chapterViewContainer.MarkDirtyLayout(); };
+        }
+
+        private void OnMenuExtendedChanged(bool isExtended)
+        {
+            if (chapterViewContainer != null)
+                chapterViewContainer.CustomMinimumSize = isExtended ? new Vector2(ProcessMenuView.ExtendedMenuWidth, 0) : new Vector2(ProcessMenuView.MinimizedMenuWidth, 0);
         }
 
         private void SetupInstantiators()
@@ -200,14 +204,17 @@ namespace TinkerFlow.Godot.Editor
 
             if (currentProcess == null) return;
 
-            return;
+            SetChapter(currentProcess.Data.FirstChapter);
+        }
+
+        private void SetupChapterHierarchy(IChapter chapter)
+        {
             chapterMenu?.Initialise(currentProcess, this);
+
             // chapterViewContainer.onGUIHandler = () => chapterMenu.Draw();
 
             // if (chapterMenu != null)
             //     chapterMenu.ChapterChanged += (sender, args) => { SetChapter(args.CurrentChapter); };
-
-            SetChapter(currentProcess.Data.FirstChapter);
         }
 
         internal override IChapter? GetChapter()
@@ -221,59 +228,49 @@ namespace TinkerFlow.Godot.Editor
         internal override void SetChapter(IChapter chapter)
         {
             IChapter? previousChapter = GlobalEditorHandler.GetCurrentChapter();
+            SetupChapterHierarchy(chapter);
 
             if (chapter != previousChapter)
             {
                 if (previousChapter != null)
                 {
                     if (storedViewTransforms.ContainsKey(previousChapter))
-                    {
                         storedViewTransforms[previousChapter] = GetViewportRect();
-                    }
                     else
-                    {
                         storedViewTransforms.Add(previousChapter, GetViewportRect());
-                    }
                 }
 
                 GlobalEditorHandler.SetCurrentChapter(chapter);
 
                 if (storedViewTransforms.ContainsKey(chapter))
                 {
-                    // TODO: SetViewportRect(storedViewTransforms[chapter]);
+                    Position = storedViewTransforms[chapter].Position;
+                    Size = storedViewTransforms[chapter].Size;
                 }
                 else
                 {
-                    // TODO: viewTransform.scale = Vector3.one;
-                    //
-                    // if (contentRect.height > 0)
-                    // {
-                    //     viewTransform.position = new Vector2(defaultViewTransform.x, (int)(contentRect.height / 2)) - chapter.ChapterMetadata.EntryNodePosition;
-                    // }
-                    // else
-                    // {
-                    //     viewTransform.position = defaultViewTransform - chapter.ChapterMetadata.EntryNodePosition;
-                    // }
+                    Scale = Vector2.One;
+                    GetChildren().OfType<EntryPointNode>().FirstOrDefault()?.GrabFocus();
                 }
             }
 
             currentChapter = chapter;
 
             ClearConnections(); // edges.ForEach(RemoveElement);
-            foreach (Node node in GetChildren())
+            foreach (var node in GetChildren().OfType<ProcessGraphNode>())
                 node.Free();
-            GetChildren().Clear();
 
             entryNode = new EntryPointNode();
             AddChild(entryNode);
 
             _ = GenerateNodes(currentChapter).ToList();
 
-            foreach (ProcessGraphNode node in GetChildren().OfType<ProcessGraphNode>())
+            foreach (var node in GetChildren().OfType<ProcessGraphNode>())
             {
                 RefreshNode(node);
             }
         }
+
         private void DeleteStep(IStep step)
         {
             if (currentChapter.ChapterMetadata.LastSelectedStep == step)
@@ -395,7 +392,21 @@ namespace TinkerFlow.Godot.Editor
 
         internal override void RefreshChapterRepresentation()
         {
-            GD.PushError(new NotImplementedException());
+            if (currentProcess != null)
+            {
+                RefreshSelectedNode();
+            }
+        }
+
+        /// <summary>
+        /// Updates visualization of the node selected in the step inspector.
+        /// </summary>
+        public void RefreshSelectedNode()
+        {
+            if (SelectedNode is ProcessGraphNode node)
+            {
+                RefreshNode(node);
+            }
         }
 
         private ProcessGraphNode? FindStepNode(IStep? step)
